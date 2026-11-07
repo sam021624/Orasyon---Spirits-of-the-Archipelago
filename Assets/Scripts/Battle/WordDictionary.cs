@@ -19,6 +19,12 @@ namespace Orasyon.Battle
         public static bool IsLoaded => words != null;
         public static int  Count    => words?.Length ?? 0;
 
+        /// <summary>All words, sorted, uppercase.</summary>
+        public static IReadOnlyList<string> Words
+        {
+            get { EnsureLoaded(); return words; }
+        }
+
         public static void EnsureLoaded()
         {
             if (words != null) return;

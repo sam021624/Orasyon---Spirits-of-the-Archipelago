@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
   displayName: Albularyo
   isBoss: 0
-  maxHP: 100
+  maxHP: 30
   attackDamage: 0
   attackName: Strike
   description: 

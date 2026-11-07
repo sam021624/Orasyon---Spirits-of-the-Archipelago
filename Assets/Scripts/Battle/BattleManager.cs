@@ -39,7 +39,7 @@ namespace Orasyon.Battle
         [SerializeField] private float enemyHomeX     =  560f;
         [SerializeField] private float groundY        =   30f;
         [SerializeField] private float meleeGap       =  230f;
-        [SerializeField] private float walkSpeed      =  850f;
+        [SerializeField] private float walkSpeed      = 1150f;
         [SerializeField] private float travelDistance = 1100f;
         [SerializeField] private float offscreenX     = 1250f;
 
@@ -56,9 +56,9 @@ namespace Orasyon.Battle
         [SerializeField] private Button scrambleButton;
         [SerializeField] private Button menuButton;
 
-        [Header("Buffs")]
+        [Header("Potions")]
         [SerializeField] private BuffInventory buffs;
-        [SerializeField] private int           lunasHeal = 25;
+        [SerializeField] private int           healingPotionAmount = 10;   // one heart
 
         [Header("Feedback")]
         [SerializeField] private TextMeshProUGUI feedbackLabel;
@@ -158,30 +158,36 @@ namespace Orasyon.Battle
             StartCoroutine(AttackRoutine(letterGrid.ConsumeSelection()));
         }
 
+        /// <summary>Shuffles the tiles still on the board. Free: the letters stay the same, only their places change.</summary>
         private void OnScramblePressed()
         {
             if (!CanAct) return;
-            StartCoroutine(ScrambleRoutine());
+            letterGrid.Scramble();
+            ShowFeedback("You shuffle the remaining letters.", true);
         }
 
         private void UseBuff(BuffType type)
         {
             switch (type)
             {
-                case BuffType.Lunas:
-                    int healed = Mathf.Min(lunasHeal, player.maxHP - playerHP);
+                case BuffType.HealingPotion:
+                    int healed = Mathf.Min(healingPotionAmount, player.maxHP - playerHP);
                     playerHP += healed;
                     playerAnimator.PlayOnce(player.cast);
-                    Popup(PlayerRect, "+" + healed, new Color(0.45f, 1f, 0.5f));
-                    ShowFeedback($"Lunas restores {healed} HP.", true);
+                    Popup(PlayerRect, "+" + healed, new Color(1f, 0.45f, 0.45f));
+                    ShowFeedback($"Healing Potion restores {healed} HP.", true);
                     break;
-                case BuffType.AntingAnting:
+                case BuffType.WardingPotion:
                     shieldCharges++;
-                    ShowFeedback("The Anting-Anting will block the next attack.", true);
+                    playerAnimator.PlayOnce(player.cast);
+                    Popup(PlayerRect, "Warded", new Color(0.45f, 1f, 0.5f));
+                    ShowFeedback("A green ward surrounds you. The next attack will be blocked.", true);
                     break;
-                case BuffType.Agimat:
+                case BuffType.PowerPotion:
                     damageMultiplier = 2;
-                    ShowFeedback("The Agimat glows. Your next word deals double damage!", true);
+                    playerAnimator.PlayOnce(player.cast);
+                    Popup(PlayerRect, "Power!", new Color(0.5f, 0.75f, 1f));
+                    ShowFeedback("Power surges through you. Your next word deals double damage!", true);
                     break;
             }
             RefreshHearts();
@@ -218,7 +224,7 @@ namespace Orasyon.Battle
 
             string msg = $"<b>{word}</b> deals {damage} damage!";
             if (weakness)  msg += "  <color=#9CFF7A>Weakness!</color>";
-            if (empowered) msg += "  <color=#FFB347>Agimat x2!</color>";
+            if (empowered) msg += "  <color=#7FB2FF>Power x2!</color>";
             var reward = buffs.AwardForWord(word.Length);
             if (reward != null) msg += $"\n<color=#9FE2BF>You found a {reward.displayName}!</color>";
             ShowFeedback(msg, true);
@@ -249,22 +255,12 @@ namespace Orasyon.Battle
             FinishTurn();
         }
 
-        private IEnumerator ScrambleRoutine()
-        {
-            busy = true;
-            RefreshInput();
-            letterGrid.Scramble(minWordsOnBoard);
-            ShowFeedback($"You shuffle the letters... the {CurrentEnemy.displayName} takes its chance!", false);
-            yield return new WaitForSeconds(0.6f);
-            yield return EnemyTurnRoutine(CurrentEnemy);
-            if (CheckPlayerDefeat()) yield break;
-            FinishTurn();
-        }
-
         private IEnumerator EnemyTurnRoutine(CharacterDefinition enemy)
         {
+            // Close the distance to the player, strike, then go back
             float home = EnemyRect.anchoredPosition.x;
-            yield return MoveX(EnemyRect, home - 140f, 0.15f);
+            float reach = (player.spriteSize + enemy.spriteSize) * 0.5f * 0.75f;
+            yield return WalkTo(enemyAnimator, enemy, playerHomeX + reach);
 
             float strike = enemyAnimator.Duration(enemy.attack);
             enemyAnimator.PlayOnce(enemy.attack);
@@ -274,7 +270,7 @@ namespace Orasyon.Battle
             {
                 shieldCharges--;
                 Popup(PlayerRect, "Blocked!", new Color(0.55f, 0.8f, 1f));
-                ShowFeedback($"The Anting-Anting blocks {enemy.attackName}!", true);
+                ShowFeedback($"Your ward blocks {enemy.attackName}!", true);
             }
             else
             {
@@ -287,7 +283,7 @@ namespace Orasyon.Battle
             RefreshStatus();
 
             yield return new WaitForSeconds(strike * 0.4f);
-            yield return MoveX(EnemyRect, home, 0.2f);
+            yield return WalkTo(enemyAnimator, enemy, home);
         }
 
         /// <summary>Player walks forward while the background scrolls and the next enemy approaches.</summary>
@@ -345,39 +341,58 @@ namespace Orasyon.Battle
 
         private void FinishTurn()
         {
+            EnsurePlayableBoard();
             busy = false;
             RefreshInput();
             OnTurnFinished?.Invoke();
         }
 
+        /// <summary>Used tiles stay removed; only when no word can be made are the gaps refilled.</summary>
+        private void EnsurePlayableBoard()
+        {
+            if (letterGrid.HasAnyWord()) return;
+            int added = letterGrid.RefillEmpty(minWordsOnBoard);
+            if (added > 0 && feedbackLabel != null)
+                feedbackLabel.text += "\n<color=#9FE2BF>No words left. New letters fill the empty spaces.</color>";
+        }
+
         // ── Movement ─────────────────────────────────────────────────────────
+        /// <summary>
+        /// Moves a character horizontally. Characters with a walk clip (side view) play it and face the
+        /// direction of travel; front-facing creatures without one keep their idle and hop along instead.
+        /// </summary>
         private IEnumerator WalkTo(UIFrameAnimator anim, CharacterDefinition def, float targetX)
         {
             var rt = (RectTransform)anim.transform;
-            float dir = Mathf.Sign(targetX - rt.anchoredPosition.x);
-            rt.localScale = new Vector3(dir < 0 ? -1f : 1f, 1f, 1f);
-            if (def.walk != null && def.walk.Length > 0) anim.PlayLoop(def.walk);
+            bool hasWalk = def.walk != null && def.walk.Length > 0;
+            float baseY = groundY + def.hoverHeight;
+            float startX = rt.anchoredPosition.x;
+
+            if (hasWalk)
+            {
+                float dir = Mathf.Sign(targetX - startX);
+                rt.localScale = new Vector3(dir < 0 ? -1f : 1f, 1f, 1f);
+                anim.PlayLoop(def.walk);
+            }
 
             while (Mathf.Abs(rt.anchoredPosition.x - targetX) > 0.5f)
             {
                 float x = Mathf.MoveTowards(rt.anchoredPosition.x, targetX, walkSpeed * Time.deltaTime);
-                rt.anchoredPosition = new Vector2(x, rt.anchoredPosition.y);
+                float y = baseY;
+                if (!hasWalk)
+                {
+                    // Hop: 3 bounces per 1000px travelled, flying creatures bob more gently
+                    float travelled = Mathf.Abs(x - startX);
+                    float height = def.hoverHeight > 0f ? 22f : 34f;
+                    y += Mathf.Abs(Mathf.Sin(travelled / 1000f * 3f * Mathf.PI)) * height;
+                }
+                rt.anchoredPosition = new Vector2(x, y);
                 yield return null;
             }
 
+            rt.anchoredPosition = new Vector2(targetX, baseY);
             rt.localScale = Vector3.one;
-            anim.ReturnToIdle();
-        }
-
-        private static IEnumerator MoveX(RectTransform rt, float targetX, float duration)
-        {
-            float startX = rt.anchoredPosition.x;
-            for (float t = 0f; t < 1f; t += Time.deltaTime / duration)
-            {
-                rt.anchoredPosition = new Vector2(Mathf.Lerp(startX, targetX, t), rt.anchoredPosition.y);
-                yield return null;
-            }
-            rt.anchoredPosition = new Vector2(targetX, rt.anchoredPosition.y);
+            if (hasWalk) anim.ReturnToIdle();
         }
 
         private void SetX(RectTransform rt, CharacterDefinition def, float x)
@@ -474,8 +489,8 @@ namespace Orasyon.Battle
         {
             if (playerStatusLabel == null) return;
             string s = "";
-            if (shieldCharges > 0)     s += $"<color=#8CC8FF>Anting-Anting x{shieldCharges}</color>   ";
-            if (damageMultiplier > 1)  s += "<color=#FFB347>Agimat: next word x2</color>";
+            if (shieldCharges > 0)     s += $"<color=#7CFF8A>Warded x{shieldCharges}</color>   ";
+            if (damageMultiplier > 1)  s += "<color=#7FB2FF>Powered: next word x2</color>";
             playerStatusLabel.text = s;
         }
 

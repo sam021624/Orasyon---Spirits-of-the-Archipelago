@@ -18,10 +18,17 @@ namespace Orasyon.Battle
     {
         [SerializeField] private ParallaxLayer[] layers;
         [SerializeField] private float layerWidth = 1920f;
+        [Tooltip("Pixels per second to drift on its own (e.g. on the title screen). 0 = only scroll when told.")]
+        [SerializeField] private float autoScrollSpeed;
 
         private float offset;
 
         private void Start() => Apply();
+
+        private void Update()
+        {
+            if (autoScrollSpeed != 0f) Scroll(autoScrollSpeed * Time.unscaledDeltaTime);
+        }
 
         /// <summary>Scroll by <paramref name="pixels"/> (positive = travel to the right).</summary>
         public void Scroll(float pixels)

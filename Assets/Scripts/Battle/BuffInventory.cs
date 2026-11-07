@@ -7,11 +7,12 @@ using UnityEngine.UI;
 
 namespace Orasyon.Battle
 {
+    /// <summary>Potions on the left-panel shelf, earned by spelling long words.</summary>
     public enum BuffType
     {
-        Lunas,        // heal
-        AntingAnting, // block the next enemy attack
-        Agimat        // double damage on the next word
+        HealingPotion, // red: restore HP
+        WardingPotion, // green: block the next enemy attack
+        PowerPotion    // blue: double damage on the next word
     }
 
     [Serializable]
@@ -27,8 +28,9 @@ namespace Orasyon.Battle
     }
 
     /// <summary>
-    /// Left-panel collectibles. Long words award buffs; clicking a slot uses one.
+    /// Left-panel potion shelf. Long words award potions; clicking one drinks it.
     /// The effect itself is applied by BattleManager (OnBuffUsed).
+    /// The item slots below the shelf are reserved for boss drops (not implemented yet).
     /// </summary>
     public sealed class BuffInventory : MonoBehaviour
     {

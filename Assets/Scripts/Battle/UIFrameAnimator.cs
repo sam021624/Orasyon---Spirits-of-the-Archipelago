@@ -12,6 +12,8 @@ namespace Orasyon.Battle
     public sealed class UIFrameAnimator : MonoBehaviour
     {
         [SerializeField] private float framesPerSecond = 10f;
+        [Tooltip("Optional: loop this character's idle animation automatically (e.g. on the title screen).")]
+        [SerializeField] private CharacterDefinition playIdleOnStart;
 
         private RawImage    image;
         private Texture2D[] idleClip;
@@ -31,6 +33,15 @@ namespace Orasyon.Battle
         private void Awake()
         {
             image = GetComponent<RawImage>();
+        }
+
+        private void Start()
+        {
+            if (playIdleOnStart != null && currentClip == null)
+            {
+                FramesPerSecond = playIdleOnStart.framesPerSecond;
+                SetIdle(playIdleOnStart.idle);
+            }
         }
 
         /// <summary>Sets the looping idle clip and starts playing it.</summary>

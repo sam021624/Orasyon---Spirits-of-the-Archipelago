@@ -1,142 +1,97 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using UnityEngine;
 
 namespace Orasyon.Battle
 {
     /// <summary>
-    /// Builds letter boards and checks how many valid words they contain.
-    /// Words are formed from tiles that touch (8 directions), each tile used once per word.
+    /// Builds letter boards and checks which words can be made from them.
+    /// Bookworm rules: any tiles can be used, in any order, each tile once per word.
     /// </summary>
     public static class BoardGenerator
     {
-        private static readonly int[] DR = { -1, -1, -1, 0, 0, 1, 1, 1 };
-        private static readonly int[] DC = { -1, 0, 1, -1, 1, -1, 0, 1 };
-
         public static char RandomLetter(System.Random rng) => LetterScoring.RandomLetter(rng);
 
         /// <summary>
-        /// Random board with <paramref name="plantWord"/> placed along a connected path (if given),
-        /// retried until it contains at least <paramref name="minWords"/> valid words.
+        /// Random board containing the letters of <paramref name="plantWord"/> (if given),
+        /// retried until at least <paramref name="minWords"/> words can be made from it.
         /// </summary>
         public static char[,] Generate(int rows, int cols, string plantWord, int minWords, System.Random rng)
         {
             char[,] best = null;
             int bestCount = -1;
+            int size = rows * cols;
 
-            for (int attempt = 0; attempt < 80; attempt++)
+            for (int attempt = 0; attempt < 40; attempt++)
             {
+                var cells = Enumerable.Range(0, size).OrderBy(_ => rng.Next()).ToList();
                 var board = new char[rows, cols];
-                if (!string.IsNullOrEmpty(plantWord) && plantWord.Length <= rows * cols)
-                    TryPlant(board, plantWord.ToUpperInvariant(), rng);
+                int k = 0;
 
-                for (int r = 0; r < rows; r++)
-                    for (int c = 0; c < cols; c++)
-                        if (board[r, c] == '\0') board[r, c] = RandomLetter(rng);
+                if (!string.IsNullOrEmpty(plantWord) && plantWord.Length <= size)
+                    foreach (char ch in plantWord.ToUpperInvariant())
+                    {
+                        int i = cells[k++];
+                        board[i / cols, i % cols] = ch;
+                    }
 
-                int count = CountWords(board, minWords);
+                for (; k < size; k++)
+                {
+                    int i = cells[k];
+                    board[i / cols, i % cols] = RandomLetter(rng);
+                }
+
+                int count = CountWords(Letters(board), minWords);
                 if (count >= minWords) return board;
                 if (count > bestCount) { best = board; bestCount = count; }
             }
             return best;
         }
 
-        /// <summary>Counts distinct valid words on the board, stopping early at <paramref name="stopAt"/>.</summary>
-        public static int CountWords(char[,] board, int stopAt)
+        /// <summary>The letters on a board, skipping empty cells ('\0').</summary>
+        public static IEnumerable<char> Letters(char[,] board)
         {
-            var found = new HashSet<string>();
-            Search(board, found, stopAt);
-            return found.Count;
+            foreach (char c in board)
+                if (c != '\0') yield return c;
         }
 
-        /// <summary>All valid words on the board, longest first.</summary>
-        public static List<string> FindWords(char[,] board, int max = int.MaxValue)
+        /// <summary>How many distinct words can be made from these letters (stops early at <paramref name="stopAt"/>).</summary>
+        public static int CountWords(IEnumerable<char> letters, int stopAt)
         {
-            var found = new HashSet<string>();
-            Search(board, found, max);
-            return found.OrderByDescending(w => w.Length).ThenBy(w => w).ToList();
+            int n = 0;
+            foreach (var _ in Formable(letters))
+                if (++n >= stopAt) break;
+            return n;
         }
 
-        // ── Internal ─────────────────────────────────────────────────────────
-        private static bool TryPlant(char[,] board, string word, System.Random rng)
+        /// <summary>All words that can be made from these letters, longest first.</summary>
+        public static List<string> FindWords(IEnumerable<char> letters, int max = int.MaxValue)
         {
-            int rows = board.GetLength(0), cols = board.GetLength(1);
-            var visited = new bool[rows, cols];
-            var path = new List<Vector2Int>();
+            return Formable(letters).OrderByDescending(w => w.Length).ThenBy(w => w).Take(max).ToList();
+        }
 
-            var starts = new List<Vector2Int>();
-            for (int r = 0; r < rows; r++)
-                for (int c = 0; c < cols; c++)
-                    starts.Add(new Vector2Int(r, c));
-            starts = starts.OrderBy(_ => rng.Next()).ToList();
-
-            foreach (var s in starts)
+        private static IEnumerable<string> Formable(IEnumerable<char> letters)
+        {
+            var available = new int[26];
+            int total = 0;
+            foreach (char raw in letters)
             {
-                if (Walk(s.x, s.y, 0))
-                {
-                    for (int i = 0; i < path.Count; i++)
-                        board[path[i].x, path[i].y] = word[i];
-                    return true;
-                }
+                char c = char.ToUpperInvariant(raw);
+                if (c < 'A' || c > 'Z') continue;
+                available[c - 'A']++;
+                total++;
             }
-            return false;
 
-            bool Walk(int r, int c, int index)
+            var used = new int[26];
+            foreach (var word in WordDictionary.Words)
             {
-                visited[r, c] = true;
-                path.Add(new Vector2Int(r, c));
-                if (index == word.Length - 1) return true;
+                if (word.Length > total) continue;
 
-                foreach (int d in Enumerable.Range(0, 8).OrderBy(_ => rng.Next()))
-                {
-                    int nr = r + DR[d], nc = c + DC[d];
-                    if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && !visited[nr, nc] && Walk(nr, nc, index + 1))
-                        return true;
-                }
+                bool ok = true;
+                foreach (char c in word)
+                    if (++used[c - 'A'] > available[c - 'A']) { ok = false; break; }
 
-                visited[r, c] = false;
-                path.RemoveAt(path.Count - 1);
-                return false;
-            }
-        }
-
-        private static void Search(char[,] board, HashSet<string> found, int stopAt)
-        {
-            WordDictionary.EnsureLoaded();
-            int rows = board.GetLength(0), cols = board.GetLength(1);
-            var visited = new bool[rows, cols];
-            var sb = new StringBuilder();
-
-            for (int r = 0; r < rows; r++)
-                for (int c = 0; c < cols; c++)
-                {
-                    Dfs(r, c);
-                    if (found.Count >= stopAt) return;
-                }
-
-            void Dfs(int r, int c)
-            {
-                if (found.Count >= stopAt) return;
-                visited[r, c] = true;
-                sb.Append(board[r, c]);
-
-                string s = sb.ToString();
-                if (WordDictionary.IsPrefix(s))
-                {
-                    if (s.Length >= WordDictionary.MinLength && WordDictionary.IsWord(s))
-                        found.Add(s);
-
-                    for (int d = 0; d < 8; d++)
-                    {
-                        int nr = r + DR[d], nc = c + DC[d];
-                        if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && !visited[nr, nc])
-                            Dfs(nr, nc);
-                    }
-                }
-
-                sb.Length--;
-                visited[r, c] = false;
+                foreach (char c in word) used[c - 'A'] = 0;
+                if (ok) yield return word;
             }
         }
     }

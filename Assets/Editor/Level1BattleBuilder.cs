@@ -140,19 +140,22 @@ namespace Orasyon.EditorTools
             var trim = Panel("TopTrim", bottom.transform, Gold);
             Anchor(trim.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0.5f, 1), Vector2.zero, new Vector2(0, 6));
 
-            // Left: buffs
-            var left = Panel("BuffPanel", bottom.transform, WoodLight, panelSprite);
+            // Left: potion shelf (top) + item slots reserved for boss drops (bottom, empty for now)
+            var left = Panel("InventoryPanel", bottom.transform, WoodLight, panelSprite);
             Anchor(left.rectTransform, Vector2.zero, Vector2.zero, Vector2.zero, new Vector2(16, 100), new Vector2(580, 404));
             AddOutline(left.gameObject, Gold, 2);
-            var buffHeader = Text("Header", left.transform, "BUFFS", 24, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
-            Anchor(buffHeader.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -8), new Vector2(560, 36));
             var buffInventory = left.gameObject.AddComponent<BuffInventory>();
             var cards = new[]
             {
-                BuffCard(left.transform, 0, "Lunas",         "5-letter word", "Heals 25 HP",               new Color(0.35f, 0.75f, 0.40f), "+"),
-                BuffCard(left.transform, 1, "Anting-Anting", "6-letter word", "Blocks the next attack",    new Color(0.35f, 0.55f, 0.92f), Glyph("\u25C6", "#")),
-                BuffCard(left.transform, 2, "Agimat",        "7+ letters",    "Next word deals x2 damage", new Color(0.95f, 0.62f, 0.22f), "x2"),
+                PotionSlot(left.transform, 0, "Healing", "+1 heart",          "5-letter word", PotionSprite("potion_red")),
+                PotionSlot(left.transform, 1, "Warding", "Blocks next attack", "6-letter word", PotionSprite("potion_green")),
+                PotionSlot(left.transform, 2, "Power",   "Next word x2",       "7+ letters",    PotionSprite("potion_blue")),
             };
+            var shelf = Panel("Shelf", left.transform, new Color(0.36f, 0.22f, 0.12f, 1f));
+            Anchor(shelf.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0.5f, 1), new Vector2(0, -196), new Vector2(-24, 12));
+            AddOutline(shelf.gameObject, new Color(0.10f, 0.06f, 0.03f, 1f), 2);
+            var itemArea = Node("ItemSlots", left.transform);   // reserved: boss drops go here later
+            Anchor(itemArea, new Vector2(0, 0), new Vector2(1, 0), new Vector2(0.5f, 0), new Vector2(0, 12), new Vector2(-24, 180));
             var scramble = MakeButton("ScrambleButton", bottom.transform, "SCRAMBLE", new Color(0.66f, 0.32f, 0.12f), Cream, 28);
             Anchor((RectTransform)scramble.transform, Vector2.zero, Vector2.zero, Vector2.zero, new Vector2(16, 20), new Vector2(580, 64));
 
@@ -249,7 +252,7 @@ namespace Orasyon.EditorTools
             var slots = bso.FindProperty("slots");
             slots.arraySize = 3;
             int[] minLengths = { 5, 6, 7 };
-            string[] names = { "Lunas", "Anting-Anting", "Agimat" };
+            string[] names = { "Healing Potion", "Warding Potion", "Power Potion" };
             for (int i = 0; i < 3; i++)
             {
                 var s = slots.GetArrayElementAtIndex(i);
@@ -475,34 +478,46 @@ namespace Orasyon.EditorTools
 
         private struct Card { public Button button; public TextMeshProUGUI count; public CanvasGroup group; }
 
-        private static Card BuffCard(Transform parent, int index, string title, string requirement, string effect, Color color, string glyph)
+        /// <summary>One potion on the shelf: flask icon with a count badge, name, effect and how to earn it.</summary>
+        private static Card PotionSlot(Transform parent, int index, string title, string effect, string requirement, Sprite potion)
         {
-            var card = Panel("Buff_" + title, parent, new Color(0.19f, 0.11f, 0.07f, 1f), panelSprite);
-            Anchor(card.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14 + index * 188, -50), new Vector2(176, 340));
-            AddOutline(card.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.6f), 1);
-            var button = card.gameObject.AddComponent<Button>();
-            button.targetGraphic = card;
-            var group = card.gameObject.AddComponent<CanvasGroup>();
+            var slot = Panel("Potion_" + title, parent, new Color(0, 0, 0, 0));   // invisible hit area
+            Anchor(slot.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14 + index * 188, -10), new Vector2(176, 180));
+            var group = slot.gameObject.AddComponent<CanvasGroup>();
 
-            var icon = Panel("Icon", card.transform, color, circleSprite);
-            Anchor(icon.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -16), new Vector2(100, 100));
+            var icon = Panel("Icon", slot.transform, Color.white);
+            icon.sprite = potion;
             icon.type = Image.Type.Simple;
-            var g = Text("Glyph", icon.transform, glyph, 44, Color.white, TextAlignmentOptions.Center, FontStyles.Bold);
-            Stretch(g.rectTransform);
+            icon.preserveAspect = true;
+            Anchor(icon.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -2), new Vector2(104, 104));
 
-            var count = Text("Count", card.transform, "x0", 22, Cream, TextAlignmentOptions.Right, FontStyles.Bold);
-            Anchor(count.rectTransform, new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-8, -6), new Vector2(60, 30));
+            var button = slot.gameObject.AddComponent<Button>();
+            button.targetGraphic = icon;
+            var colors = button.colors;
+            colors.normalColor = new Color(0.92f, 0.92f, 0.92f, 1f);
+            colors.highlightedColor = Color.white;
+            colors.pressedColor = new Color(0.7f, 0.7f, 0.7f, 1f);
+            colors.disabledColor = new Color(0.55f, 0.55f, 0.55f, 1f);
+            button.colors = colors;
 
-            var n = Text("Name", card.transform, title, 21, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
-            Anchor(n.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -124), new Vector2(166, 50));
-            var req = Text("Requirement", card.transform, requirement, 15, new Color(0.85f, 0.80f, 0.68f), TextAlignmentOptions.Center, FontStyles.Italic);
-            Anchor(req.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -176), new Vector2(166, 26));
-            var eff = Text("Effect", card.transform, effect, 17, Cream, TextAlignmentOptions.Center);
-            Anchor(eff.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -206), new Vector2(166, 76));
-            var use = Text("UseHint", card.transform, "click to use", 14, new Color(0.75f, 0.68f, 0.55f), TextAlignmentOptions.Center, FontStyles.Italic);
-            Anchor(use.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 10), new Vector2(166, 24));
+            var count = Text("Count", slot.transform, "x0", 24, Cream, TextAlignmentOptions.Left, FontStyles.Bold);
+            Anchor(count.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, 1), new Vector2(38, -72), new Vector2(60, 32));
+            count.outlineWidth = 0.25f;
+            count.outlineColor = new Color32(20, 10, 5, 255);
+
+            var n = Text("Name", slot.transform, title, 20, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
+            Anchor(n.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -108), new Vector2(172, 26));
+            var eff = Text("Effect", slot.transform, effect, 15, Cream, TextAlignmentOptions.Center);
+            Anchor(eff.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -134), new Vector2(172, 22));
+            var req = Text("Requirement", slot.transform, requirement, 13, new Color(0.80f, 0.74f, 0.62f), TextAlignmentOptions.Center, FontStyles.Italic);
+            Anchor(req.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -156), new Vector2(172, 20));
 
             return new Card { button = button, count = count, group = group };
+        }
+
+        private static Sprite PotionSprite(string name)
+        {
+            return AssetDatabase.LoadAllAssetsAtPath($"Assets/Sprites/Icons/Potions/{name}.png").OfType<Sprite>().FirstOrDefault();
         }
 
         // ── Generic helpers ──────────────────────────────────────────────────

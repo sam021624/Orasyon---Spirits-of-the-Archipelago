@@ -73,7 +73,7 @@ namespace Orasyon.Battle
 
                 case Step.Grid:
                     Set("The Letter Grid",
-                        "Build a word by clicking letters that <b>touch</b> each other, diagonals included. Words need at least <b>3 letters</b>.\n\n" +
+                        "Build a word by clicking <b>any</b> letters, in any order. Words need at least <b>3 letters</b>.\n\n" +
                         "Only real words light up the <b>Attack</b> button. Longer words and rare letters hit harder.",
                         "Show me!");
                     if (bottomGroup != null) StartCoroutine(Fade(bottomGroup, 1f));
@@ -97,9 +97,9 @@ namespace Orasyon.Battle
 
                 case Step.Tips:
                     Set("Keep Fighting",
-                        "Used tiles vanish and new letters fall in.\n\n" +
-                        "Words of <b>5+ letters</b> earn buffs on the left. Click one to use it.\n" +
-                        "The right panel shows your foe and the words it is <b>weak</b> to. Stuck? <b>Scramble</b> costs a turn.",
+                        "Tiles you use are removed from the board. When no words are left, new letters fill the gaps.\n\n" +
+                        "Words of <b>5+ letters</b> earn potions on the left shelf. Click one to drink it.\n" +
+                        "The right panel shows your foe and the words it is <b>weak</b> to. <b>Scramble</b> shuffles the tiles you have left.",
                         "Let's fight!");
                     break;
             }

@@ -7,8 +7,9 @@ using UnityEngine;
 namespace Orasyon.Battle
 {
     /// <summary>
-    /// The 4x4 letter board. Handles selection (touching tiles only), word validity,
-    /// removing used tiles (remaining tiles fall, new letters drop in from above), and scrambling.
+    /// The 4x4 letter board, Bookworm style: click any tiles in any order to spell a word.
+    /// Tiles used in an attack are removed and leave empty gaps. Scramble shuffles the tiles still on the board.
+    /// Empty gaps are only refilled when no word can be made (see BattleManager) or on a new board.
     /// </summary>
     public sealed class LetterGrid : MonoBehaviour
     {
@@ -19,15 +20,11 @@ namespace Orasyon.Battle
         [SerializeField] private float      spacing  = 8f;
         [SerializeField] private GameObject tilePrefab;
 
-        [Header("Playability")]
-        [Tooltip("After used tiles are replaced, re-roll the new letters until the board has at least this many words.")]
-        [SerializeField] private int minWordsAfterRefill = 4;
-
-        private LetterTileData[,]            tiles;
+        private LetterTileData[,]             tiles;
         private readonly List<LetterTileData> path = new List<LetterTileData>();
         private readonly System.Random        rng  = new System.Random();
 
-        /// <summary>Fired whenever the selected word changes (select, undo, clear, refill).</summary>
+        /// <summary>Fired whenever the selected word or the board changes.</summary>
         public event Action OnSelectionChanged;
 
         public int Rows => rows;
@@ -47,6 +44,22 @@ namespace Orasyon.Battle
 
         public string GetCurrentWord() => CurrentWord;
 
+        /// <summary>Letters of the tiles still on the board.</summary>
+        public IEnumerable<char> RemainingLetters
+        {
+            get
+            {
+                EnsureTiles();
+                foreach (var t in tiles)
+                    if (!t.IsEmpty) yield return t.Letter;
+            }
+        }
+
+        public int RemainingCount => RemainingLetters.Count();
+
+        /// <summary>True if at least one valid word can still be made from the remaining tiles.</summary>
+        public bool HasAnyWord() => BoardGenerator.CountWords(RemainingLetters, 1) >= 1;
+
         // ── Board setup ──────────────────────────────────────────────────────
         public void GenerateBoard(string plantWord, int minWords, bool dropIn)
         {
@@ -63,15 +76,14 @@ namespace Orasyon.Battle
                 {
                     var d = tiles[r, c];
                     d.Letter = letters[r, c];
-                    d.Row = r;
-                    d.Col = c;
                     d.IsSelected = false;
                     d.IsHighlighted = false;
+                    d.IsEmpty = false;
+                    d.View.Refresh();
 
                     Vector2 pos = CellPosition(r, c);
                     if (dropIn)
                     {
-                        // Lower rows start lower so the whole board rains in top-down, staggered by column
                         d.View.Place(pos + Vector2.up * (DropHeight + (rows - r) * 40f + c * 25f));
                         d.View.MoveTo(pos);
                     }
@@ -79,29 +91,31 @@ namespace Orasyon.Battle
                     {
                         d.View.Place(pos);
                     }
-                    d.View.Refresh();
                 }
 
             Changed();
         }
 
+        /// <summary>Board letters, with '\0' for empty gaps.</summary>
         public char[,] GetLetters()
         {
             EnsureTiles();
             var b = new char[rows, cols];
             for (int r = 0; r < rows; r++)
                 for (int c = 0; c < cols; c++)
-                    b[r, c] = tiles[r, c].Letter;
+                    b[r, c] = tiles[r, c].IsEmpty ? '\0' : tiles[r, c].Letter;
             return b;
         }
 
         // ── Selection ────────────────────────────────────────────────────────
         public void OnTileClicked(LetterTileData tile)
         {
+            if (tile.IsEmpty) return;
+
             int index = path.IndexOf(tile);
             if (index >= 0)
             {
-                // Clicking a selected tile removes it and everything after it
+                // Clicking a selected tile removes it and every letter after it
                 for (int i = path.Count - 1; i >= index; i--)
                 {
                     path[i].IsSelected = false;
@@ -112,13 +126,11 @@ namespace Orasyon.Battle
                 return;
             }
 
-            if (path.Count == 0 || IsAdjacent(path[path.Count - 1], tile))
-            {
-                tile.IsSelected = true;
-                path.Add(tile);
-                tile.View.Refresh();
-                Changed();
-            }
+            // Any tile, any order
+            tile.IsSelected = true;
+            path.Add(tile);
+            tile.View.Refresh();
+            Changed();
         }
 
         public void ClearSelection()
@@ -132,89 +144,78 @@ namespace Orasyon.Battle
             Changed();
         }
 
-        /// <summary>
-        /// Removes the selected tiles from the board and returns the word they spelled.
-        /// Tiles above fall down; new random letters drop in from the top.
-        /// </summary>
+        /// <summary>Removes the selected tiles from the board (leaving gaps) and returns the word they spelled.</summary>
         public string ConsumeSelection()
         {
             if (path.Count == 0) return "";
             string word = CurrentWord;
-            var removed = new HashSet<LetterTileData>(path);
-            path.Clear();
 
-            var newTiles = new List<LetterTileData>();
-            for (int c = 0; c < cols; c++)
+            foreach (var t in path)
             {
-                var keep = new List<LetterTileData>();
-                var gone = new List<LetterTileData>();
-                for (int r = rows - 1; r >= 0; r--)
-                {
-                    var d = tiles[r, c];
-                    if (removed.Contains(d)) gone.Add(d); else keep.Add(d);
-                }
-
-                int row = rows - 1;
-                foreach (var d in keep)
-                {
-                    tiles[row, c] = d;
-                    d.Row = row;
-                    d.View.MoveTo(CellPosition(row, c));
-                    row--;
-                }
-
-                int k = 0;
-                foreach (var d in gone)
-                {
-                    tiles[row, c] = d;
-                    d.Row = row;
-                    d.IsSelected = false;
-                    d.IsHighlighted = false;
-                    d.Letter = BoardGenerator.RandomLetter(rng);
-                    Vector2 pos = CellPosition(row, c);
-                    d.View.Place(pos + Vector2.up * (DropHeight + k * 40f));
-                    d.View.MoveTo(pos);
-                    newTiles.Add(d);
-                    row--;
-                    k++;
-                }
+                t.IsSelected = false;
+                t.IsHighlighted = false;
+                t.IsEmpty = true;
+                t.View.Refresh();
             }
-
-            // Keep the board playable: re-roll only the new letters if too few words remain
-            for (int attempt = 0; attempt < 30 && BoardGenerator.CountWords(GetLetters(), minWordsAfterRefill) < minWordsAfterRefill; attempt++)
-                foreach (var d in newTiles) d.Letter = BoardGenerator.RandomLetter(rng);
-
-            foreach (var d in tiles) d.View.Refresh();
+            path.Clear();
             Changed();
             return word;
         }
 
-        /// <summary>Shuffles the letters already on the board until it has at least <paramref name="minWords"/> words.</summary>
-        public void Scramble(int minWords)
+        /// <summary>Shuffles the letters of the tiles still on the board. Gaps stay where they are.</summary>
+        public void Scramble()
         {
             EnsureTiles();
-            foreach (var t in path) t.IsSelected = false;
-            path.Clear();
+            ClearSelectionSilently();
 
-            var letters = tiles.Cast<LetterTileData>().Select(t => t.Letter).ToList();
-            var board = new char[rows, cols];
-            for (int attempt = 0; attempt < 25; attempt++)
+            var filled = tiles.Cast<LetterTileData>().Where(t => !t.IsEmpty).ToList();
+            if (filled.Count < 2) return;
+
+            var original = filled.Select(t => t.Letter).ToList();
+            var shuffled = original;
+            for (int attempt = 0; attempt < 10; attempt++)
             {
-                letters = letters.OrderBy(_ => rng.Next()).ToList();
-                for (int i = 0; i < letters.Count; i++) board[i / cols, i % cols] = letters[i];
-                if (BoardGenerator.CountWords(board, minWords) >= minWords) break;
+                shuffled = original.OrderBy(_ => rng.Next()).ToList();
+                if (!shuffled.SequenceEqual(original)) break;   // make sure something actually moves
             }
 
-            for (int r = 0; r < rows; r++)
-                for (int c = 0; c < cols; c++)
-                {
-                    var d = tiles[r, c];
-                    d.Letter = board[r, c];
-                    d.IsHighlighted = false;
-                    d.View.Pop();
-                    d.View.Refresh();
-                }
+            for (int i = 0; i < filled.Count; i++)
+            {
+                filled[i].Letter = shuffled[i];
+                filled[i].IsHighlighted = false;
+                filled[i].View.Pop();
+                filled[i].View.Refresh();
+            }
             Changed();
+        }
+
+        /// <summary>Drops new random letters into the empty gaps, aiming for at least <paramref name="minWords"/> words.</summary>
+        public int RefillEmpty(int minWords)
+        {
+            EnsureTiles();
+            var empties = tiles.Cast<LetterTileData>().Where(t => t.IsEmpty).ToList();
+            if (empties.Count == 0) return 0;
+
+            for (int attempt = 0; attempt < 30; attempt++)
+            {
+                foreach (var t in empties) t.Letter = BoardGenerator.RandomLetter(rng);
+                var all = tiles.Cast<LetterTileData>().Select(t => t.Letter);
+                if (BoardGenerator.CountWords(all, minWords) >= minWords) break;
+            }
+
+            int k = 0;
+            foreach (var t in empties)
+            {
+                t.IsEmpty = false;
+                t.IsSelected = false;
+                t.IsHighlighted = false;
+                t.View.Refresh();
+                Vector2 pos = CellPosition(t.Row, t.Col);
+                t.View.Place(pos + Vector2.up * (DropHeight + k++ * 30f));
+                t.View.MoveTo(pos);
+            }
+            Changed();
+            return empties.Count;
         }
 
         // ── Tutorial helpers ─────────────────────────────────────────────────
@@ -244,6 +245,16 @@ namespace Orasyon.Battle
             return new Vector2((c - (cols - 1) * 0.5f) * step, ((rows - 1) * 0.5f - r) * step);
         }
 
+        private void ClearSelectionSilently()
+        {
+            foreach (var t in path)
+            {
+                t.IsSelected = false;
+                t.View.Refresh();
+            }
+            path.Clear();
+        }
+
         private void EnsureTiles()
         {
             if (tiles != null) return;
@@ -262,11 +273,6 @@ namespace Orasyon.Battle
                     go.GetComponent<LetterTile>().Bind(data, this);
                     tiles[r, c] = data;
                 }
-        }
-
-        private static bool IsAdjacent(LetterTileData a, LetterTileData b)
-        {
-            return Mathf.Abs(a.Row - b.Row) <= 1 && Mathf.Abs(a.Col - b.Col) <= 1 && !(a.Row == b.Row && a.Col == b.Col);
         }
 
         private void Changed() => OnSelectionChanged?.Invoke();

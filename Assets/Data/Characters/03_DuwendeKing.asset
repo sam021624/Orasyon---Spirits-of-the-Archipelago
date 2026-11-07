@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
   displayName: Duwende King
   isBoss: 1
-  maxHP: 80
-  attackDamage: 12
+  maxHP: 50
+  attackDamage: 4
   attackName: Staff Smash
   description: Ruler of the backyard mounds. Walk past his home without a respectful
     "tabi tabi po" and his mischief will follow you for days. Today, he is not in

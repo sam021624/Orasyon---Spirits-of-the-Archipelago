@@ -68,6 +68,11 @@ namespace Orasyon.Battle
         public void Refresh()
         {
             if (data == null) return;
+
+            // Used tiles leave an empty gap on the board
+            if (gameObject.activeSelf == data.IsEmpty) gameObject.SetActive(!data.IsEmpty);
+            if (data.IsEmpty) return;
+
             if (letterLabel != null) letterLabel.text = data.Letter.ToString();
 
             Color bg;

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
   displayName: Balete Tree Minion
   isBoss: 0
-  maxHP: 45
-  attackDamage: 9
+  maxHP: 30
+  attackDamage: 3
   attackName: Root Lash
   description: Elders warn children never to point at a balete tree. Its tangled
     roots remember every insult, and sometimes they pull themselves out of the ground

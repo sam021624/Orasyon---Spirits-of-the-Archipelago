@@ -15,7 +15,7 @@ MonoBehaviour:
   displayName: Forest Bat
   isBoss: 0
   maxHP: 30
-  attackDamage: 6
+  attackDamage: 2
   attackName: Wing Gust
   description: Little bats flit between the old trees after dusk, keeping watch for
     the bigger spirits of the forest. Alone they are only a nuisance. When they gather,
