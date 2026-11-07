@@ -1,0 +1,89 @@
+{
+  "group_id": "4d79e059-236a-424b-8641-336e2cb2f2f3",
+  "states": [
+    {
+      "character": {
+        "id": "347431c5-fcf1-4b0f-aadb-5c73fb76f112",
+        "name": "Idle",
+        "prompt": "Small Duwende minion for a colorful 2D side-view word battle game. He has warm tan skin, large pointed ears, a round nose, thick eyebrows, messy dark hair, and a mischievous grin. He wears a patched red pointed cap, moss-green shirt, brown vest, rope belt, short brown trousers, and curled shoes. He carries a small wooden club. He is stronger than the enchanted mushroom but smaller and weaker than the Duwende boss. Keep his design, colors, proportions, clothing, and weapon consistent in every frame. No text, no extra objects, and transparent background.\n",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-06T08:48:23.563265+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "The_Duwende_minion_becomes_dizzy_drops_his_wooden": {
+            "south": [
+              "Idle/animations/The_Duwende_minion_becomes_dizzy_drops_his_wooden/south/frame_000.png",
+              "Idle/animations/The_Duwende_minion_becomes_dizzy_drops_his_wooden/south/frame_001.png",
+              "Idle/animations/The_Duwende_minion_becomes_dizzy_drops_his_wooden/south/frame_002.png",
+              "Idle/animations/The_Duwende_minion_becomes_dizzy_drops_his_wooden/south/frame_003.png",
+              "Idle/animations/The_Duwende_minion_becomes_dizzy_drops_his_wooden/south/frame_004.png",
+              "Idle/animations/The_Duwende_minion_becomes_dizzy_drops_his_wooden/south/frame_005.png",
+              "Idle/animations/The_Duwende_minion_becomes_dizzy_drops_his_wooden/south/frame_006.png",
+              "Idle/animations/The_Duwende_minion_becomes_dizzy_drops_his_wooden/south/frame_007.png",
+              "Idle/animations/The_Duwende_minion_becomes_dizzy_drops_his_wooden/south/frame_008.png"
+            ]
+          },
+          "Attack_The_Duwende_minion_pulls_his_wooden_club_ba": {
+            "south": [
+              "Idle/animations/Attack_The_Duwende_minion_pulls_his_wooden_club_ba/south/frame_000.png",
+              "Idle/animations/Attack_The_Duwende_minion_pulls_his_wooden_club_ba/south/frame_001.png",
+              "Idle/animations/Attack_The_Duwende_minion_pulls_his_wooden_club_ba/south/frame_002.png",
+              "Idle/animations/Attack_The_Duwende_minion_pulls_his_wooden_club_ba/south/frame_003.png",
+              "Idle/animations/Attack_The_Duwende_minion_pulls_his_wooden_club_ba/south/frame_004.png",
+              "Idle/animations/Attack_The_Duwende_minion_pulls_his_wooden_club_ba/south/frame_005.png",
+              "Idle/animations/Attack_The_Duwende_minion_pulls_his_wooden_club_ba/south/frame_006.png",
+              "Idle/animations/Attack_The_Duwende_minion_pulls_his_wooden_club_ba/south/frame_007.png",
+              "Idle/animations/Attack_The_Duwende_minion_pulls_his_wooden_club_ba/south/frame_008.png"
+            ]
+          },
+          "Hurt_The_Duwende_minion_is_hit_by_an_invisible_att": {
+            "south": [
+              "Idle/animations/Hurt_The_Duwende_minion_is_hit_by_an_invisible_att/south/frame_000.png",
+              "Idle/animations/Hurt_The_Duwende_minion_is_hit_by_an_invisible_att/south/frame_001.png",
+              "Idle/animations/Hurt_The_Duwende_minion_is_hit_by_an_invisible_att/south/frame_002.png",
+              "Idle/animations/Hurt_The_Duwende_minion_is_hit_by_an_invisible_att/south/frame_003.png",
+              "Idle/animations/Hurt_The_Duwende_minion_is_hit_by_an_invisible_att/south/frame_004.png",
+              "Idle/animations/Hurt_The_Duwende_minion_is_hit_by_an_invisible_att/south/frame_005.png",
+              "Idle/animations/Hurt_The_Duwende_minion_is_hit_by_an_invisible_att/south/frame_006.png",
+              "Idle/animations/Hurt_The_Duwende_minion_is_hit_by_an_invisible_att/south/frame_007.png",
+              "Idle/animations/Hurt_The_Duwende_minion_is_hit_by_an_invisible_att/south/frame_008.png"
+            ]
+          },
+          "Idle_The_Duwende_minion_gently_breathes_blinks_shi": {
+            "south": [
+              "Idle/animations/Idle_The_Duwende_minion_gently_breathes_blinks_shi/south/frame_000.png",
+              "Idle/animations/Idle_The_Duwende_minion_gently_breathes_blinks_shi/south/frame_001.png",
+              "Idle/animations/Idle_The_Duwende_minion_gently_breathes_blinks_shi/south/frame_002.png",
+              "Idle/animations/Idle_The_Duwende_minion_gently_breathes_blinks_shi/south/frame_003.png",
+              "Idle/animations/Idle_The_Duwende_minion_gently_breathes_blinks_shi/south/frame_004.png",
+              "Idle/animations/Idle_The_Duwende_minion_gently_breathes_blinks_shi/south/frame_005.png",
+              "Idle/animations/Idle_The_Duwende_minion_gently_breathes_blinks_shi/south/frame_006.png",
+              "Idle/animations/Idle_The_Duwende_minion_gently_breathes_blinks_shi/south/frame_007.png",
+              "Idle/animations/Idle_The_Duwende_minion_gently_breathes_blinks_shi/south/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-06T09:06:56.425199"
+}

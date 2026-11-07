@@ -1,0 +1,178 @@
+GAME DESIGN
+1. Game Overview
+a. Title: Orasyon: Spirits of the Archipelago
+b. Genre: 2D Word Puzzle / Turn-Based Battle Game
+c. Platform: PC (Windows)
+d. Target Audience: Casual puzzle players, students, and players interested in Philippine mythology
+and folklore.
+e. Game Summary: Orasyon: Spirits of the Archipelago is a word-puzzle battle game inspired by
+Bookworm Adventures. Players form words from a letter grid to cast attacks against creatures from
+Philippine mythology. Each creature has a unique mechanic that changes the letter grid, creating
+different challenges while keeping the core gameplay simple and focused.
+f. Similar Games: Bookworm Adventures, Boggle, Wordscapes, and other word-forming puzzle
+games.
+g. Key Selling Points: Word-based combat, Philippine mythology theme, unique creature mechanics
+that directly affect the letter grid, simple controls, and a focused scope suitable for a studentdeveloped game.
+2. Core Gameplay/Mechanics
+a. Core Loop: Start battle > Observe the letter grid > Select connected letters to form a word >
+Validate the word > Deal damage or activate an effect > Enemy takes a turn > Enemy attacks or
+changes the grid > Repeat until the player or enemy is defeated.
+b. Objective & Goals: Defeat mythological creatures by forming valid and strategically useful words,
+survive enemy attacks, adapt to each creature's special mechanic, and complete all chapters leading
+to the final encounter.
+c. Player Action: The player selects adjacent letter tiles to form a word, submits the word, and uses
+the resulting attack against the enemy. Longer words generally produce stronger attacks,
+encouraging players to balance quick attacks with more powerful combinations.
+d. Key Mechanics: Letter-grid word formation, local word validation using an English dictionary,
+word-length-based damage, player and enemy HP, special tiles, turn-based enemy actions, and
+creature-specific grid disruption. Filipino/Tagalog word support may be considered as a future
+enhancement rather than a core requirement.
+e. Game Progression: The game is divided into chapters. Each chapter introduces a mythological
+creature and its main mechanic. Regular encounters allow players to learn the mechanic, while boss
+encounters provide a stronger version of the challenge. Completing a chapter unlocks the next one.
+f. Control Scheme: Mouse: select letter tiles, form words, submit actions, and navigate menus.
+Keyboard: optional menu navigation and confirmation. The controls are designed around simple
+point-and-click interaction so the player can focus on word formation.
+3. Narrative
+a. Story Summary: The player takes the role of a young albularyo who carries an old book of orasyon.
+As supernatural creatures begin appearing across the land, the player travels through different
+locations and uses words of power to confront them. The goal is to overcome each guardian and
+eventually face the Bakunawa.
+b. World-Building: The game is set in a stylized version of the Philippine archipelago inspired by local
+folklore. Each chapter represents a different environment associated with a mythological creature,
+such as a backyard mound, a balete tree, village rooftops, a deep forest, and a cosmic ocean.
+c. Plot Structure: The story follows a simple chapter-based structure: introduction to the player's role
+> encounter with a creature > progression through the creature's environment > boss battle > next
+chapter. The final chapter leads to the confrontation with the Bakunawa.
+d. Optional Narrative: Narrative is kept lightweight to avoid scope creep. Short dialogue boxes,
+chapter introductions, and brief creature descriptions may be used to provide context without
+requiring long cutscenes or extensive voice acting.
+e. Key Events: The player receives the book of orasyon; the first encounter with a Duwende
+introduces word combat; later chapters introduce the Kapre, Manananggal, and Tiyanak with
+increasingly disruptive mechanics; the player reaches the final confrontation with the Bakunawa
+during an eclipse.
+f. Characters: Player Character – a young albularyo who uses the book of orasyon. Duwende – an
+unpredictable trickster that disrupts the letter grid. Kapre – a powerful tree-dwelling spirit that
+obscures tiles with smoke. Manananggal – a dangerous creature that changes its defensive state.
+Tiyanak – a deceptive forest creature that scrambles the grid. Bakunawa – the final cosmic serpent
+and strongest encounter.
+g. Tone and Themes Mystical, adventurous, slightly eerie, and accessible rather than horror-focused.
+The game emphasizes Filipino folklore, resourcefulness, word knowledge, and overcoming
+supernatural challenges.
+4. Mechanical and System
+a. Combat System: Combat is turn-based and centered on word formation. The player selects a
+sequence of adjacent letters to create a valid word. The word is then converted into an attack, with
+longer valid words generally dealing more damage. After the player's turn, the enemy performs an
+attack or special action.
+b. Abilities: Abilities are represented by special tiles and word effects. Special tiles may provide
+bonus damage, healing, protection, or other simple effects. A limited set of effects will be used in the
+initial version to keep combat readable and manageable.
+c. Economy: The core game does not require a monetary economy. Optional rewards such as points,
+stars, or chapter ratings may be awarded for successful battles and can be used to track performance
+rather than purchase gameplay advantages.
+d. Progression System: Progression is chapter-based. Players unlock new encounters by defeating
+previous enemies. Difficulty increases through enemy health, damage, board disruption, and more
+demanding puzzle conditions rather than through a large equipment or inventory system.
+e. Interaction System: Players interact with letter tiles, battle buttons, menus, chapter selection, and
+simple dialogue panels. Letter tiles provide immediate visual and audio feedback when selected,
+submitted, or rejected.
+f. AI & Behavior: Enemies use simple rule-based behavior rather than complex navigation AI. Each
+creature has a predictable attack pattern and a signature grid mechanic. For example, Duwende can
+remove valuable tiles, Kapre can hide several tiles with smoke, Tiyanak can scramble the grid, and
+Bakunawa can gradually consume tiles from the board.
+5. Visual and Audio Design
+a. Art Style: Stylized 2D digital illustration with a colorful fantasy-folklore presentation. The visual
+style should be approachable and game-like while retaining recognizable elements of Philippine
+mythology.
+b. Audio: Atmospheric background music inspired by Philippine settings and fantasy adventure.
+Sound effects include tile selection, word submission, successful attacks, damage, special mechanics,
+victory, and defeat.
+c. Color Palette: Each chapter uses a distinct environment palette while maintaining readable highcontrast letter tiles and battle UI. Mystical effects use brighter accent colors to distinguish attacks
+and special mechanics from the background.
+d. UI/UX: The interface prioritizes the letter grid, player HP, enemy HP, current word, turn indicator,
+and available effects. Buttons and tiles should be large enough for comfortable mouse interaction,
+with clear feedback for valid and invalid words.
+e. Character & Asset Design: The player character and mythological creatures use simplified 2D
+designs that are practical for a student project. Each major creature requires an idle state, attack
+state, and damage state. Environments can use static backgrounds with limited effects to reduce
+animation workload.
+6. Level Design
+a. Level Layout: Each level is a single battle-focused screen. The enemy occupies one side of the
+screen while the player interface and letter grid occupy the main interaction area. Chapters contain a
+sequence of encounters followed by a stronger boss battle.
+b. Environment Types: Backyard or mound for Duwende, balete tree for Kapre, village rooftops for
+Manananggal, deep forest for Tiyanak, and a cosmic ocean or eclipse setting for Bakunawa.
+c. Pacing: Early encounters are short and introduce the basic word-battle rules. Later encounters
+gradually require more planning because enemies disrupt the board. Boss fights are longer and
+combine higher enemy strength with their signature mechanics.
+d. Environmental Storytelling: Backgrounds, creature designs, chapter names, visual effects, and
+short descriptions communicate the setting and folklore without requiring large maps or extensive
+dialogue.
+e. Key Challenges: Finding useful words under limited board conditions, deciding when to use long
+words, responding to enemy grid disruption, maintaining enough HP to survive longer battles, and
+adapting to each creature's unique mechanic.
+f. Difficulty & Progression: Difficulty increases gradually through stronger enemy statistics, more
+disruptive mechanics, and less predictable board conditions. Each new creature introduces one
+major complication before later encounters combine challenge types.
+7. Monetization
+a. Business Model: The game is not monetized and is intended as a student-developed project.
+b. Premium Features: None. All planned gameplay content is included in the base game.
+c. AIP/ADS placements: None. The game does not use advertisements or in-app purchases.
+8. Technical Requirement
+a. Engine: Unity with C#.
+b. Performance Goals Target approximately 60 FPS on the intended Windows PC hardware, with
+responsive letter selection, word validation, and battle animations. The game should avoid
+unnecessary loading between individual encounters.
+c. Platform-Specific Features: The initial target is Windows PC with mouse and keyboard support. The
+game uses Unity UI and 2D systems and does not require an online connection for the core
+gameplay.
+d. Multiplayer Requirements: None. The game is designed as a single-player experience to keep
+development scope focused.
+9. Production Plan
+a. Key Milestone: Gameplay concept and design completion > word-grid prototype > functional word
+validation and combat > first complete creature encounter > enemy-specific mechanics > chapter
+and boss implementation > art/audio integration > internal testing and balancing > final build.
+b. Team Roles: Game Programmer – implements the letter grid, word validation, combat, enemy
+behavior, and game flow. Game Designer/Project Manager – defines mechanics, balances difficulty,
+manages documentation, and coordinates development. 2D Artist – creates characters, creatures,
+backgrounds, UI assets, and effects. Audio/QA Support – prepares sound assets, performs
+playtesting, and documents bugs and balancing issues.
+c. Cost & Budget: Low-cost student project. Development will prioritize free or already available tools
+and assets. Any optional spending should be limited to required art, audio, or Unity assets.
+d. Development Timeline: An indicative 15-week schedule is provided below.
+e. Risk and Mitigation: Risk of scope creep will be reduced by limiting the game to a small number of
+chapters and mechanics. Development delays will be mitigated by prioritizing the core word-battle
+loop before optional content. Art and animation workload will be reduced through static
+backgrounds and limited creature animations. Dictionary and word-validation issues will be tested
+early with a fixed local word list. Difficulty and balance problems will be addressed through repeated
+internal playtesting.
+10. Appendices
+a. References and Inspiration:
+b. Concept Art: Concept art should include the player character, letter tiles, special tiles, chapter
+backgrounds, and the major mythological creatures. Each creature should have visual references for
+idle, attack, and damage states.
+c. Diagrams and Flowcharts: (students can disregard this part). Recommended diagrams include the
+main gameplay loop, player turn flow, word validation flow, enemy turn flow, chapter progression,
+and the relationship between the letter grid, word validator, combat system, and enemy behavior.
+Phase Weeks Main Tasks Output
+Planning & Design 1–2
+Finalize GDD, rules, UI flow,
+chapter plan Approved design
+Prototype 3–4
+Letter grid, word selection,
+dictionary validation Playable prototype
+Core Development 5–7
+Combat, HP, turns, damage,
+enemy framework Functional battle
+Content & Assets 8–10
+Creatures, backgrounds, UI,
+effects, chapters Playable content
+Integration 11–12
+Combine systems, assets,
+audio, menus, progression Feature-complete build
+Testing & Balancing 13–14
+Bug fixing, difficulty tuning,
+playtesting Stable final candidate
+Finalization 15
+Polish, documentation,
+presentation build Final game build

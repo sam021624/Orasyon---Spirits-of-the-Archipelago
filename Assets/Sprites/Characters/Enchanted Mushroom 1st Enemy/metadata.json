@@ -1,0 +1,50 @@
+{
+  "group_id": "578d2828-bf68-4809-bb48-44b6ce63834a",
+  "states": [
+    {
+      "character": {
+        "id": "5e2d75c2-36a8-4530-b71e-48da64639d51",
+        "name": "Idle",
+        "prompt": "Small enchanted mushroom enemy for a colorful 2D side-view word battle game. It has a large red-orange mushroom cap with cream spots, a pale beige body, short arms, tiny feet, large amber eyes, and a mischievous but harmless smile. It is a weak Stage 1 starter enemy. Keep the same appearance, proportions, colors, and clean cartoon design in every direction and animation. No weapons, no clothes, no text, and no additional objects.\n",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-06T06:28:16.522218+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "Attack_The_enchanted_mushroom_leans_backward_then": {
+            "south-west": [
+              "Idle/animations/Attack_The_enchanted_mushroom_leans_backward_then/south-west/frame_000.png",
+              "Idle/animations/Attack_The_enchanted_mushroom_leans_backward_then/south-west/frame_001.png",
+              "Idle/animations/Attack_The_enchanted_mushroom_leans_backward_then/south-west/frame_002.png",
+              "Idle/animations/Attack_The_enchanted_mushroom_leans_backward_then/south-west/frame_003.png",
+              "Idle/animations/Attack_The_enchanted_mushroom_leans_backward_then/south-west/frame_004.png",
+              "Idle/animations/Attack_The_enchanted_mushroom_leans_backward_then/south-west/frame_005.png",
+              "Idle/animations/Attack_The_enchanted_mushroom_leans_backward_then/south-west/frame_006.png",
+              "Idle/animations/Attack_The_enchanted_mushroom_leans_backward_then/south-west/frame_007.png",
+              "Idle/animations/Attack_The_enchanted_mushroom_leans_backward_then/south-west/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-06T08:44:29.277296"
+}

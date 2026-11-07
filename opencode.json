@@ -1,0 +1,9 @@
+{
+  "mcp": {
+    "ai-game-developer": {
+      "enabled": true,
+      "type": "remote",
+      "url": "http://localhost:20405/p/05d378cc"
+    }
+  }
+}

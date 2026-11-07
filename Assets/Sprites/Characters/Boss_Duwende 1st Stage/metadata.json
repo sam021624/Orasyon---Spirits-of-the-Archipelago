@@ -1,0 +1,88 @@
+{
+  "group_id": "bcfa7f9c-fc8e-4c49-9654-4ce59498a320",
+  "states": [
+    {
+      "character": {
+        "id": "23e77e76-a15d-4579-a5fb-904a134ad12e",
+        "name": "Idle",
+        "prompt": "Powerful Duwende King boss for a colorful 2D side-view word battle game. He has bronze skin, huge pointed ears, a large nose, thick eyebrows, curled dark mustache, and an intimidating expression. He wears an ornate crimson pointed cap, green royal tunic, decorated brown vest, gold belt, red cape, patterned trousers, and heavy curled boots. He carries a large twisted wooden staff containing a glowing green gemstone. He is larger, older, and more powerful than the Duwende minion. Keep his design, proportions, colors, clothing, cape, and staff consistent in every frame. Transparent background with no text or additional characters.\n",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-06T08:56:09.543323+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "Idle": {
+            "south": [
+              "Idle/animations/Idle/south/frame_000.png",
+              "Idle/animations/Idle/south/frame_001.png",
+              "Idle/animations/Idle/south/frame_002.png",
+              "Idle/animations/Idle/south/frame_003.png",
+              "Idle/animations/Idle/south/frame_004.png",
+              "Idle/animations/Idle/south/frame_005.png",
+              "Idle/animations/Idle/south/frame_006.png",
+              "Idle/animations/Idle/south/frame_007.png"
+            ]
+          },
+          "Cast_The_Duwende_King_raises_his_staff_above_his_h": {
+            "south-west": [
+              "Idle/animations/Cast_The_Duwende_King_raises_his_staff_above_his_h/south-west/frame_000.png",
+              "Idle/animations/Cast_The_Duwende_King_raises_his_staff_above_his_h/south-west/frame_001.png",
+              "Idle/animations/Cast_The_Duwende_King_raises_his_staff_above_his_h/south-west/frame_002.png",
+              "Idle/animations/Cast_The_Duwende_King_raises_his_staff_above_his_h/south-west/frame_003.png",
+              "Idle/animations/Cast_The_Duwende_King_raises_his_staff_above_his_h/south-west/frame_004.png",
+              "Idle/animations/Cast_The_Duwende_King_raises_his_staff_above_his_h/south-west/frame_005.png",
+              "Idle/animations/Cast_The_Duwende_King_raises_his_staff_above_his_h/south-west/frame_006.png",
+              "Idle/animations/Cast_The_Duwende_King_raises_his_staff_above_his_h/south-west/frame_007.png",
+              "Idle/animations/Cast_The_Duwende_King_raises_his_staff_above_his_h/south-west/frame_008.png"
+            ]
+          },
+          "Attack_The_Duwende_King_pulls_back_his_large_woode": {
+            "south": [
+              "Idle/animations/Attack_The_Duwende_King_pulls_back_his_large_woode/south/frame_000.png",
+              "Idle/animations/Attack_The_Duwende_King_pulls_back_his_large_woode/south/frame_001.png",
+              "Idle/animations/Attack_The_Duwende_King_pulls_back_his_large_woode/south/frame_002.png",
+              "Idle/animations/Attack_The_Duwende_King_pulls_back_his_large_woode/south/frame_003.png",
+              "Idle/animations/Attack_The_Duwende_King_pulls_back_his_large_woode/south/frame_004.png",
+              "Idle/animations/Attack_The_Duwende_King_pulls_back_his_large_woode/south/frame_005.png",
+              "Idle/animations/Attack_The_Duwende_King_pulls_back_his_large_woode/south/frame_006.png",
+              "Idle/animations/Attack_The_Duwende_King_pulls_back_his_large_woode/south/frame_007.png",
+              "Idle/animations/Attack_The_Duwende_King_pulls_back_his_large_woode/south/frame_008.png"
+            ]
+          },
+          "Hurt_The_Duwende_King_is_struck_by_an_invisible_at": {
+            "south": [
+              "Idle/animations/Hurt_The_Duwende_King_is_struck_by_an_invisible_at/south/frame_000.png",
+              "Idle/animations/Hurt_The_Duwende_King_is_struck_by_an_invisible_at/south/frame_001.png",
+              "Idle/animations/Hurt_The_Duwende_King_is_struck_by_an_invisible_at/south/frame_002.png",
+              "Idle/animations/Hurt_The_Duwende_King_is_struck_by_an_invisible_at/south/frame_003.png",
+              "Idle/animations/Hurt_The_Duwende_King_is_struck_by_an_invisible_at/south/frame_004.png",
+              "Idle/animations/Hurt_The_Duwende_King_is_struck_by_an_invisible_at/south/frame_005.png",
+              "Idle/animations/Hurt_The_Duwende_King_is_struck_by_an_invisible_at/south/frame_006.png",
+              "Idle/animations/Hurt_The_Duwende_King_is_struck_by_an_invisible_at/south/frame_007.png",
+              "Idle/animations/Hurt_The_Duwende_King_is_struck_by_an_invisible_at/south/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-06T09:09:32.606451"
+}

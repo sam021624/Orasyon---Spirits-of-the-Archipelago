@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: 03_DuwendeKing
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Duwende King
+  isBoss: 1
+  maxHP: 80
+  attackDamage: 12
+  attackName: Staff Smash
+  description: Ruler of the backyard mounds. Walk past his home without a respectful
+    "tabi tabi po" and his mischief will follow you for days. Today, he is not in
+    a forgiving mood.
+  themeWords:
+  - MOUND
+  - GOLD
+  - KING
+  - DIRT
+  - GNOME
+  spriteSize: 380
+  hoverHeight: 0
+  framesPerSecond: 10
+  idle:
+  - {fileID: 2800000, guid: 9f1e89f1c0c32e04c9f1d77b13852106, type: 3}
+  - {fileID: 2800000, guid: 3065155071771ea46b0a92c6ba3aebc8, type: 3}
+  - {fileID: 2800000, guid: a35d9469fce741d4bb0fa1eb24bb53b1, type: 3}
+  - {fileID: 2800000, guid: 7c084e1b1f9426e4b8abc47722908747, type: 3}
+  - {fileID: 2800000, guid: c6051a862997cec48ab00ad0484e36df, type: 3}
+  - {fileID: 2800000, guid: aae5962827c0ad3429c397ab91515e24, type: 3}
+  - {fileID: 2800000, guid: 0a4e424df8e939a4480fde51c57da177, type: 3}
+  - {fileID: 2800000, guid: 482e879d305c2654fbc6393040f743f7, type: 3}
+  walk: []
+  attack:
+  - {fileID: 2800000, guid: 56b6ed9e2645a24419403e0566117c2a, type: 3}
+  - {fileID: 2800000, guid: 205cfa178943f29409c7beb8b69ee75b, type: 3}
+  - {fileID: 2800000, guid: 4cf37d3067b9cc74a8f81a61f65a3d19, type: 3}
+  - {fileID: 2800000, guid: 19b506e8ff4510b4fac345a790221379, type: 3}
+  - {fileID: 2800000, guid: 93c602589b0092b4e8f51fb96b929393, type: 3}
+  - {fileID: 2800000, guid: 4332d133f9e945643877aff2dea6a98a, type: 3}
+  - {fileID: 2800000, guid: 3fd0d2f8534d08849a2b1e225ba50a2f, type: 3}
+  - {fileID: 2800000, guid: f7beb938116c2ba418811f1c78412aaf, type: 3}
+  - {fileID: 2800000, guid: 0142b482c883dc444a92f53311136cf7, type: 3}
+  cast:
+  - {fileID: 2800000, guid: 31ff830db55143a448e4e7df44eb19b6, type: 3}
+  - {fileID: 2800000, guid: d2fb80a7acbc169439fb7a457d6de9db, type: 3}
+  - {fileID: 2800000, guid: 81a1ec70f7e7f784e8dbb1431e594738, type: 3}
+  - {fileID: 2800000, guid: 1e280e5e906209240b65fd4947c03deb, type: 3}
+  - {fileID: 2800000, guid: 07e97936f4652604faaf9e441a6398ea, type: 3}
+  - {fileID: 2800000, guid: 12c39c352e4ab5c4ab4eecb237e684c4, type: 3}
+  - {fileID: 2800000, guid: f1b9abf90a2c3a541b0c9668347fc82d, type: 3}
+  - {fileID: 2800000, guid: a3893110648ad37479c881d02ce2ae3f, type: 3}
+  - {fileID: 2800000, guid: 9f3466ad10fee6d4199c6afe20617ccd, type: 3}
+  hurt:
+  - {fileID: 2800000, guid: 0c5707a49e6ce5c4e9d3966af31dd47c, type: 3}
+  - {fileID: 2800000, guid: 5c608388342978d47854616d56abf917, type: 3}
+  - {fileID: 2800000, guid: f70606ef4e7654b44897a48d2410f602, type: 3}
+  - {fileID: 2800000, guid: 6b589e1efe30e8d47bdb7dc9dcde4579, type: 3}
+  - {fileID: 2800000, guid: 1db23b82420f6a247843f685fa69243c, type: 3}
+  - {fileID: 2800000, guid: d2f782c77b754b741abb318cf79e8cae, type: 3}
+  - {fileID: 2800000, guid: e7187b768f6035f46aca47fdb3d71096, type: 3}
+  - {fileID: 2800000, guid: c487fd82120265b4d8a7b45950300bc5, type: 3}
+  - {fileID: 2800000, guid: 30ad24c972e90ff45bd0fbfac4440e4b, type: 3}
+  death: []

@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: 01_ForestBat
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Forest Bat
+  isBoss: 0
+  maxHP: 30
+  attackDamage: 6
+  attackName: Wing Gust
+  description: Little bats flit between the old trees after dusk, keeping watch for
+    the bigger spirits of the forest. Alone they are only a nuisance. When they gather,
+    something larger is never far behind.
+  themeWords:
+  - BAT
+  - WING
+  - NIGHT
+  - CAVE
+  - FANG
+  spriteSize: 280
+  hoverHeight: 70
+  framesPerSecond: 10
+  idle:
+  - {fileID: 2800000, guid: 122d9d57a1b38d24eb30d186aee9092c, type: 3}
+  - {fileID: 2800000, guid: 1b33afbb3fce3914ab20332df4ee20ce, type: 3}
+  - {fileID: 2800000, guid: 55b953473f36c2a468db972f6084f7af, type: 3}
+  - {fileID: 2800000, guid: f482a2f961258c94ca7ad78b4022b072, type: 3}
+  - {fileID: 2800000, guid: 6d3d662394d06bc4a9f27d67c48844ba, type: 3}
+  - {fileID: 2800000, guid: 3e84b9fbc72dca64caae84af2e46dc38, type: 3}
+  - {fileID: 2800000, guid: 37a69d386c9e31c44851d32cf63b5406, type: 3}
+  - {fileID: 2800000, guid: b03151f7ef16ed74f8bcc06c78a19261, type: 3}
+  walk: []
+  attack:
+  - {fileID: 2800000, guid: 3aa0dc2f7205f9142b58efc417e0979a, type: 3}
+  - {fileID: 2800000, guid: c1b2732af58d43b419d06dff6fb1e996, type: 3}
+  - {fileID: 2800000, guid: fcdd2eac8e6e08749a6408a13bb14378, type: 3}
+  - {fileID: 2800000, guid: dffa260f55baff04ead151b439df6d35, type: 3}
+  - {fileID: 2800000, guid: 39558a78d2881af4fbdeb0e5d9370cba, type: 3}
+  - {fileID: 2800000, guid: 0ddbe9eadbbc9ad408170468e365daba, type: 3}
+  - {fileID: 2800000, guid: 39f627cb5d13672499902c3f0eab086e, type: 3}
+  - {fileID: 2800000, guid: 210a7296bf3a60f4492128407aca3d24, type: 3}
+  - {fileID: 2800000, guid: 839a620389c6aa84288a6d79435430f6, type: 3}
+  cast: []
+  hurt:
+  - {fileID: 2800000, guid: d4b0cb8095677e440a91fe7692254955, type: 3}
+  - {fileID: 2800000, guid: bc30b5610664a504dbc0f91d8100a760, type: 3}
+  - {fileID: 2800000, guid: 375ac0e67150713499b799d2371e2e42, type: 3}
+  - {fileID: 2800000, guid: 7a0d182d6aff73b449df80839ba7b37e, type: 3}
+  - {fileID: 2800000, guid: eba09f8eb11cd6649b7262e6d99fa676, type: 3}
+  - {fileID: 2800000, guid: 227910ec8c89da84c89a3e3f7adfdfdf, type: 3}
+  - {fileID: 2800000, guid: 015abb9de6553b94399335ffe9fbe9f0, type: 3}
+  - {fileID: 2800000, guid: 6d328b8bca73ca344b234634b9478728, type: 3}
+  - {fileID: 2800000, guid: 89a17d9de6ccae2478d085c30f82572a, type: 3}
+  death:
+  - {fileID: 2800000, guid: d1cc07bf1f18f2f4085c84165b6a19a3, type: 3}
+  - {fileID: 2800000, guid: 8675e34a9da84984e83013adac5c7e45, type: 3}
+  - {fileID: 2800000, guid: b08c5718b65aa3d4a949dd90b8ccf97f, type: 3}
+  - {fileID: 2800000, guid: 9db4e27e0894b534ea9255adf6d81e14, type: 3}
+  - {fileID: 2800000, guid: 179f230e2f13da24f9dd8315cf1989c1, type: 3}
+  - {fileID: 2800000, guid: 34553e739ffc1ad4e82a28543b4a9eed, type: 3}
+  - {fileID: 2800000, guid: a687912aecad32a46ac79091489a7bb8, type: 3}
+  - {fileID: 2800000, guid: 41237477bf671094bbcd67a75286013c, type: 3}
+  - {fileID: 2800000, guid: 1b64adb14ddfae34798a1b616b0ad6ae, type: 3}

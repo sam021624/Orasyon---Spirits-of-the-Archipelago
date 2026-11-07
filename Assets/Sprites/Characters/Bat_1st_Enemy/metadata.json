@@ -1,0 +1,88 @@
+{
+  "group_id": "1b9cc03c-a317-4c78-a729-39b11bc2c372",
+  "states": [
+    {
+      "character": {
+        "id": "b4a845a6-9348-471d-839a-8dfe6b7f638d",
+        "name": "Idle",
+        "prompt": "Small enchanted forest bat serving the Kapre in a colorful 2D side-view word battle game. It has dark-brown fur, enormous pointed ears, bright amber eyes, two small fangs, tiny clawed feet, a smoky curled tail, and wide wings with moss-green membranes and magical vine patterns. It is a weak Stage 2 flying enemy. Keep its appearance, colors, size, and proportions consistent in every frame. Transparent background with no text or additional objects.\n",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-06T09:22:40.269121+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "Idle": {
+            "south": [
+              "Idle/animations/Idle/south/frame_000.png",
+              "Idle/animations/Idle/south/frame_001.png",
+              "Idle/animations/Idle/south/frame_002.png",
+              "Idle/animations/Idle/south/frame_003.png",
+              "Idle/animations/Idle/south/frame_004.png",
+              "Idle/animations/Idle/south/frame_005.png",
+              "Idle/animations/Idle/south/frame_006.png",
+              "Idle/animations/Idle/south/frame_007.png"
+            ]
+          },
+          "Attack_The_bat_pulls_its_wings_backward_quickly_fl": {
+            "south": [
+              "Idle/animations/Attack_The_bat_pulls_its_wings_backward_quickly_fl/south/frame_000.png",
+              "Idle/animations/Attack_The_bat_pulls_its_wings_backward_quickly_fl/south/frame_001.png",
+              "Idle/animations/Attack_The_bat_pulls_its_wings_backward_quickly_fl/south/frame_002.png",
+              "Idle/animations/Attack_The_bat_pulls_its_wings_backward_quickly_fl/south/frame_003.png",
+              "Idle/animations/Attack_The_bat_pulls_its_wings_backward_quickly_fl/south/frame_004.png",
+              "Idle/animations/Attack_The_bat_pulls_its_wings_backward_quickly_fl/south/frame_005.png",
+              "Idle/animations/Attack_The_bat_pulls_its_wings_backward_quickly_fl/south/frame_006.png",
+              "Idle/animations/Attack_The_bat_pulls_its_wings_backward_quickly_fl/south/frame_007.png",
+              "Idle/animations/Attack_The_bat_pulls_its_wings_backward_quickly_fl/south/frame_008.png"
+            ]
+          },
+          "Hurt_The_bat_is_struck_by_an_invisible_attack._It": {
+            "south": [
+              "Idle/animations/Hurt_The_bat_is_struck_by_an_invisible_attack._It/south/frame_000.png",
+              "Idle/animations/Hurt_The_bat_is_struck_by_an_invisible_attack._It/south/frame_001.png",
+              "Idle/animations/Hurt_The_bat_is_struck_by_an_invisible_attack._It/south/frame_002.png",
+              "Idle/animations/Hurt_The_bat_is_struck_by_an_invisible_attack._It/south/frame_003.png",
+              "Idle/animations/Hurt_The_bat_is_struck_by_an_invisible_attack._It/south/frame_004.png",
+              "Idle/animations/Hurt_The_bat_is_struck_by_an_invisible_attack._It/south/frame_005.png",
+              "Idle/animations/Hurt_The_bat_is_struck_by_an_invisible_attack._It/south/frame_006.png",
+              "Idle/animations/Hurt_The_bat_is_struck_by_an_invisible_attack._It/south/frame_007.png",
+              "Idle/animations/Hurt_The_bat_is_struck_by_an_invisible_attack._It/south/frame_008.png"
+            ]
+          },
+          "Death_The_bat_becomes_dizzy_its_wings_flap_unevenl": {
+            "south": [
+              "Idle/animations/Death_The_bat_becomes_dizzy_its_wings_flap_unevenl/south/frame_000.png",
+              "Idle/animations/Death_The_bat_becomes_dizzy_its_wings_flap_unevenl/south/frame_001.png",
+              "Idle/animations/Death_The_bat_becomes_dizzy_its_wings_flap_unevenl/south/frame_002.png",
+              "Idle/animations/Death_The_bat_becomes_dizzy_its_wings_flap_unevenl/south/frame_003.png",
+              "Idle/animations/Death_The_bat_becomes_dizzy_its_wings_flap_unevenl/south/frame_004.png",
+              "Idle/animations/Death_The_bat_becomes_dizzy_its_wings_flap_unevenl/south/frame_005.png",
+              "Idle/animations/Death_The_bat_becomes_dizzy_its_wings_flap_unevenl/south/frame_006.png",
+              "Idle/animations/Death_The_bat_becomes_dizzy_its_wings_flap_unevenl/south/frame_007.png",
+              "Idle/animations/Death_The_bat_becomes_dizzy_its_wings_flap_unevenl/south/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-06T09:33:59.349360"
+}

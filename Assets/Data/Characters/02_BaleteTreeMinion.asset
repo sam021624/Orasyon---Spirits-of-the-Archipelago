@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: 02_BaleteTreeMinion
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Balete Tree Minion
+  isBoss: 0
+  maxHP: 45
+  attackDamage: 9
+  attackName: Root Lash
+  description: Elders warn children never to point at a balete tree. Its tangled
+    roots remember every insult, and sometimes they pull themselves out of the ground
+    to settle the score.
+  themeWords:
+  - ROOT
+  - TREE
+  - LEAF
+  - BARK
+  - VINE
+  spriteSize: 320
+  hoverHeight: 0
+  framesPerSecond: 10
+  idle:
+  - {fileID: 2800000, guid: f09a0b6f94dc3cd4fa312bfb4c811244, type: 3}
+  - {fileID: 2800000, guid: 6df064cbbb230d94aa9fbc7eb09775d2, type: 3}
+  - {fileID: 2800000, guid: b32410e340a324b4b8ef8b534bb8f28d, type: 3}
+  - {fileID: 2800000, guid: 125f3c28aea5a69488632f62099871bf, type: 3}
+  - {fileID: 2800000, guid: 38a431959c9f43546a4ce70664cf52bf, type: 3}
+  - {fileID: 2800000, guid: f994a1b0632f8cf4a9a13e2fa70265f5, type: 3}
+  - {fileID: 2800000, guid: d915c61f84c49a84ea3b40b161ac6f37, type: 3}
+  - {fileID: 2800000, guid: 8e2db83d9dcc4c741905217cbf04190a, type: 3}
+  - {fileID: 2800000, guid: d267ab168587f7b40bfa9481d6a56e16, type: 3}
+  walk: []
+  attack:
+  - {fileID: 2800000, guid: ae62d7ff19bac7c44a20701e1723107b, type: 3}
+  - {fileID: 2800000, guid: 095d37a27610d1f4fa9627408fcfb038, type: 3}
+  - {fileID: 2800000, guid: fe8e5273585e9c64e9892529a71c0796, type: 3}
+  - {fileID: 2800000, guid: c0d46ad336e07484b85ed40cf4729dc6, type: 3}
+  - {fileID: 2800000, guid: 2ab73276a51e6e548b4f0f0329540e63, type: 3}
+  - {fileID: 2800000, guid: 9242d18fe0626bf44ad38ceb69269f70, type: 3}
+  - {fileID: 2800000, guid: 820f2dc22470ded488e3bc9ee42976fd, type: 3}
+  - {fileID: 2800000, guid: da6cfb343b7da0b4a8ebb90093d70cb9, type: 3}
+  - {fileID: 2800000, guid: 1f2262b2af48574478a10f7cae42ec0f, type: 3}
+  cast: []
+  hurt:
+  - {fileID: 2800000, guid: d9e2f4dcba2bda940baf58cd10c5ebe4, type: 3}
+  - {fileID: 2800000, guid: f292cc2d68f49574ab1d04ddbb79da3d, type: 3}
+  - {fileID: 2800000, guid: a64a83b6e5cf93b4daf3597267ca80fa, type: 3}
+  - {fileID: 2800000, guid: 855a9b77c0a38df46b8582774f36a7b0, type: 3}
+  - {fileID: 2800000, guid: dbb6a3421f6c02a43a8f8f0f33b56035, type: 3}
+  - {fileID: 2800000, guid: 91fd957aa015d274f838c79d5c27d531, type: 3}
+  - {fileID: 2800000, guid: 52d696ab3331d64479096f237b5890c0, type: 3}
+  - {fileID: 2800000, guid: db385af981d2d2f419004ac4e866425d, type: 3}
+  - {fileID: 2800000, guid: 5af7aa43d79e22541bda7341549110cf, type: 3}
+  death:
+  - {fileID: 2800000, guid: f99a62346ad67654782206b9cac17000, type: 3}
+  - {fileID: 2800000, guid: 2d6c8ed25ad065e44a6e0ff624cf69c8, type: 3}
+  - {fileID: 2800000, guid: 8fa870f473cc46345b5815abddb1890d, type: 3}
+  - {fileID: 2800000, guid: 168b30bea2d4cd64a98719514c593565, type: 3}
+  - {fileID: 2800000, guid: 57caeb166ff41c44a8e81a26dfda9392, type: 3}
+  - {fileID: 2800000, guid: e744699ba25b8b945a9a1e61699871da, type: 3}
+  - {fileID: 2800000, guid: d56e663ebaad11148b84c0e025234411, type: 3}
+  - {fileID: 2800000, guid: 07b3e7631d81f95429a60040eedf2934, type: 3}
+  - {fileID: 2800000, guid: 03ce3cfd41d1c0b409dae387e2e71e0f, type: 3}

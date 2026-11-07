@@ -1,0 +1,602 @@
+using System.IO;
+using System.Linq;
+using Orasyon.Battle;
+using TMPro;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
+using UnityEngine.UI;
+
+namespace Orasyon.EditorTools
+{
+    /// <summary>
+    /// Builds the Bookworm-style battle layout in Level1:
+    /// top bar (names, hearts, chapter) · battle stage (parallax background, characters, word preview)
+    /// · bottom: buffs (left), letter grid + Attack (center), enemy info (right).
+    /// Re-running replaces the BattleCanvas object (manual edits inside it are lost).
+    /// </summary>
+    public static class Level1BattleBuilder
+    {
+        private const string ScenePath      = "Assets/Levels/Level1.unity";
+        private const string TilePrefabPath = "Assets/Resources/TilePrefab.prefab";
+        private const string DataFolder     = "Assets/Data/Characters/";
+        private const string CharFolder     = "Assets/Sprites/Characters/";
+        private const string BackgroundPack = "Assets/Sprites/Terrains/1";
+        private const string HeartSprite    = "Assets/Sprites/Icons/Hearts/PNG/basic/heart.png";
+
+        private static readonly Color Wood      = new Color(0.16f, 0.10f, 0.06f, 1f);
+        private static readonly Color WoodLight = new Color(0.25f, 0.15f, 0.09f, 1f);
+        private static readonly Color WoodDark  = new Color(0.10f, 0.06f, 0.04f, 0.95f);
+        private static readonly Color Gold      = new Color(0.88f, 0.68f, 0.30f, 1f);
+        private static readonly Color Cream     = new Color(0.97f, 0.91f, 0.76f, 1f);
+        private static readonly Color Parchment = new Color(0.96f, 0.89f, 0.70f, 1f);
+        private static readonly Color Ink       = new Color(0.28f, 0.16f, 0.07f, 1f);
+
+        private static Sprite roundedSprite, panelSprite, circleSprite;
+
+        [MenuItem("Tools/Orasyon/Rebuild Level 1 Battle UI")]
+        public static void Build()
+        {
+            roundedSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
+            panelSprite   = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
+            circleSprite  = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
+
+            UpdateCharacterData();
+            var tilePrefab = BuildTilePrefab();
+
+            var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            foreach (var root in scene.GetRootGameObjects())
+                if (root.name == "BattleCanvas") Object.DestroyImmediate(root);
+            EnsureEventSystem(scene);
+
+            // ── Canvas ───────────────────────────────────────────────────────
+            var canvasGo = new GameObject("BattleCanvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            canvasGo.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            var scaler = canvasGo.GetComponent<CanvasScaler>();
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1920, 1080);
+            scaler.matchWidthOrHeight = 0.5f;
+            var canvas = canvasGo.transform;
+
+            var albularyo = Load<CharacterDefinition>(DataFolder + "Albularyo.asset");
+            var bat       = Load<CharacterDefinition>(DataFolder + "01_ForestBat.asset");
+            var tree      = Load<CharacterDefinition>(DataFolder + "02_BaleteTreeMinion.asset");
+            var king      = Load<CharacterDefinition>(DataFolder + "03_DuwendeKing.asset");
+
+            // ── Stage (top 560px) ────────────────────────────────────────────
+            var stage = Node("Stage", canvas);
+            Anchor(stage, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0.5f, 1), Vector2.zero, new Vector2(0, 560));
+            stage.gameObject.AddComponent<Image>().color = new Color(0.09f, 0.13f, 0.10f);
+            stage.gameObject.AddComponent<RectMask2D>();
+
+            var parallax = BuildBackground(stage);
+
+            var characters = Node("Characters", stage);
+            Stretch(characters);
+
+            var playerAnim = Character("Player", characters, albularyo, -560f);
+            var enemyAnim  = Character("Enemy",  characters, bat,       560f);
+
+            var popup = Text("DamagePopupTemplate", characters, "-10", 46, Color.white, TextAlignmentOptions.Center, FontStyles.Bold);
+            Anchor(popup.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), Vector2.zero, new Vector2(320, 64));
+            popup.outlineWidth = 0.2f;
+            popup.outlineColor = new Color32(40, 20, 10, 255);
+
+            // Word preview (current word as tiles), hint, feedback
+            var previewRow = Node("WordPreview", stage);
+            Anchor(previewRow, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -100), new Vector2(1000, 80));
+            var hlg = previewRow.gameObject.AddComponent<HorizontalLayoutGroup>();
+            hlg.spacing = 6; hlg.childAlignment = TextAnchor.MiddleCenter;
+            hlg.childControlWidth = hlg.childControlHeight = false;
+            hlg.childForceExpandWidth = hlg.childForceExpandHeight = false;
+            var letterTemplate = Panel("LetterTemplate", previewRow, Parchment, roundedSprite);
+            letterTemplate.rectTransform.sizeDelta = new Vector2(72, 72);
+            AddShadow(letterTemplate.gameObject);
+            var templateLetter = Text("Letter", letterTemplate.transform, "A", 44, Ink, TextAlignmentOptions.Center, FontStyles.Bold);
+            Stretch(templateLetter.rectTransform);
+
+            var hint = Text("WordHint", stage, "", 22, Cream, TextAlignmentOptions.Center, FontStyles.Bold | FontStyles.Italic);
+            Anchor(hint.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -184), new Vector2(700, 32));
+            hint.outlineWidth = 0.25f;
+            hint.outlineColor = new Color32(20, 10, 5, 255);
+            var feedback = Text("Feedback", stage, "", 28, Cream, TextAlignmentOptions.Top, FontStyles.Bold);
+            Anchor(feedback.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -218), new Vector2(900, 96));
+            feedback.outlineWidth = 0.2f;
+            feedback.outlineColor = new Color32(20, 10, 5, 255);
+
+            var status = Text("PlayerStatus", stage, "", 20, Cream, TextAlignmentOptions.Left, FontStyles.Bold);
+            Anchor(status.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -94), new Vector2(700, 30));
+            status.outlineWidth = 0.25f;
+            status.outlineColor = new Color32(20, 10, 5, 255);
+
+            // ── Top bar ──────────────────────────────────────────────────────
+            var topBar = Panel("TopBar", canvas, new Color(0.06f, 0.04f, 0.03f, 0.80f));
+            Anchor(topBar.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0.5f, 1), Vector2.zero, new Vector2(0, 88));
+
+            var playerName = Text("PlayerName", topBar.transform, "Albularyo", 28, new Color(0.60f, 0.93f, 0.62f), TextAlignmentOptions.Left, FontStyles.Bold);
+            Anchor(playerName.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -6), new Vector2(560, 40));
+            var playerHearts = Hearts("PlayerHearts", topBar.transform, mirrored: false);
+            Anchor((RectTransform)playerHearts.transform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -48), new Vector2(440, 32));
+
+            var enemyName = Text("EnemyName", topBar.transform, bat.displayName, 28, Gold, TextAlignmentOptions.Right, FontStyles.Bold);
+            Anchor(enemyName.rectTransform, new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-20, -6), new Vector2(560, 40));
+            var enemyHearts = Hearts("EnemyHearts", topBar.transform, mirrored: true);
+            Anchor((RectTransform)enemyHearts.transform, new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-20, -48), new Vector2(440, 32));
+
+            var plaque = Panel("ChapterPlaque", topBar.transform, Wood, panelSprite);
+            Anchor(plaque.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -6), new Vector2(640, 76));
+            AddOutline(plaque.gameObject, Gold, 2);
+            var chapter = Text("ChapterTitle", plaque.transform, "Chapter 1: The Backyard Mound", 28, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
+            Anchor(chapter.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -6), new Vector2(620, 38));
+            var encounter = Text("Encounter", plaque.transform, "Encounter 1 of 3", 18, Cream, TextAlignmentOptions.Center);
+            Anchor(encounter.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -44), new Vector2(620, 26));
+
+            // ── Bottom (520px) ───────────────────────────────────────────────
+            var bottom = Panel("Bottom", canvas, Wood);
+            Anchor(bottom.rectTransform, new Vector2(0, 0), new Vector2(1, 0), new Vector2(0.5f, 0), Vector2.zero, new Vector2(0, 520));
+            var bottomGroup = bottom.gameObject.AddComponent<CanvasGroup>();
+            var trim = Panel("TopTrim", bottom.transform, Gold);
+            Anchor(trim.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0.5f, 1), Vector2.zero, new Vector2(0, 6));
+
+            // Left: buffs
+            var left = Panel("BuffPanel", bottom.transform, WoodLight, panelSprite);
+            Anchor(left.rectTransform, Vector2.zero, Vector2.zero, Vector2.zero, new Vector2(16, 100), new Vector2(580, 404));
+            AddOutline(left.gameObject, Gold, 2);
+            var buffHeader = Text("Header", left.transform, "BUFFS", 24, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
+            Anchor(buffHeader.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -8), new Vector2(560, 36));
+            var buffInventory = left.gameObject.AddComponent<BuffInventory>();
+            var cards = new[]
+            {
+                BuffCard(left.transform, 0, "Lunas",         "5-letter word", "Heals 25 HP",               new Color(0.35f, 0.75f, 0.40f), "+"),
+                BuffCard(left.transform, 1, "Anting-Anting", "6-letter word", "Blocks the next attack",    new Color(0.35f, 0.55f, 0.92f), Glyph("\u25C6", "#")),
+                BuffCard(left.transform, 2, "Agimat",        "7+ letters",    "Next word deals x2 damage", new Color(0.95f, 0.62f, 0.22f), "x2"),
+            };
+            var scramble = MakeButton("ScrambleButton", bottom.transform, "SCRAMBLE", new Color(0.66f, 0.32f, 0.12f), Cream, 28);
+            Anchor((RectTransform)scramble.transform, Vector2.zero, Vector2.zero, Vector2.zero, new Vector2(16, 20), new Vector2(580, 64));
+
+            // Center: grid + attack/clear
+            var gridFrame = Panel("GridFrame", bottom.transform, WoodDark, panelSprite);
+            Anchor(gridFrame.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 100), new Vector2(440, 404));
+            AddOutline(gridFrame.gameObject, Gold, 2);
+            var gridRt = Node("LetterGrid", gridFrame.transform);
+            Anchor(gridRt, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(400, 400));
+            gridRt.gameObject.AddComponent<RectMask2D>();
+            var gridGroup = gridRt.gameObject.AddComponent<CanvasGroup>();
+            var grid = gridRt.gameObject.AddComponent<LetterGrid>();
+            var gso = new SerializedObject(grid);
+            gso.FindProperty("tilePrefab").objectReferenceValue = tilePrefab;
+            gso.FindProperty("cellSize").floatValue = 92f;
+            gso.FindProperty("spacing").floatValue = 8f;
+            gso.ApplyModifiedPropertiesWithoutUndo();
+
+            var attack = MakeButton("AttackButton", bottom.transform, "ATTACK", new Color(0.32f, 0.62f, 0.28f), Cream, 34);
+            Anchor((RectTransform)attack.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-70, 20), new Vector2(330, 64));
+            var clear = MakeButton("ClearButton", bottom.transform, "CLEAR", new Color(0.40f, 0.24f, 0.32f), Cream, 22);
+            Anchor((RectTransform)clear.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(170, 20), new Vector2(130, 64));
+
+            // Right: enemy info
+            var right = Panel("EnemyInfoPanel", bottom.transform, WoodLight, panelSprite);
+            Anchor(right.rectTransform, new Vector2(1, 0), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-16, 100), new Vector2(580, 404));
+            AddOutline(right.gameObject, Gold, 2);
+            var portraitBg = Panel("PortraitFrame", right.transform, WoodDark, panelSprite);
+            Anchor(portraitBg.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -14), new Vector2(132, 132));
+            var portraitGo = Node("Portrait", portraitBg.transform);
+            Stretch(portraitGo, 4);
+            var portrait = portraitGo.gameObject.AddComponent<RawImage>();
+            portrait.raycastTarget = false;
+            var infoName = Text("Name", right.transform, bat.displayName, 28, Gold, TextAlignmentOptions.Left, FontStyles.Bold);
+            Anchor(infoName.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(160, -16), new Vector2(404, 40));
+            var infoAttack = Text("Attack", right.transform, "", 21, Cream, TextAlignmentOptions.Left);
+            Anchor(infoAttack.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(160, -60), new Vector2(404, 30));
+            var infoWeak = Text("Weakness", right.transform, "", 18, new Color(0.62f, 0.95f, 0.58f), TextAlignmentOptions.TopLeft);
+            Anchor(infoWeak.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(160, -96), new Vector2(404, 54));
+            var descBox = Panel("DescriptionBox", right.transform, WoodDark, panelSprite);
+            Anchor(descBox.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -160), new Vector2(552, 230));
+            var infoDesc = Text("Description", descBox.transform, "", 20, Cream, TextAlignmentOptions.TopLeft, FontStyles.Italic);
+            Stretch(infoDesc.rectTransform, 16);
+            var info = right.gameObject.AddComponent<EnemyInfoPanel>();
+            var iso = new SerializedObject(info);
+            iso.FindProperty("portrait").objectReferenceValue = portrait;
+            iso.FindProperty("nameLabel").objectReferenceValue = infoName;
+            iso.FindProperty("attackLabel").objectReferenceValue = infoAttack;
+            iso.FindProperty("weaknessLabel").objectReferenceValue = infoWeak;
+            iso.FindProperty("descriptionLabel").objectReferenceValue = infoDesc;
+            iso.ApplyModifiedPropertiesWithoutUndo();
+            info.Show(bat);
+
+            var menu = MakeButton("MenuButton", bottom.transform, "MENU", new Color(0.62f, 0.46f, 0.12f), Cream, 28);
+            Anchor((RectTransform)menu.transform, new Vector2(1, 0), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-16, 20), new Vector2(580, 64));
+
+            // ── Tutorial popup ───────────────────────────────────────────────
+            var tutPanel = Panel("TutorialPanel", canvas, new Color(0.07f, 0.05f, 0.12f, 0.96f), panelSprite);
+            Anchor(tutPanel.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -100), new Vector2(780, 340));
+            AddOutline(tutPanel.gameObject, Gold, 2);
+            var tutTitle = Text("Title", tutPanel.transform, "Tutorial", 32, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
+            Anchor(tutTitle.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -16), new Vector2(720, 44));
+            var tutBody = Text("Body", tutPanel.transform, "", 22, Cream, TextAlignmentOptions.TopLeft);
+            Anchor(tutBody.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -70), new Vector2(720, 190));
+            var tutNext = MakeButton("NextButton", tutPanel.transform, "Got it!", Gold, Ink, 24);
+            Anchor((RectTransform)tutNext.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 18), new Vector2(220, 54));
+
+            // ── Result popup ─────────────────────────────────────────────────
+            var result = Panel("ResultPanel", canvas, new Color(0, 0, 0, 0.75f));
+            Stretch(result.rectTransform);
+            var resultBox = Panel("Box", result.transform, Wood, panelSprite);
+            Anchor(resultBox.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(680, 340));
+            AddOutline(resultBox.gameObject, Gold, 3);
+            var resultTitle = Text("Title", resultBox.transform, "Chapter Complete!", 48, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
+            Anchor(resultTitle.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -24), new Vector2(640, 64));
+            var resultBody = Text("Body", resultBox.transform, "", 24, Cream, TextAlignmentOptions.Center);
+            Anchor(resultBody.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -100), new Vector2(620, 110));
+            var retry = MakeButton("RetryButton", resultBox.transform, "PLAY AGAIN", new Color(0.32f, 0.62f, 0.28f), Cream, 24);
+            Anchor((RectTransform)retry.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-150, 28), new Vector2(260, 60));
+            var resultMenu = MakeButton("MainMenuButton", resultBox.transform, "MAIN MENU", new Color(0.62f, 0.46f, 0.12f), Cream, 24);
+            Anchor((RectTransform)resultMenu.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(150, 28), new Vector2(260, 60));
+
+            // ── Word preview component ───────────────────────────────────────
+            var preview = previewRow.gameObject.AddComponent<WordPreview>();
+            var pso = new SerializedObject(preview);
+            pso.FindProperty("grid").objectReferenceValue = grid;
+            pso.FindProperty("row").objectReferenceValue = previewRow;
+            pso.FindProperty("letterTemplate").objectReferenceValue = letterTemplate.gameObject;
+            pso.FindProperty("hintLabel").objectReferenceValue = hint;
+            pso.ApplyModifiedPropertiesWithoutUndo();
+
+            // ── Buff slots ───────────────────────────────────────────────────
+            var bso = new SerializedObject(buffInventory);
+            var slots = bso.FindProperty("slots");
+            slots.arraySize = 3;
+            int[] minLengths = { 5, 6, 7 };
+            string[] names = { "Lunas", "Anting-Anting", "Agimat" };
+            for (int i = 0; i < 3; i++)
+            {
+                var s = slots.GetArrayElementAtIndex(i);
+                s.FindPropertyRelative("type").enumValueIndex = i;
+                s.FindPropertyRelative("displayName").stringValue = names[i];
+                s.FindPropertyRelative("minWordLength").intValue = minLengths[i];
+                s.FindPropertyRelative("button").objectReferenceValue = cards[i].button;
+                s.FindPropertyRelative("countLabel").objectReferenceValue = cards[i].count;
+                s.FindPropertyRelative("group").objectReferenceValue = cards[i].group;
+            }
+            bso.ApplyModifiedPropertiesWithoutUndo();
+
+            // ── Battle manager ───────────────────────────────────────────────
+            var managers = Node("Managers", canvas);
+            var battle = managers.gameObject.AddComponent<BattleManager>();
+            var m = new SerializedObject(battle);
+            Set(m, "chapterLabel", chapter);
+            Set(m, "encounterLabel", encounter);
+            Set(m, "player", albularyo);
+            Set(m, "playerAnimator", playerAnim);
+            Set(m, "playerNameLabel", playerName);
+            Set(m, "playerHearts", playerHearts);
+            Set(m, "playerStatusLabel", status);
+            var enemies = m.FindProperty("enemies");
+            enemies.arraySize = 3;
+            enemies.GetArrayElementAtIndex(0).objectReferenceValue = bat;
+            enemies.GetArrayElementAtIndex(1).objectReferenceValue = tree;
+            enemies.GetArrayElementAtIndex(2).objectReferenceValue = king;
+            Set(m, "enemyAnimator", enemyAnim);
+            Set(m, "enemyNameLabel", enemyName);
+            Set(m, "enemyHearts", enemyHearts);
+            Set(m, "enemyInfo", info);
+            Set(m, "background", parallax);
+            Set(m, "letterGrid", grid);
+            Set(m, "gridGroup", gridGroup);
+            Set(m, "attackButton", attack);
+            Set(m, "clearButton", clear);
+            Set(m, "scrambleButton", scramble);
+            Set(m, "menuButton", menu);
+            Set(m, "buffs", buffInventory);
+            Set(m, "feedbackLabel", feedback);
+            Set(m, "damagePopupTemplate", popup);
+            Set(m, "resultPanel", result.gameObject);
+            Set(m, "resultTitle", resultTitle);
+            Set(m, "resultBody", resultBody);
+            Set(m, "retryButton", retry);
+            Set(m, "resultMenuButton", resultMenu);
+            m.ApplyModifiedPropertiesWithoutUndo();
+
+            // ── Tutorial manager ─────────────────────────────────────────────
+            var tutorial = managers.gameObject.AddComponent<TutorialManager>();
+            var t = new SerializedObject(tutorial);
+            Set(t, "tutorialPanel", tutPanel.gameObject);
+            Set(t, "titleText", tutTitle);
+            Set(t, "bodyText", tutBody);
+            Set(t, "nextButton", tutNext);
+            Set(t, "nextButtonLabel", tutNext.GetComponentInChildren<TextMeshProUGUI>());
+            Set(t, "battle", battle);
+            Set(t, "letterGrid", grid);
+            Set(t, "bottomGroup", bottomGroup);
+            t.FindProperty("sampleWord").stringValue = "WORD";
+            var positions = t.FindProperty("sampleWordPositions");
+            positions.arraySize = 4;
+            for (int i = 0; i < 4; i++) positions.GetArrayElementAtIndex(i).vector2IntValue = new Vector2Int(0, i);
+            t.ApplyModifiedPropertiesWithoutUndo();
+
+            result.gameObject.SetActive(false);
+            tutPanel.transform.SetAsLastSibling();
+            result.transform.SetAsLastSibling();
+
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+            Debug.Log("[Orasyon] Level 1 battle UI rebuilt.");
+        }
+
+        // ── Character data ───────────────────────────────────────────────────
+        private static void UpdateCharacterData()
+        {
+            var albularyo = Load<CharacterDefinition>(DataFolder + "Albularyo.asset");
+            albularyo.walk = Clip("Main Character", "Walking");
+            albularyo.spriteSize = 320f;
+            EditorUtility.SetDirty(albularyo);
+
+            var bat = Load<CharacterDefinition>(DataFolder + "01_ForestBat.asset");
+            bat.attackName = "Wing Gust";
+            bat.themeWords = new[] { "BAT", "WING", "NIGHT", "CAVE", "FANG" };
+            bat.hoverHeight = 70f;
+            bat.spriteSize = 280f;
+            bat.description = "Little bats flit between the old trees after dusk, keeping watch for the bigger spirits of the forest. " +
+                              "Alone they are only a nuisance. When they gather, something larger is never far behind.";
+            EditorUtility.SetDirty(bat);
+
+            var tree = Load<CharacterDefinition>(DataFolder + "02_BaleteTreeMinion.asset");
+            tree.attackName = "Root Lash";
+            tree.themeWords = new[] { "ROOT", "TREE", "LEAF", "BARK", "VINE" };
+            tree.spriteSize = 320f;
+            tree.description = "Elders warn children never to point at a balete tree. " +
+                               "Its tangled roots remember every insult, and sometimes they pull themselves out of the ground to settle the score.";
+            EditorUtility.SetDirty(tree);
+
+            var king = Load<CharacterDefinition>(DataFolder + "03_DuwendeKing.asset");
+            king.attackName = "Staff Smash";
+            king.themeWords = new[] { "MOUND", "GOLD", "KING", "DIRT", "GNOME" };
+            king.spriteSize = 380f;
+            king.description = "Ruler of the backyard mounds. Walk past his home without a respectful \"tabi tabi po\" " +
+                               "and his mischief will follow you for days. Today, he is not in a forgiving mood.";
+            EditorUtility.SetDirty(king);
+
+            AssetDatabase.SaveAssets();
+        }
+
+        private static Texture2D[] Clip(string character, string prefix)
+        {
+            string anims = CharFolder + character + "/Idle/animations";
+            var clipFolder = AssetDatabase.GetSubFolders(anims)
+                .FirstOrDefault(f => Path.GetFileName(f) == prefix || Path.GetFileName(f).StartsWith(prefix + "_"));
+            if (clipFolder == null) return new Texture2D[0];
+            var dir = AssetDatabase.GetSubFolders(clipFolder).FirstOrDefault() ?? clipFolder;
+            return AssetDatabase.FindAssets("t:Texture2D", new[] { dir })
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .Where(p => Path.GetDirectoryName(p).Replace('\\', '/') == dir)
+                .OrderBy(p => p)
+                .Select(AssetDatabase.LoadAssetAtPath<Texture2D>)
+                .ToArray();
+        }
+
+        // ── Pieces ───────────────────────────────────────────────────────────
+        private static GameObject BuildTilePrefab()
+        {
+            var root = new GameObject("LetterTile", typeof(RectTransform), typeof(Image), typeof(Button));
+            ((RectTransform)root.transform).sizeDelta = new Vector2(92, 92);
+            var bg = root.GetComponent<Image>();
+            bg.sprite = roundedSprite; bg.type = Image.Type.Sliced; bg.color = Parchment;
+            AddShadow(root);
+            var btn = root.GetComponent<Button>();
+            btn.transition = Selectable.Transition.None;
+            btn.targetGraphic = bg;
+
+            var ring = Panel("HighlightRing", root.transform, new Color(0.4f, 1f, 0.4f, 0.35f), roundedSprite);
+            Stretch(ring.rectTransform, -6);
+            ring.raycastTarget = false;
+            ring.enabled = false;
+
+            var letter = Text("Letter", root.transform, "A", 52, Ink, TextAlignmentOptions.Center, FontStyles.Bold);
+            Stretch(letter.rectTransform);
+
+            var tile = root.AddComponent<LetterTile>();
+            var so = new SerializedObject(tile);
+            so.FindProperty("background").objectReferenceValue = bg;
+            so.FindProperty("highlightRing").objectReferenceValue = ring;
+            so.FindProperty("letterLabel").objectReferenceValue = letter;
+            so.ApplyModifiedPropertiesWithoutUndo();
+
+            var prefab = PrefabUtility.SaveAsPrefabAsset(root, TilePrefabPath);
+            Object.DestroyImmediate(root);
+            return prefab;
+        }
+
+        private static ParallaxBackground BuildBackground(RectTransform stage)
+        {
+            var bgRoot = Node("Background", stage);
+            Anchor(bgRoot, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), Vector2.zero, new Vector2(1920, 1080));
+            var parallax = bgRoot.gameObject.AddComponent<ParallaxBackground>();
+
+            var layerPaths = Directory.GetFiles(BackgroundPack, "*.png")
+                .Select(p => p.Replace('\\', '/'))
+                .Where(p => int.TryParse(Path.GetFileNameWithoutExtension(p), out _))
+                .OrderBy(p => int.Parse(Path.GetFileNameWithoutExtension(p)))
+                .ToArray();
+
+            var so = new SerializedObject(parallax);
+            var layers = so.FindProperty("layers");
+            layers.arraySize = layerPaths.Length;
+            for (int i = 0; i < layerPaths.Length; i++)
+            {
+                var tex = Load<Texture2D>(layerPaths[i]);
+                var layer = Node("Layer_" + (i + 1), bgRoot);
+                Stretch(layer);
+                RectTransform Copy(string n, float x)
+                {
+                    var rt = Node(n, layer);
+                    Anchor(rt, Vector2.zero, Vector2.zero, Vector2.zero, new Vector2(x, 0), new Vector2(1920, 1080));
+                    var raw = rt.gameObject.AddComponent<RawImage>();
+                    raw.texture = tex;
+                    raw.raycastTarget = false;
+                    return rt;
+                }
+                var e = layers.GetArrayElementAtIndex(i);
+                e.FindPropertyRelative("first").objectReferenceValue = Copy("A", 0);
+                e.FindPropertyRelative("second").objectReferenceValue = Copy("B", 1920);
+                e.FindPropertyRelative("speed").floatValue = layerPaths.Length == 1 ? 1f : Mathf.Lerp(0.1f, 1f, i / (float)(layerPaths.Length - 1));
+            }
+            so.ApplyModifiedPropertiesWithoutUndo();
+            return parallax;
+        }
+
+        private static UIFrameAnimator Character(string name, RectTransform parent, CharacterDefinition def, float x)
+        {
+            var rt = Node(name, parent);
+            Anchor(rt, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(x, 30f + def.hoverHeight), Vector2.one * def.spriteSize);
+            var raw = rt.gameObject.AddComponent<RawImage>();
+            raw.raycastTarget = false;
+            raw.texture = def.idle.Length > 0 ? def.idle[0] : null;
+            return rt.gameObject.AddComponent<UIFrameAnimator>();
+        }
+
+        private static HeartBar Hearts(string name, Transform parent, bool mirrored)
+        {
+            var rt = Node(name, parent);
+            var layout = rt.gameObject.AddComponent<HorizontalLayoutGroup>();
+            layout.spacing = 3;
+            layout.childAlignment = mirrored ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
+            layout.reverseArrangement = mirrored;
+            layout.childControlWidth = layout.childControlHeight = true;
+            layout.childForceExpandWidth = layout.childForceExpandHeight = false;
+            var bar = rt.gameObject.AddComponent<HeartBar>();
+            var so = new SerializedObject(bar);
+            so.FindProperty("heartSprite").objectReferenceValue = AssetDatabase.LoadAllAssetsAtPath(HeartSprite).OfType<Sprite>().FirstOrDefault();
+            so.FindProperty("mirrored").boolValue = mirrored;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            return bar;
+        }
+
+        private struct Card { public Button button; public TextMeshProUGUI count; public CanvasGroup group; }
+
+        private static Card BuffCard(Transform parent, int index, string title, string requirement, string effect, Color color, string glyph)
+        {
+            var card = Panel("Buff_" + title, parent, new Color(0.19f, 0.11f, 0.07f, 1f), panelSprite);
+            Anchor(card.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14 + index * 188, -50), new Vector2(176, 340));
+            AddOutline(card.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.6f), 1);
+            var button = card.gameObject.AddComponent<Button>();
+            button.targetGraphic = card;
+            var group = card.gameObject.AddComponent<CanvasGroup>();
+
+            var icon = Panel("Icon", card.transform, color, circleSprite);
+            Anchor(icon.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -16), new Vector2(100, 100));
+            icon.type = Image.Type.Simple;
+            var g = Text("Glyph", icon.transform, glyph, 44, Color.white, TextAlignmentOptions.Center, FontStyles.Bold);
+            Stretch(g.rectTransform);
+
+            var count = Text("Count", card.transform, "x0", 22, Cream, TextAlignmentOptions.Right, FontStyles.Bold);
+            Anchor(count.rectTransform, new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-8, -6), new Vector2(60, 30));
+
+            var n = Text("Name", card.transform, title, 21, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
+            Anchor(n.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -124), new Vector2(166, 50));
+            var req = Text("Requirement", card.transform, requirement, 15, new Color(0.85f, 0.80f, 0.68f), TextAlignmentOptions.Center, FontStyles.Italic);
+            Anchor(req.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -176), new Vector2(166, 26));
+            var eff = Text("Effect", card.transform, effect, 17, Cream, TextAlignmentOptions.Center);
+            Anchor(eff.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -206), new Vector2(166, 76));
+            var use = Text("UseHint", card.transform, "click to use", 14, new Color(0.75f, 0.68f, 0.55f), TextAlignmentOptions.Center, FontStyles.Italic);
+            Anchor(use.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 10), new Vector2(166, 24));
+
+            return new Card { button = button, count = count, group = group };
+        }
+
+        // ── Generic helpers ──────────────────────────────────────────────────
+        private static void EnsureEventSystem(UnityEngine.SceneManagement.Scene scene)
+        {
+            foreach (var root in scene.GetRootGameObjects())
+                if (root.GetComponentInChildren<EventSystem>(true) != null) return;
+            new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
+        }
+
+        private static T Load<T>(string path) where T : Object => AssetDatabase.LoadAssetAtPath<T>(path);
+
+        private static void Set(SerializedObject so, string prop, Object value)
+        {
+            var p = so.FindProperty(prop);
+            if (p == null) { Debug.LogError($"[Orasyon] Missing property '{prop}' on {so.targetObject.GetType().Name}"); return; }
+            p.objectReferenceValue = value;
+        }
+
+        private static string Glyph(string preferred, string fallback)
+        {
+            var font = TMP_Settings.defaultFontAsset;
+            return font != null && font.HasCharacters(preferred) ? preferred : fallback;
+        }
+
+        private static RectTransform Node(string name, Transform parent)
+        {
+            var go = new GameObject(name, typeof(RectTransform));
+            go.transform.SetParent(parent, false);
+            return (RectTransform)go.transform;
+        }
+
+        private static void Anchor(RectTransform rt, Vector2 min, Vector2 max, Vector2 pivot, Vector2 pos, Vector2 size)
+        {
+            rt.anchorMin = min; rt.anchorMax = max; rt.pivot = pivot;
+            rt.anchoredPosition = pos; rt.sizeDelta = size;
+        }
+
+        private static void Stretch(RectTransform rt, float inset = 0f)
+        {
+            rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one; rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.offsetMin = new Vector2(inset, inset); rt.offsetMax = new Vector2(-inset, -inset);
+        }
+
+        private static Image Panel(string name, Transform parent, Color color, Sprite sprite = null)
+        {
+            var rt = Node(name, parent);
+            var img = rt.gameObject.AddComponent<Image>();
+            img.color = color;
+            if (sprite != null) { img.sprite = sprite; img.type = Image.Type.Sliced; }
+            return img;
+        }
+
+        private static TextMeshProUGUI Text(string name, Transform parent, string text, float size, Color color,
+                                            TextAlignmentOptions align, FontStyles style = FontStyles.Normal)
+        {
+            var rt = Node(name, parent);
+            var t = rt.gameObject.AddComponent<TextMeshProUGUI>();
+            t.text = text; t.fontSize = size; t.color = color; t.alignment = align; t.fontStyle = style;
+            t.raycastTarget = false;
+            return t;
+        }
+
+        private static Button MakeButton(string name, Transform parent, string label, Color color, Color labelColor, float fontSize)
+        {
+            var img = Panel(name, parent, color, roundedSprite);
+            AddOutline(img.gameObject, new Color(0.10f, 0.06f, 0.03f, 0.9f), 2);
+            var btn = img.gameObject.AddComponent<Button>();
+            btn.targetGraphic = img;
+            var colors = btn.colors;
+            colors.normalColor      = new Color(0.88f, 0.88f, 0.88f, 1f);
+            colors.highlightedColor = Color.white;
+            colors.pressedColor     = new Color(0.70f, 0.70f, 0.70f, 1f);
+            colors.selectedColor    = new Color(0.88f, 0.88f, 0.88f, 1f);
+            colors.disabledColor    = new Color(0.40f, 0.40f, 0.40f, 0.75f);
+            colors.fadeDuration     = 0.08f;
+            btn.colors = colors;
+            var t = Text("Label", img.transform, label, fontSize, labelColor, TextAlignmentOptions.Center, FontStyles.Bold);
+            Stretch(t.rectTransform);
+            return btn;
+        }
+
+        private static void AddOutline(GameObject go, Color color, float width)
+        {
+            var o = go.AddComponent<Outline>();
+            o.effectColor = color;
+            o.effectDistance = new Vector2(width, -width);
+        }
+
+        private static void AddShadow(GameObject go)
+        {
+            var s = go.AddComponent<Shadow>();
+            s.effectColor = new Color(0f, 0f, 0f, 0.45f);
+            s.effectDistance = new Vector2(0f, -4f);
+        }
+    }
+}

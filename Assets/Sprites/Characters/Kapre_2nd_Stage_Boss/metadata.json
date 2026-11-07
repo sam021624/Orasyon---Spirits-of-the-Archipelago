@@ -1,0 +1,89 @@
+{
+  "group_id": "0cf5328f-839b-44bc-85e6-2bdb5e4fb070",
+  "states": [
+    {
+      "character": {
+        "id": "3b968047-43bb-4675-9896-8318bd571f2f",
+        "name": "Idle",
+        "prompt": "Gigantic Kapre boss for a colorful 2D side-view word battle game. He has dark-brown skin, wild black hair, a long tangled beard, glowing orange eyes, a large nose, and an intimidating grin. His proportions are extremely top-heavy, with an enormous head, chest, shoulders, arms, and hands but short thick legs and smaller feet. He wears a torn dark-red waistcloth, vine belt, wooden bead necklace, and vine wrist wraps. He holds a smoking brown cigar. Make him look much larger than every regular enemy and fill most of the frame. Keep his appearance, proportions, clothing, cigar, colors, and details consistent. Transparent background with no text or additional characters.\n",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-06T09:40:37.974155+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex": {
+            "south-west": [
+              "Idle/animations/Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex/south-west/frame_000.png",
+              "Idle/animations/Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex/south-west/frame_001.png",
+              "Idle/animations/Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex/south-west/frame_002.png",
+              "Idle/animations/Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex/south-west/frame_003.png",
+              "Idle/animations/Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex/south-west/frame_004.png",
+              "Idle/animations/Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex/south-west/frame_005.png",
+              "Idle/animations/Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex/south-west/frame_006.png",
+              "Idle/animations/Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex/south-west/frame_007.png",
+              "Idle/animations/Death_The_Kapres_glowing_eyes_slowly_dim_as_his_ex/south-west/frame_008.png"
+            ]
+          },
+          "Idle_The_giant_Kapre_breathes_heavily_while_his_hu": {
+            "south": [
+              "Idle/animations/Idle_The_giant_Kapre_breathes_heavily_while_his_hu/south/frame_000.png",
+              "Idle/animations/Idle_The_giant_Kapre_breathes_heavily_while_his_hu/south/frame_001.png",
+              "Idle/animations/Idle_The_giant_Kapre_breathes_heavily_while_his_hu/south/frame_002.png",
+              "Idle/animations/Idle_The_giant_Kapre_breathes_heavily_while_his_hu/south/frame_003.png",
+              "Idle/animations/Idle_The_giant_Kapre_breathes_heavily_while_his_hu/south/frame_004.png",
+              "Idle/animations/Idle_The_giant_Kapre_breathes_heavily_while_his_hu/south/frame_005.png",
+              "Idle/animations/Idle_The_giant_Kapre_breathes_heavily_while_his_hu/south/frame_006.png",
+              "Idle/animations/Idle_The_giant_Kapre_breathes_heavily_while_his_hu/south/frame_007.png",
+              "Idle/animations/Idle_The_giant_Kapre_breathes_heavily_while_his_hu/south/frame_008.png"
+            ]
+          },
+          "Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in": {
+            "south": [
+              "Idle/animations/Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in/south/frame_000.png",
+              "Idle/animations/Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in/south/frame_001.png",
+              "Idle/animations/Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in/south/frame_002.png",
+              "Idle/animations/Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in/south/frame_003.png",
+              "Idle/animations/Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in/south/frame_004.png",
+              "Idle/animations/Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in/south/frame_005.png",
+              "Idle/animations/Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in/south/frame_006.png",
+              "Idle/animations/Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in/south/frame_007.png",
+              "Idle/animations/Hurt_The_Kapre_is_suddenly_rocked_by_a_powerful_in/south/frame_008.png"
+            ]
+          },
+          "The_Kapre_draws_his_left_arm_back_behind_his_shoul": {
+            "south": [
+              "Idle/animations/The_Kapre_draws_his_left_arm_back_behind_his_shoul/south/frame_000.png",
+              "Idle/animations/The_Kapre_draws_his_left_arm_back_behind_his_shoul/south/frame_001.png",
+              "Idle/animations/The_Kapre_draws_his_left_arm_back_behind_his_shoul/south/frame_002.png",
+              "Idle/animations/The_Kapre_draws_his_left_arm_back_behind_his_shoul/south/frame_003.png",
+              "Idle/animations/The_Kapre_draws_his_left_arm_back_behind_his_shoul/south/frame_004.png",
+              "Idle/animations/The_Kapre_draws_his_left_arm_back_behind_his_shoul/south/frame_005.png",
+              "Idle/animations/The_Kapre_draws_his_left_arm_back_behind_his_shoul/south/frame_006.png",
+              "Idle/animations/The_Kapre_draws_his_left_arm_back_behind_his_shoul/south/frame_007.png",
+              "Idle/animations/The_Kapre_draws_his_left_arm_back_behind_his_shoul/south/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-06T09:58:04.412626"
+}

@@ -1,0 +1,89 @@
+{
+  "group_id": "26c2b265-da26-4db1-a943-bb66aac3d181",
+  "states": [
+    {
+      "character": {
+        "id": "c8fa65bb-7c81-4eae-8c53-174c530d10ba",
+        "name": "Idle",
+        "prompt": "Strong Balete Tree Minion serving the Kapre in a colorful 2D side-view word battle game. It has a bulky body made of twisted brown bark and roots, glowing amber eyes, hanging root beard, large wooden claws, moss patches, green leaves, and glowing purple symbols carved into its body. It is stronger than the enchanted forest bat but weaker than the Kapre boss. Keep its design, colors, markings, proportions, roots, and leaves consistent in every frame. Transparent background with no text, weapons, or additional objects.\n",
+        "size": {
+          "width": 256,
+          "height": 256
+        },
+        "template_id": "mannequin",
+        "directions": 8,
+        "view": "low top-down",
+        "created_at": "2026-09-06T09:28:44.405024+00:00"
+      },
+      "folder": "Idle",
+      "frames": {
+        "rotations": {
+          "south": "Idle/rotations/south.png",
+          "south-east": "Idle/rotations/south-east.png",
+          "east": "Idle/rotations/east.png",
+          "north-east": "Idle/rotations/north-east.png",
+          "north": "Idle/rotations/north.png",
+          "north-west": "Idle/rotations/north-west.png",
+          "west": "Idle/rotations/west.png",
+          "south-west": "Idle/rotations/south-west.png"
+        },
+        "animations": {
+          "Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi": {
+            "south": [
+              "Idle/animations/Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi/south/frame_000.png",
+              "Idle/animations/Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi/south/frame_001.png",
+              "Idle/animations/Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi/south/frame_002.png",
+              "Idle/animations/Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi/south/frame_003.png",
+              "Idle/animations/Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi/south/frame_004.png",
+              "Idle/animations/Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi/south/frame_005.png",
+              "Idle/animations/Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi/south/frame_006.png",
+              "Idle/animations/Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi/south/frame_007.png",
+              "Idle/animations/Hurt_The_Balete_Tree_Minion_is_struck_by_an_invisi/south/frame_008.png"
+            ]
+          },
+          "Idle_The_Balete_Tree_Minion_slowly_breathes_while": {
+            "south": [
+              "Idle/animations/Idle_The_Balete_Tree_Minion_slowly_breathes_while/south/frame_000.png",
+              "Idle/animations/Idle_The_Balete_Tree_Minion_slowly_breathes_while/south/frame_001.png",
+              "Idle/animations/Idle_The_Balete_Tree_Minion_slowly_breathes_while/south/frame_002.png",
+              "Idle/animations/Idle_The_Balete_Tree_Minion_slowly_breathes_while/south/frame_003.png",
+              "Idle/animations/Idle_The_Balete_Tree_Minion_slowly_breathes_while/south/frame_004.png",
+              "Idle/animations/Idle_The_Balete_Tree_Minion_slowly_breathes_while/south/frame_005.png",
+              "Idle/animations/Idle_The_Balete_Tree_Minion_slowly_breathes_while/south/frame_006.png",
+              "Idle/animations/Idle_The_Balete_Tree_Minion_slowly_breathes_while/south/frame_007.png",
+              "Idle/animations/Idle_The_Balete_Tree_Minion_slowly_breathes_while/south/frame_008.png"
+            ]
+          },
+          "Death_The_Balete_Tree_Minions_purple_markings_flic": {
+            "south": [
+              "Idle/animations/Death_The_Balete_Tree_Minions_purple_markings_flic/south/frame_000.png",
+              "Idle/animations/Death_The_Balete_Tree_Minions_purple_markings_flic/south/frame_001.png",
+              "Idle/animations/Death_The_Balete_Tree_Minions_purple_markings_flic/south/frame_002.png",
+              "Idle/animations/Death_The_Balete_Tree_Minions_purple_markings_flic/south/frame_003.png",
+              "Idle/animations/Death_The_Balete_Tree_Minions_purple_markings_flic/south/frame_004.png",
+              "Idle/animations/Death_The_Balete_Tree_Minions_purple_markings_flic/south/frame_005.png",
+              "Idle/animations/Death_The_Balete_Tree_Minions_purple_markings_flic/south/frame_006.png",
+              "Idle/animations/Death_The_Balete_Tree_Minions_purple_markings_flic/south/frame_007.png",
+              "Idle/animations/Death_The_Balete_Tree_Minions_purple_markings_flic/south/frame_008.png"
+            ]
+          },
+          "Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran": {
+            "south": [
+              "Idle/animations/Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran/south/frame_000.png",
+              "Idle/animations/Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran/south/frame_001.png",
+              "Idle/animations/Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran/south/frame_002.png",
+              "Idle/animations/Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran/south/frame_003.png",
+              "Idle/animations/Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran/south/frame_004.png",
+              "Idle/animations/Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran/south/frame_005.png",
+              "Idle/animations/Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran/south/frame_006.png",
+              "Idle/animations/Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran/south/frame_007.png",
+              "Idle/animations/Attack_The_Balete_Tree_Minion_pulls_one_heavy_bran/south/frame_008.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.1",
+  "export_date": "2026-09-06T09:46:21.790324"
+}

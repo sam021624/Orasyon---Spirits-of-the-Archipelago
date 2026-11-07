@@ -1,0 +1,534 @@
+using System;
+using System.Collections;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+namespace Orasyon.Battle
+{
+    /// <summary>
+    /// Runs one chapter: a sequence of enemies ending in a boss.
+    /// Player turn: spell a valid word → walk up → attack → walk back. Enemy turn: lunge and strike.
+    /// Between enemies the player walks forward while the background scrolls and the next foe approaches.
+    /// </summary>
+    public sealed class BattleManager : MonoBehaviour
+    {
+        [Header("Chapter")]
+        [SerializeField] private string          chapterTitle = "Chapter 1: The Backyard Mound";
+        [SerializeField] private TextMeshProUGUI chapterLabel;
+        [SerializeField] private TextMeshProUGUI encounterLabel;
+
+        [Header("Player")]
+        [SerializeField] private CharacterDefinition player;
+        [SerializeField] private UIFrameAnimator     playerAnimator;
+        [SerializeField] private TextMeshProUGUI     playerNameLabel;
+        [SerializeField] private HeartBar            playerHearts;
+        [SerializeField] private TextMeshProUGUI     playerStatusLabel;
+
+        [Header("Enemies (fought in order; the last one is the boss)")]
+        [SerializeField] private CharacterDefinition[] enemies;
+        [SerializeField] private UIFrameAnimator     enemyAnimator;
+        [SerializeField] private TextMeshProUGUI     enemyNameLabel;
+        [SerializeField] private HeartBar            enemyHearts;
+        [SerializeField] private EnemyInfoPanel      enemyInfo;
+
+        [Header("Stage")]
+        [SerializeField] private ParallaxBackground background;
+        [SerializeField] private float playerHomeX    = -560f;
+        [SerializeField] private float enemyHomeX     =  560f;
+        [SerializeField] private float groundY        =   30f;
+        [SerializeField] private float meleeGap       =  230f;
+        [SerializeField] private float walkSpeed      =  850f;
+        [SerializeField] private float travelDistance = 1100f;
+        [SerializeField] private float offscreenX     = 1250f;
+
+        [Header("Board")]
+        [SerializeField] private LetterGrid  letterGrid;
+        [SerializeField] private CanvasGroup gridGroup;
+        [Tooltip("Fixed 16-letter board for the first enemy (used by the tutorial). Leave empty for random.")]
+        [SerializeField] private string      firstBoard = "WORDATESLINGBUKA";
+        [SerializeField] private int         minWordsOnBoard = 8;
+
+        [Header("Buttons")]
+        [SerializeField] private Button attackButton;
+        [SerializeField] private Button clearButton;
+        [SerializeField] private Button scrambleButton;
+        [SerializeField] private Button menuButton;
+
+        [Header("Buffs")]
+        [SerializeField] private BuffInventory buffs;
+        [SerializeField] private int           lunasHeal = 25;
+
+        [Header("Feedback")]
+        [SerializeField] private TextMeshProUGUI feedbackLabel;
+        [SerializeField] private TextMeshProUGUI damagePopupTemplate;
+
+        [Header("Result")]
+        [SerializeField] private GameObject      resultPanel;
+        [SerializeField] private TextMeshProUGUI resultTitle;
+        [SerializeField] private TextMeshProUGUI resultBody;
+        [SerializeField] private Button          retryButton;
+        [SerializeField] private Button          resultMenuButton;
+        [SerializeField] private string          mainMenuScene = "MainMenu";
+
+        /// <summary>Fired when the player commits a word (before the attack plays).</summary>
+        public event Action<string> OnPlayerAttack;
+        /// <summary>Fired when control returns to the player.</summary>
+        public event Action OnTurnFinished;
+
+        // ── Runtime ──────────────────────────────────────────────────────────
+        private readonly System.Random rng = new System.Random();
+        private int  playerHP;
+        private int  enemyHP;
+        private int  enemyIndex;
+        private bool busy;
+        private bool battleOver;
+        private int  shieldCharges;
+        private int  damageMultiplier = 1;
+        private bool gridLocked;
+        private bool actionsLocked;
+
+        private CharacterDefinition CurrentEnemy =>
+            enemies != null && enemyIndex < enemies.Length ? enemies[enemyIndex] : null;
+
+        private RectTransform PlayerRect => (RectTransform)playerAnimator.transform;
+        private RectTransform EnemyRect  => (RectTransform)enemyAnimator.transform;
+
+        // ── Setup ────────────────────────────────────────────────────────────
+        private void Start()
+        {
+            WordDictionary.EnsureLoaded();
+
+            if (chapterLabel != null) chapterLabel.text = chapterTitle;
+            if (playerNameLabel != null) playerNameLabel.text = player.displayName;
+            playerHP = player.maxHP;
+            SetupAnimator(playerAnimator, player);
+            SetX(PlayerRect, player, playerHomeX - offscreenX);
+
+            enemyIndex = 0;
+            LoadEnemy(enemyIndex);
+            SetX(EnemyRect, CurrentEnemy, enemyHomeX);
+
+            if (!string.IsNullOrEmpty(firstBoard) && firstBoard.Length >= letterGrid.Rows * letterGrid.Cols)
+                letterGrid.SetBoard(ParseBoard(firstBoard), dropIn: true);
+            else
+                NewBoard();
+
+            attackButton.onClick.AddListener(OnAttackPressed);
+            clearButton.onClick.AddListener(letterGrid.ClearSelection);
+            scrambleButton.onClick.AddListener(OnScramblePressed);
+            menuButton.onClick.AddListener(LoadMainMenu);
+            retryButton.onClick.AddListener(Retry);
+            resultMenuButton.onClick.AddListener(LoadMainMenu);
+            buffs.OnBuffUsed += UseBuff;
+            letterGrid.OnSelectionChanged += RefreshInput;
+
+            resultPanel.SetActive(false);
+            damagePopupTemplate.gameObject.SetActive(false);
+            ShowFeedback("", true);
+            RefreshHearts();
+            RefreshStatus();
+            StartCoroutine(IntroRoutine());
+        }
+
+        /// <summary>Used by the tutorial to restrict input while it explains things.</summary>
+        public void SetTutorialLocks(bool lockGrid, bool lockActions)
+        {
+            gridLocked = lockGrid;
+            actionsLocked = lockActions;
+            RefreshInput();
+        }
+
+        private IEnumerator IntroRoutine()
+        {
+            busy = true;
+            RefreshInput();
+            yield return WalkTo(playerAnimator, player, playerHomeX);
+            busy = false;
+            RefreshInput();
+        }
+
+        // ── Player actions ───────────────────────────────────────────────────
+        private bool CanAct => !busy && !battleOver && !actionsLocked && CurrentEnemy != null;
+
+        private void OnAttackPressed()
+        {
+            if (!CanAct || !letterGrid.CurrentWordIsValid) return;
+            StartCoroutine(AttackRoutine(letterGrid.ConsumeSelection()));
+        }
+
+        private void OnScramblePressed()
+        {
+            if (!CanAct) return;
+            StartCoroutine(ScrambleRoutine());
+        }
+
+        private void UseBuff(BuffType type)
+        {
+            switch (type)
+            {
+                case BuffType.Lunas:
+                    int healed = Mathf.Min(lunasHeal, player.maxHP - playerHP);
+                    playerHP += healed;
+                    playerAnimator.PlayOnce(player.cast);
+                    Popup(PlayerRect, "+" + healed, new Color(0.45f, 1f, 0.5f));
+                    ShowFeedback($"Lunas restores {healed} HP.", true);
+                    break;
+                case BuffType.AntingAnting:
+                    shieldCharges++;
+                    ShowFeedback("The Anting-Anting will block the next attack.", true);
+                    break;
+                case BuffType.Agimat:
+                    damageMultiplier = 2;
+                    ShowFeedback("The Agimat glows. Your next word deals double damage!", true);
+                    break;
+            }
+            RefreshHearts();
+            RefreshStatus();
+        }
+
+        // ── Turns ────────────────────────────────────────────────────────────
+        private IEnumerator AttackRoutine(string word)
+        {
+            busy = true;
+            RefreshInput();
+            OnPlayerAttack?.Invoke(word);
+
+            var enemy = CurrentEnemy;
+            bool weakness = IsThemeWord(enemy, word);
+            bool empowered = damageMultiplier > 1;
+            int damage = LetterScoring.Damage(word);
+            if (weakness) damage = Mathf.RoundToInt(damage * 1.5f);
+            damage *= damageMultiplier;
+            damageMultiplier = 1;
+            RefreshStatus();
+            ShowFeedback($"<b>{word}</b>!", true);
+
+            // Walk up to the enemy and strike
+            yield return WalkTo(playerAnimator, player, enemyHomeX - meleeGap);
+            float swing = playerAnimator.Duration(player.attack);
+            playerAnimator.PlayOnce(player.attack);
+            yield return new WaitForSeconds(swing * 0.55f);
+
+            enemyHP = Mathf.Max(0, enemyHP - damage);
+            RefreshHearts();
+            PlayHurt(enemyAnimator, enemy);
+            Popup(EnemyRect, "-" + damage, new Color(1f, 0.85f, 0.3f));
+
+            string msg = $"<b>{word}</b> deals {damage} damage!";
+            if (weakness)  msg += "  <color=#9CFF7A>Weakness!</color>";
+            if (empowered) msg += "  <color=#FFB347>Agimat x2!</color>";
+            var reward = buffs.AwardForWord(word.Length);
+            if (reward != null) msg += $"\n<color=#9FE2BF>You found a {reward.displayName}!</color>";
+            ShowFeedback(msg, true);
+
+            yield return new WaitForSeconds(swing * 0.45f);
+            yield return WalkTo(playerAnimator, player, playerHomeX);
+
+            // Enemy defeated → next encounter (or victory)
+            if (enemyHP <= 0)
+            {
+                yield return DefeatRoutine(enemyAnimator, enemy, fadeOut: true);
+                enemyIndex++;
+                if (CurrentEnemy == null)
+                {
+                    battleOver = true;
+                    RefreshInput();
+                    ShowResult(victory: true);
+                    yield break;
+                }
+                yield return TravelRoutine();
+                FinishTurn();
+                yield break;
+            }
+
+            yield return new WaitForSeconds(0.25f);
+            yield return EnemyTurnRoutine(enemy);
+            if (CheckPlayerDefeat()) yield break;
+            FinishTurn();
+        }
+
+        private IEnumerator ScrambleRoutine()
+        {
+            busy = true;
+            RefreshInput();
+            letterGrid.Scramble(minWordsOnBoard);
+            ShowFeedback($"You shuffle the letters... the {CurrentEnemy.displayName} takes its chance!", false);
+            yield return new WaitForSeconds(0.6f);
+            yield return EnemyTurnRoutine(CurrentEnemy);
+            if (CheckPlayerDefeat()) yield break;
+            FinishTurn();
+        }
+
+        private IEnumerator EnemyTurnRoutine(CharacterDefinition enemy)
+        {
+            float home = EnemyRect.anchoredPosition.x;
+            yield return MoveX(EnemyRect, home - 140f, 0.15f);
+
+            float strike = enemyAnimator.Duration(enemy.attack);
+            enemyAnimator.PlayOnce(enemy.attack);
+            yield return new WaitForSeconds(strike * 0.6f);
+
+            if (shieldCharges > 0)
+            {
+                shieldCharges--;
+                Popup(PlayerRect, "Blocked!", new Color(0.55f, 0.8f, 1f));
+                ShowFeedback($"The Anting-Anting blocks {enemy.attackName}!", true);
+            }
+            else
+            {
+                playerHP = Mathf.Max(0, playerHP - enemy.attackDamage);
+                PlayHurt(playerAnimator, player);
+                Popup(PlayerRect, "-" + enemy.attackDamage, new Color(1f, 0.4f, 0.35f));
+                ShowFeedback($"The {enemy.displayName} uses {enemy.attackName}! -{enemy.attackDamage} HP", false);
+            }
+            RefreshHearts();
+            RefreshStatus();
+
+            yield return new WaitForSeconds(strike * 0.4f);
+            yield return MoveX(EnemyRect, home, 0.2f);
+        }
+
+        /// <summary>Player walks forward while the background scrolls and the next enemy approaches.</summary>
+        private IEnumerator TravelRoutine()
+        {
+            LoadEnemy(enemyIndex);
+            var next = CurrentEnemy;
+            SetX(EnemyRect, next, enemyHomeX + travelDistance);
+            ShowFeedback("", true);
+
+            if (player.walk != null && player.walk.Length > 0) playerAnimator.PlayLoop(player.walk);
+            float remaining = travelDistance;
+            while (remaining > 0f)
+            {
+                float step = Mathf.Min(remaining, walkSpeed * 0.8f * Time.deltaTime);
+                remaining -= step;
+                if (background != null) background.Scroll(step);
+                var p = EnemyRect.anchoredPosition;
+                EnemyRect.anchoredPosition = new Vector2(p.x - step, p.y);
+                yield return null;
+            }
+            playerAnimator.ReturnToIdle();
+
+            ShowFeedback(next.isBoss
+                ? $"<color=#FF6B6B>BOSS!</color>  The {next.displayName} blocks your path!"
+                : $"A {next.displayName} appears!", next.isBoss ? false : true);
+            NewBoard();
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        private bool CheckPlayerDefeat()
+        {
+            if (playerHP > 0) return false;
+            battleOver = true;
+            RefreshInput();
+            StartCoroutine(PlayerDefeatRoutine());
+            return true;
+        }
+
+        private IEnumerator PlayerDefeatRoutine()
+        {
+            yield return DefeatRoutine(playerAnimator, player, fadeOut: false);
+            ShowResult(victory: false);
+        }
+
+        private IEnumerator DefeatRoutine(UIFrameAnimator anim, CharacterDefinition def, bool fadeOut)
+        {
+            if (def.death != null && def.death.Length > 0)
+            {
+                anim.PlayOnce(def.death, holdLast: true);
+                yield return new WaitForSeconds(anim.Duration(def.death) + 0.3f);
+            }
+            if (fadeOut) yield return anim.FadeTo(0f, 0.4f);
+        }
+
+        private void FinishTurn()
+        {
+            busy = false;
+            RefreshInput();
+            OnTurnFinished?.Invoke();
+        }
+
+        // ── Movement ─────────────────────────────────────────────────────────
+        private IEnumerator WalkTo(UIFrameAnimator anim, CharacterDefinition def, float targetX)
+        {
+            var rt = (RectTransform)anim.transform;
+            float dir = Mathf.Sign(targetX - rt.anchoredPosition.x);
+            rt.localScale = new Vector3(dir < 0 ? -1f : 1f, 1f, 1f);
+            if (def.walk != null && def.walk.Length > 0) anim.PlayLoop(def.walk);
+
+            while (Mathf.Abs(rt.anchoredPosition.x - targetX) > 0.5f)
+            {
+                float x = Mathf.MoveTowards(rt.anchoredPosition.x, targetX, walkSpeed * Time.deltaTime);
+                rt.anchoredPosition = new Vector2(x, rt.anchoredPosition.y);
+                yield return null;
+            }
+
+            rt.localScale = Vector3.one;
+            anim.ReturnToIdle();
+        }
+
+        private static IEnumerator MoveX(RectTransform rt, float targetX, float duration)
+        {
+            float startX = rt.anchoredPosition.x;
+            for (float t = 0f; t < 1f; t += Time.deltaTime / duration)
+            {
+                rt.anchoredPosition = new Vector2(Mathf.Lerp(startX, targetX, t), rt.anchoredPosition.y);
+                yield return null;
+            }
+            rt.anchoredPosition = new Vector2(targetX, rt.anchoredPosition.y);
+        }
+
+        private void SetX(RectTransform rt, CharacterDefinition def, float x)
+        {
+            rt.anchoredPosition = new Vector2(x, groundY + (def != null ? def.hoverHeight : 0f));
+        }
+
+        // ── Enemies / board ──────────────────────────────────────────────────
+        private void LoadEnemy(int index)
+        {
+            var enemy = CurrentEnemy;
+            if (enemy == null) return;
+
+            enemyHP = enemy.maxHP;
+            if (enemyNameLabel != null)
+                enemyNameLabel.text = enemy.isBoss ? $"<color=#FF6B6B>BOSS</color>  {enemy.displayName}" : enemy.displayName;
+            if (encounterLabel != null)
+                encounterLabel.text = enemy.isBoss ? "Boss Battle" : $"Encounter {index + 1} of {enemies.Length}";
+            if (enemyInfo != null) enemyInfo.Show(enemy);
+            SetupAnimator(enemyAnimator, enemy);
+            RefreshHearts();
+        }
+
+        private void NewBoard()
+        {
+            string plant = null;
+            var enemy = CurrentEnemy;
+            if (enemy != null && enemy.themeWords != null && enemy.themeWords.Length > 0)
+            {
+                string pick = enemy.themeWords[rng.Next(enemy.themeWords.Length)].ToUpperInvariant();
+                if (pick.Length <= letterGrid.Rows * letterGrid.Cols && WordDictionary.IsWord(pick)) plant = pick;
+            }
+            letterGrid.GenerateBoard(plant, minWordsOnBoard, dropIn: true);
+        }
+
+        private char[,] ParseBoard(string letters)
+        {
+            var board = new char[letterGrid.Rows, letterGrid.Cols];
+            string src = letters.ToUpperInvariant().Replace(" ", "");
+            for (int i = 0; i < letterGrid.Rows * letterGrid.Cols; i++)
+                board[i / letterGrid.Cols, i % letterGrid.Cols] = src[i];
+            return board;
+        }
+
+        private static bool IsThemeWord(CharacterDefinition enemy, string word)
+        {
+            if (enemy?.themeWords == null) return false;
+            foreach (var w in enemy.themeWords)
+                if (string.Equals(w, word, StringComparison.OrdinalIgnoreCase)) return true;
+            return false;
+        }
+
+        private static void SetupAnimator(UIFrameAnimator anim, CharacterDefinition def)
+        {
+            if (anim == null || def == null) return;
+            anim.FramesPerSecond = def.framesPerSecond;
+            var rt = (RectTransform)anim.transform;
+            rt.sizeDelta = new Vector2(def.spriteSize, def.spriteSize);
+            rt.localScale = Vector3.one;
+            anim.SetAlpha(1f);
+            anim.SetIdle(def.idle);
+        }
+
+        private static void PlayHurt(UIFrameAnimator anim, CharacterDefinition def)
+        {
+            if (def.hurt != null && def.hurt.Length > 0) anim.PlayOnce(def.hurt);
+            anim.Flash(new Color(1f, 0.55f, 0.55f), 0.15f);
+        }
+
+        // ── UI ───────────────────────────────────────────────────────────────
+        private void RefreshInput()
+        {
+            bool canAct = !busy && !battleOver;
+            if (gridGroup != null)
+            {
+                bool grid = canAct && !gridLocked;
+                gridGroup.interactable = grid;
+                gridGroup.blocksRaycasts = grid;
+            }
+            if (attackButton != null)   attackButton.interactable   = canAct && !actionsLocked && letterGrid.CurrentWordIsValid;
+            if (scrambleButton != null) scrambleButton.interactable = canAct && !actionsLocked;
+            if (clearButton != null)    clearButton.interactable    = canAct && !gridLocked;
+            if (buffs != null)          buffs.Interactable          = canAct && !actionsLocked;
+        }
+
+        private void RefreshHearts()
+        {
+            if (playerHearts != null) playerHearts.Set(playerHP, player.maxHP);
+            var enemy = CurrentEnemy;
+            if (enemyHearts != null && enemy != null) enemyHearts.Set(enemyHP, enemy.maxHP);
+        }
+
+        private void RefreshStatus()
+        {
+            if (playerStatusLabel == null) return;
+            string s = "";
+            if (shieldCharges > 0)     s += $"<color=#8CC8FF>Anting-Anting x{shieldCharges}</color>   ";
+            if (damageMultiplier > 1)  s += "<color=#FFB347>Agimat: next word x2</color>";
+            playerStatusLabel.text = s;
+        }
+
+        private void ShowFeedback(string msg, bool good)
+        {
+            if (feedbackLabel == null) return;
+            feedbackLabel.color = good ? new Color(0.98f, 0.90f, 0.45f) : new Color(1f, 0.55f, 0.5f);
+            feedbackLabel.text = msg;
+        }
+
+        private void Popup(RectTransform target, string text, Color color)
+        {
+            if (damagePopupTemplate == null) return;
+            var popup = Instantiate(damagePopupTemplate, damagePopupTemplate.transform.parent);
+            popup.gameObject.SetActive(true);
+            popup.text = text;
+            popup.color = color;
+            var rt = (RectTransform)popup.transform;
+            rt.anchoredPosition = target.anchoredPosition + new Vector2(0f, target.sizeDelta.y * 0.85f);
+            StartCoroutine(PopupRoutine(popup));
+        }
+
+        private static IEnumerator PopupRoutine(TextMeshProUGUI popup)
+        {
+            var rt = (RectTransform)popup.transform;
+            Vector2 start = rt.anchoredPosition;
+            Color c = popup.color;
+            for (float t = 0f; t < 1f; t += Time.deltaTime / 0.9f)
+            {
+                rt.anchoredPosition = start + new Vector2(0f, 70f * t);
+                c.a = 1f - t * t;
+                popup.color = c;
+                yield return null;
+            }
+            Destroy(popup.gameObject);
+        }
+
+        private void ShowResult(bool victory)
+        {
+            resultPanel.SetActive(true);
+            if (victory)
+            {
+                resultTitle.text = "Chapter Complete!";
+                resultBody.text  = $"The {enemies[enemies.Length - 1].displayName} retreats into his mound.\nThe backyard is safe again.";
+            }
+            else
+            {
+                resultTitle.text = "Defeated";
+                resultBody.text  = "Your orasyon falters... but the book is still in your hands.";
+            }
+        }
+
+        private void LoadMainMenu() => SceneManager.LoadScene(mainMenuScene);
+        private void Retry() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+}
