@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: 05_DuwendeMinion
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Duwende Minion
+  isBoss: 0
+  maxHP: 30
+  attackDamage: 3
+  attackName: Club Bonk
+  description: A loyal servant of the Duwende King, still sore about his master's
+    defeat. He followed you into the forest looking for revenge, and for the club
+    he keeps dropping.
+  themeWords:
+  - CLUB
+  - ELF
+  - IMP
+  - BEARD
+  - MOUND
+  spriteSize: 280
+  hoverHeight: 0
+  framesPerSecond: 10
+  idle:
+  - {fileID: 2800000, guid: 34bde1a7efe525f43b50427a0d301373, type: 3}
+  - {fileID: 2800000, guid: a53294145c73834429e8fa7d8ea31351, type: 3}
+  - {fileID: 2800000, guid: 83b9d7d7c78853946b8866582b0abc9a, type: 3}
+  - {fileID: 2800000, guid: d0e2d6ad76b73b14bae9b82dccc30c73, type: 3}
+  - {fileID: 2800000, guid: baf43a5aecab2924fa45bd7344edfac7, type: 3}
+  - {fileID: 2800000, guid: 94282a5f1db0367459196d850a605299, type: 3}
+  - {fileID: 2800000, guid: eeb16f1f63038344e9156bd2bbb367c7, type: 3}
+  - {fileID: 2800000, guid: 5326c1d466001eb459ef28f7d70b9c02, type: 3}
+  - {fileID: 2800000, guid: e8b6983381e72d144b30fd9326266a43, type: 3}
+  walk: []
+  attack:
+  - {fileID: 2800000, guid: 29bfe758ece031647a25a443d9b68cc1, type: 3}
+  - {fileID: 2800000, guid: 678939bf32046de4aafb5379a3fffcf7, type: 3}
+  - {fileID: 2800000, guid: c9f433428cf2e414e8286f45c2e93f67, type: 3}
+  - {fileID: 2800000, guid: 5274ca0ccd4d16e40897ad27e973b1c8, type: 3}
+  - {fileID: 2800000, guid: 7cc81cea987cfd1419705968ba4aeeec, type: 3}
+  - {fileID: 2800000, guid: 1f01dd85d654f134fb2e0e4c975c4957, type: 3}
+  - {fileID: 2800000, guid: acb0ff71f8483734195dc21140e06fe1, type: 3}
+  - {fileID: 2800000, guid: 5a86b73feab672948bb8b5efdd39598a, type: 3}
+  - {fileID: 2800000, guid: 4ccafa778ca2b924793bdb1910d544ec, type: 3}
+  cast: []
+  hurt:
+  - {fileID: 2800000, guid: e41823bd3adc2a84ea34ebeed85af2f9, type: 3}
+  - {fileID: 2800000, guid: 3820c14efcb653742beaa1ee11ba90d8, type: 3}
+  - {fileID: 2800000, guid: 6aaa78ec50b28c44e9940e452529fd2d, type: 3}
+  - {fileID: 2800000, guid: f6b33fd900e9b0447958f05f392ad40b, type: 3}
+  - {fileID: 2800000, guid: b80b58db0da61754bb7f93f26e54c335, type: 3}
+  - {fileID: 2800000, guid: af3d458f91151524d96042655bfaaa4a, type: 3}
+  - {fileID: 2800000, guid: 78df2f8730d436e45a420df035997e9e, type: 3}
+  - {fileID: 2800000, guid: fe9ed836cb638f849aede20e97c59fbf, type: 3}
+  - {fileID: 2800000, guid: 71b54cc87fea7ce468093ed64093eba3, type: 3}
+  death:
+  - {fileID: 2800000, guid: ae4be63d4fb158645a7730db84ccfe9d, type: 3}
+  - {fileID: 2800000, guid: c166f309cfd540f4690f5baceb9f09f6, type: 3}
+  - {fileID: 2800000, guid: 2c6b2a536f7a9b643b03bdf2a6798f40, type: 3}
+  - {fileID: 2800000, guid: 647271f29566c1e4d983a994a3fc3b20, type: 3}
+  - {fileID: 2800000, guid: e566c5fab8334254588510562e01a076, type: 3}
+  - {fileID: 2800000, guid: 65351a9280057c4458559961bfebb1db, type: 3}
+  - {fileID: 2800000, guid: cbe984c53d702684eae0127da70a90f8, type: 3}
+  - {fileID: 2800000, guid: d02d0b60f0acb0a48b0f081c42b30e28, type: 3}
+  - {fileID: 2800000, guid: 5459f0c9295a99c43b1c55a61fcb8201, type: 3}

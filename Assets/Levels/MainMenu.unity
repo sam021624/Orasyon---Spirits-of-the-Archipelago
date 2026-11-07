@@ -4542,7 +4542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd913cfb8ca2baf48a5c879ca6327e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Orasyon.UI.MainMenuController
-  firstSceneName: Level1
+  firstSceneName: Story
   titleGroup: {fileID: 1679568368}
   menuGroup: {fileID: 1353158151}
   fadeGroup: {fileID: 1253137419}

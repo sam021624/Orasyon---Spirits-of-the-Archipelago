@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: 04_EnchantedMushroom
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Enchanted Mushroom
+  isBoss: 0
+  maxHP: 30
+  attackDamage: 2
+  attackName: Spore Burst
+  description: Glowing mushrooms sprout wherever the Kapre's smoke settles. Breathe
+    too deeply near one and you wake up hours later, wondering where the path went.
+  themeWords:
+  - SPORE
+  - MOSS
+  - DEW
+  - CAP
+  - GLOW
+  spriteSize: 260
+  hoverHeight: 0
+  framesPerSecond: 10
+  idle:
+  - {fileID: 2800000, guid: adcf025cc47793a43b021eb58e132e22, type: 3}
+  walk: []
+  attack:
+  - {fileID: 2800000, guid: 3d01d29003ee0ac458d464449275b8a4, type: 3}
+  - {fileID: 2800000, guid: d9b1b7944cbca93408b7009440b0549a, type: 3}
+  - {fileID: 2800000, guid: 2dfde6a0c8dc96a42b1a2446e3fcd555, type: 3}
+  - {fileID: 2800000, guid: 4c73ddc0555a7d24bab1e93d0904dfab, type: 3}
+  - {fileID: 2800000, guid: ca263dc46955b9b41ba815168edb4ef5, type: 3}
+  - {fileID: 2800000, guid: 20ca0873aa786594dba6e6c6ba3bd6d1, type: 3}
+  - {fileID: 2800000, guid: 5a442a3cddecbfa49985b7ebc1122bb0, type: 3}
+  - {fileID: 2800000, guid: 468d37454c3df5a40be31ab01764f8c4, type: 3}
+  - {fileID: 2800000, guid: 9fa6e867270fd1a46bc17eb55334444b, type: 3}
+  cast: []
+  hurt: []
+  death: []

@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde939564cab4924aa400c211a29d387, type: 3}
+  m_Name: Interlude_Chapter1
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Story.StoryScript
+  title: Chapter 1 Complete
+  subtitle: Voices in the Pages
+  background: {fileID: 2800000, guid: ee93e8cf3145f834c9b770fa902c85e0, type: 3}
+  lines:
+  - speaker: 0
+    text: The mound is quiet. Somewhere far away, the pages of the Book of Orasyon
+      begin to rustle.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 1
+    text: Lola? Lola, can you hear me? The Duwende King is gone. He went back into
+      his mound!
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 2
+    text: I heard every word, apo. You were strong, and you were respectful. That
+      is how an albularyo wins.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 1
+    text: So it's over? I can come home now?
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 2
+    text: Not yet. The duwende were only the first to stir. Listen... do you hear
+      the leaves?
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 1
+    text: Something big is moving in the trees. And I smell... smoke? Like a cigar?
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 2
+    text: The Kapre. He sits in the oldest balete, and his smoke can hide even the
+      clearest path.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 2
+    text: Speak clearly, apo. Your words must cut through the smoke.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 1
+    text: Then I'll find him. Book of Orasyon, take me to the old balete!
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 0
+    text: The pages turn on their own, and the world turns with them.
+    flash: 1
+    changeBackground: {fileID: 2800000, guid: 94755aca10b64c14a84f75766027ec33, type: 3}
+    lolaOnStage: 0
+  nextScene: Level2

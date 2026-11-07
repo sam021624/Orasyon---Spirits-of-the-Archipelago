@@ -72,6 +72,12 @@ namespace Orasyon.Battle
         [SerializeField] private Button          resultMenuButton;
         [SerializeField] private string          mainMenuScene = "MainMenu";
 
+        [Header("Story")]
+        [Tooltip("Dialogue played after the chapter is won (it then loads the next chapter). Empty = Play Again.")]
+        [SerializeField] private Orasyon.Story.StoryScript nextStory;
+        [TextArea(2, 3)]
+        [SerializeField] private string victoryMessage = "The way ahead is clear.";
+
         /// <summary>Fired when the player commits a word (before the attack plays).</summary>
         public event Action<string> OnPlayerAttack;
         /// <summary>Fired when control returns to the player.</summary>
@@ -530,20 +536,32 @@ namespace Orasyon.Battle
 
         private void ShowResult(bool victory)
         {
+            won = victory;
             resultPanel.SetActive(true);
+            var retryLabel = retryButton.GetComponentInChildren<TextMeshProUGUI>();
             if (victory)
             {
                 resultTitle.text = "Chapter Complete!";
-                resultBody.text  = $"The {enemies[enemies.Length - 1].displayName} retreats into his mound.\nThe backyard is safe again.";
+                resultBody.text  = victoryMessage;
+                if (retryLabel != null) retryLabel.text = nextStory != null ? "CONTINUE" : "PLAY AGAIN";
             }
             else
             {
                 resultTitle.text = "Defeated";
                 resultBody.text  = "Your orasyon falters... but the book is still in your hands.";
+                if (retryLabel != null) retryLabel.text = "TRY AGAIN";
             }
         }
 
+        private bool won;
+
         private void LoadMainMenu() => SceneManager.LoadScene(mainMenuScene);
-        private void Retry() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        /// <summary>After a win with a follow-up story: continue the adventure. Otherwise replay this chapter.</summary>
+        private void Retry()
+        {
+            if (won && nextStory != null) Orasyon.Story.StoryRouter.Play(nextStory);
+            else SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }

@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: 06_Kapre
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Kapre
+  isBoss: 1
+  maxHP: 50
+  attackDamage: 5
+  attackName: Smoke Slam
+  description: A towering spirit who sits in the oldest balete, smoking a cigar that
+    never burns out. He is not cruel, only proud, and he has no patience for visitors
+    who forget their manners.
+  themeWords:
+  - SMOKE
+  - CIGAR
+  - GIANT
+  - BALETE
+  - ASH
+  spriteSize: 430
+  hoverHeight: 0
+  framesPerSecond: 10
+  idle:
+  - {fileID: 2800000, guid: 0645031885d8c1645a615b87d7fc5d7e, type: 3}
+  - {fileID: 2800000, guid: 2b64d2f4a46c2ec4db6a611ac3e86518, type: 3}
+  - {fileID: 2800000, guid: 20bf01b0ce16dc04a824cfb869e610aa, type: 3}
+  - {fileID: 2800000, guid: 51a75946ef447804fbe3b37d45c4f8d9, type: 3}
+  - {fileID: 2800000, guid: 892376c333fd8ce43846af92ecf83a05, type: 3}
+  - {fileID: 2800000, guid: 0f2470fcd128ac546932ae2d77cd3e69, type: 3}
+  - {fileID: 2800000, guid: f1e829cf695e0094fb654a4b16268090, type: 3}
+  - {fileID: 2800000, guid: ceb87cab656ee874a82c6b085c09324d, type: 3}
+  - {fileID: 2800000, guid: b774b692d45a6784b8510c4b0ffe8f37, type: 3}
+  walk: []
+  attack:
+  - {fileID: 2800000, guid: e0d67301853d1524d8b01bc47fd51cd3, type: 3}
+  - {fileID: 2800000, guid: 92e3525058599ef4c9afd4da899c1552, type: 3}
+  - {fileID: 2800000, guid: 68e99f07ce635ba43a0c3511850ac4ca, type: 3}
+  - {fileID: 2800000, guid: 23ace76bd4ad85c46a5fe11f010a76a6, type: 3}
+  - {fileID: 2800000, guid: 1f86c11e16f4768419494b184f4aa07f, type: 3}
+  - {fileID: 2800000, guid: 7ca1ab8b9fbf507459117a86e4193015, type: 3}
+  - {fileID: 2800000, guid: af336c148752a1d4f82b6058090bb020, type: 3}
+  - {fileID: 2800000, guid: 01edd60a7348f014fac1499a1c52b320, type: 3}
+  - {fileID: 2800000, guid: 894d8ceb79984cf40af222b890cbc454, type: 3}
+  cast: []
+  hurt:
+  - {fileID: 2800000, guid: 50a321abf10eaa94ebffbecbf5abe520, type: 3}
+  - {fileID: 2800000, guid: d15e0f950847c5746a7caef6e1002b75, type: 3}
+  - {fileID: 2800000, guid: 638b21bf3c202724bb3660eb71fdc2c1, type: 3}
+  - {fileID: 2800000, guid: ce83f272af3563843801913717c6ba66, type: 3}
+  - {fileID: 2800000, guid: 97d13ecf1300faf4984c547c35bef5b8, type: 3}
+  - {fileID: 2800000, guid: 84ab10b7b200d5c468f920acd35d97e8, type: 3}
+  - {fileID: 2800000, guid: 6afc85f8122e96c41b4f776c3c463b2e, type: 3}
+  - {fileID: 2800000, guid: c14cfdd7a5640404eb4dea911f6d6a94, type: 3}
+  - {fileID: 2800000, guid: d9cfbf8ee691c264793cc3b3e0c4a114, type: 3}
+  death:
+  - {fileID: 2800000, guid: d145be2162e3731419d25747f8389095, type: 3}
+  - {fileID: 2800000, guid: d9dfa1099665ed44285b1dd32b664637, type: 3}
+  - {fileID: 2800000, guid: 933a245b868356348ab41df82674d879, type: 3}
+  - {fileID: 2800000, guid: 3e0f920de2a7c5947b396977c7591a31, type: 3}
+  - {fileID: 2800000, guid: 7fc2be80ea1648242bf58632271636da, type: 3}
+  - {fileID: 2800000, guid: a224b60e570c53b48abaaf595c8f1faf, type: 3}
+  - {fileID: 2800000, guid: 45fbb0dc2c6abea4ea9e885f2c82a574, type: 3}
+  - {fileID: 2800000, guid: d54b826ac4cc9e04a92597d78b5b9570, type: 3}
+  - {fileID: 2800000, guid: e39f85b5d02b21a49b10d5c1b7febb4b, type: 3}

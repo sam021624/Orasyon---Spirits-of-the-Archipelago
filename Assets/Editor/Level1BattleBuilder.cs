@@ -19,12 +19,48 @@ namespace Orasyon.EditorTools
     /// </summary>
     public static class Level1BattleBuilder
     {
-        private const string ScenePath      = "Assets/Levels/Level1.unity";
         private const string TilePrefabPath = "Assets/Resources/TilePrefab.prefab";
         private const string DataFolder     = "Assets/Data/Characters/";
         private const string CharFolder     = "Assets/Sprites/Characters/";
-        private const string BackgroundPack = "Assets/Sprites/Terrains/1";
+        private const string StoryFolder    = "Assets/Data/Story/";
         private const string HeartSprite    = "Assets/Sprites/Icons/Hearts/PNG/basic/heart.png";
+
+        /// <summary>Everything that differs between chapters.</summary>
+        private sealed class ChapterSpec
+        {
+            public string   scenePath;
+            public string   chapterTitle;
+            public string   backgroundPack;
+            public string[] enemyAssets;      // fought in order, last = boss
+            public bool     tutorial;
+            public string   firstBoard;       // fixed first board (tutorial) or "" for random
+            public string   nextStoryAsset;   // dialogue after the boss, or null
+            public string   victoryMessage;
+        }
+
+        private static readonly ChapterSpec Chapter1 = new ChapterSpec
+        {
+            scenePath      = "Assets/Levels/Level1.unity",
+            chapterTitle   = "Chapter 1: The Backyard Mound",
+            backgroundPack = "Assets/Sprites/Terrains/1",
+            enemyAssets    = new[] { "01_ForestBat", "02_BaleteTreeMinion", "03_DuwendeKing" },
+            tutorial       = true,
+            firstBoard     = "WORDATESLINGBUKA",
+            nextStoryAsset = "Interlude_Chapter1",
+            victoryMessage = "The Duwende King retreats into his mound.\nThe backyard is quiet again.",
+        };
+
+        private static readonly ChapterSpec Chapter2 = new ChapterSpec
+        {
+            scenePath      = "Assets/Levels/Level2.unity",
+            chapterTitle   = "Chapter 2: The Old Balete",
+            backgroundPack = "Assets/Sprites/Terrains/6",
+            enemyAssets    = new[] { "04_EnchantedMushroom", "05_DuwendeMinion", "06_Kapre" },
+            tutorial       = false,
+            firstBoard     = "",
+            nextStoryAsset = null,
+            victoryMessage = "The Kapre's smoke drifts away from the old balete.\nHe nods, impressed, and lets you pass.",
+        };
 
         private static readonly Color Wood      = new Color(0.16f, 0.10f, 0.06f, 1f);
         private static readonly Color WoodLight = new Color(0.25f, 0.15f, 0.09f, 1f);
@@ -37,16 +73,22 @@ namespace Orasyon.EditorTools
         private static Sprite roundedSprite, panelSprite, circleSprite;
 
         [MenuItem("Tools/Orasyon/Rebuild Level 1 Battle UI")]
-        public static void Build()
+        public static void Build() => BuildChapter(Chapter1);
+
+        [MenuItem("Tools/Orasyon/Rebuild Level 2 Battle UI")]
+        public static void BuildLevel2() => BuildChapter(Chapter2);
+
+        private static void BuildChapter(ChapterSpec spec)
         {
             roundedSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
             panelSprite   = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
             circleSprite  = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
 
             UpdateCharacterData();
+            SetPointFilter(spec.backgroundPack);
             var tilePrefab = BuildTilePrefab();
 
-            var scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Single);
+            var scene = EditorSceneManager.OpenScene(spec.scenePath, OpenSceneMode.Single);
             foreach (var root in scene.GetRootGameObjects())
                 if (root.name == "BattleCanvas") Object.DestroyImmediate(root);
             EnsureEventSystem(scene);
@@ -61,9 +103,8 @@ namespace Orasyon.EditorTools
             var canvas = canvasGo.transform;
 
             var albularyo = Load<CharacterDefinition>(DataFolder + "Albularyo.asset");
-            var bat       = Load<CharacterDefinition>(DataFolder + "01_ForestBat.asset");
-            var tree      = Load<CharacterDefinition>(DataFolder + "02_BaleteTreeMinion.asset");
-            var king      = Load<CharacterDefinition>(DataFolder + "03_DuwendeKing.asset");
+            var foes = spec.enemyAssets.Select(n => Load<CharacterDefinition>(DataFolder + n + ".asset")).ToArray();
+            var bat = foes[0];   // first foe: shown in the scene before play starts
 
             // ── Stage (top 560px) ────────────────────────────────────────────
             var stage = Node("Stage", canvas);
@@ -71,7 +112,7 @@ namespace Orasyon.EditorTools
             stage.gameObject.AddComponent<Image>().color = new Color(0.09f, 0.13f, 0.10f);
             stage.gameObject.AddComponent<RectMask2D>();
 
-            var parallax = BuildBackground(stage);
+            var parallax = BuildBackground(stage, spec.backgroundPack);
 
             var characters = Node("Characters", stage);
             Stretch(characters);
@@ -128,9 +169,9 @@ namespace Orasyon.EditorTools
             var plaque = Panel("ChapterPlaque", topBar.transform, Wood, panelSprite);
             Anchor(plaque.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -6), new Vector2(640, 76));
             AddOutline(plaque.gameObject, Gold, 2);
-            var chapter = Text("ChapterTitle", plaque.transform, "Chapter 1: The Backyard Mound", 28, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
+            var chapter = Text("ChapterTitle", plaque.transform, spec.chapterTitle, 28, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
             Anchor(chapter.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -6), new Vector2(620, 38));
-            var encounter = Text("Encounter", plaque.transform, "Encounter 1 of 3", 18, Cream, TextAlignmentOptions.Center);
+            var encounter = Text("Encounter", plaque.transform, $"Encounter 1 of {foes.Length}", 18, Cream, TextAlignmentOptions.Center);
             Anchor(encounter.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -44), new Vector2(620, 26));
 
             // ── Bottom (520px) ───────────────────────────────────────────────
@@ -277,10 +318,13 @@ namespace Orasyon.EditorTools
             Set(m, "playerHearts", playerHearts);
             Set(m, "playerStatusLabel", status);
             var enemies = m.FindProperty("enemies");
-            enemies.arraySize = 3;
-            enemies.GetArrayElementAtIndex(0).objectReferenceValue = bat;
-            enemies.GetArrayElementAtIndex(1).objectReferenceValue = tree;
-            enemies.GetArrayElementAtIndex(2).objectReferenceValue = king;
+            enemies.arraySize = foes.Length;
+            for (int i = 0; i < foes.Length; i++) enemies.GetArrayElementAtIndex(i).objectReferenceValue = foes[i];
+            m.FindProperty("chapterTitle").stringValue = spec.chapterTitle;
+            m.FindProperty("firstBoard").stringValue = spec.firstBoard;
+            m.FindProperty("victoryMessage").stringValue = spec.victoryMessage;
+            if (!string.IsNullOrEmpty(spec.nextStoryAsset))
+                Set(m, "nextStory", Load<Orasyon.Story.StoryScript>(StoryFolder + spec.nextStoryAsset + ".asset"));
             Set(m, "enemyAnimator", enemyAnim);
             Set(m, "enemyNameLabel", enemyName);
             Set(m, "enemyHearts", enemyHearts);
@@ -302,30 +346,37 @@ namespace Orasyon.EditorTools
             Set(m, "resultMenuButton", resultMenu);
             m.ApplyModifiedPropertiesWithoutUndo();
 
-            // ── Tutorial manager ─────────────────────────────────────────────
-            var tutorial = managers.gameObject.AddComponent<TutorialManager>();
-            var t = new SerializedObject(tutorial);
-            Set(t, "tutorialPanel", tutPanel.gameObject);
-            Set(t, "titleText", tutTitle);
-            Set(t, "bodyText", tutBody);
-            Set(t, "nextButton", tutNext);
-            Set(t, "nextButtonLabel", tutNext.GetComponentInChildren<TextMeshProUGUI>());
-            Set(t, "battle", battle);
-            Set(t, "letterGrid", grid);
-            Set(t, "bottomGroup", bottomGroup);
-            t.FindProperty("sampleWord").stringValue = "WORD";
-            var positions = t.FindProperty("sampleWordPositions");
-            positions.arraySize = 4;
-            for (int i = 0; i < 4; i++) positions.GetArrayElementAtIndex(i).vector2IntValue = new Vector2Int(0, i);
-            t.ApplyModifiedPropertiesWithoutUndo();
+            // ── Tutorial manager (first chapter only) ────────────────────────
+            if (spec.tutorial)
+            {
+                var tutorial = managers.gameObject.AddComponent<TutorialManager>();
+                var t = new SerializedObject(tutorial);
+                Set(t, "tutorialPanel", tutPanel.gameObject);
+                Set(t, "titleText", tutTitle);
+                Set(t, "bodyText", tutBody);
+                Set(t, "nextButton", tutNext);
+                Set(t, "nextButtonLabel", tutNext.GetComponentInChildren<TextMeshProUGUI>());
+                Set(t, "battle", battle);
+                Set(t, "letterGrid", grid);
+                Set(t, "bottomGroup", bottomGroup);
+                t.FindProperty("sampleWord").stringValue = "WORD";
+                var positions = t.FindProperty("sampleWordPositions");
+                positions.arraySize = 4;
+                for (int i = 0; i < 4; i++) positions.GetArrayElementAtIndex(i).vector2IntValue = new Vector2Int(0, i);
+                t.ApplyModifiedPropertiesWithoutUndo();
+                tutPanel.transform.SetAsLastSibling();
+            }
+            else
+            {
+                Object.DestroyImmediate(tutPanel.gameObject);
+            }
 
             result.gameObject.SetActive(false);
-            tutPanel.transform.SetAsLastSibling();
             result.transform.SetAsLastSibling();
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
-            Debug.Log("[Orasyon] Level 1 battle UI rebuilt.");
+            Debug.Log($"[Orasyon] {spec.chapterTitle} battle UI rebuilt in {spec.scenePath}.");
         }
 
         // ── Character data ───────────────────────────────────────────────────
@@ -361,14 +412,79 @@ namespace Orasyon.EditorTools
                                "and his mischief will follow you for days. Today, he is not in a forgiving mood.";
             EditorUtility.SetDirty(king);
 
+            // ── Chapter 2 (created from the sprite folders the first time) ──
+            var mushroom = Creature("04_EnchantedMushroom", "Enchanted Mushroom 1st Enemy", "Enchanted Mushroom",
+                idle: null, attack: "Attack", hurt: null, death: null);
+            mushroom.attackName = "Spore Burst";
+            mushroom.themeWords = new[] { "SPORE", "MOSS", "DEW", "CAP", "GLOW" };
+            mushroom.spriteSize = 260f;
+            mushroom.description = "Glowing mushrooms sprout wherever the Kapre's smoke settles. " +
+                                   "Breathe too deeply near one and you wake up hours later, wondering where the path went.";
+            EditorUtility.SetDirty(mushroom);
+
+            var minion = Creature("05_DuwendeMinion", "Duwende_Minion 2nd Enemy", "Duwende Minion",
+                idle: "Idle", attack: "Attack", hurt: "Hurt", death: "The_Duwende_minion_becomes_dizzy");
+            minion.attackName = "Club Bonk";
+            minion.themeWords = new[] { "CLUB", "ELF", "IMP", "BEARD", "MOUND" };
+            minion.spriteSize = 280f;
+            minion.description = "A loyal servant of the Duwende King, still sore about his master's defeat. " +
+                                 "He followed you into the forest looking for revenge, and for the club he keeps dropping.";
+            EditorUtility.SetDirty(minion);
+
+            var kapre = Creature("06_Kapre", "Kapre_2nd_Stage_Boss", "Kapre",
+                idle: "Idle", attack: "The_Kapre_draws", hurt: "Hurt", death: "Death");
+            kapre.isBoss = true;
+            kapre.attackName = "Smoke Slam";
+            kapre.themeWords = new[] { "SMOKE", "CIGAR", "GIANT", "BALETE", "ASH" };
+            kapre.spriteSize = 430f;
+            kapre.description = "A towering spirit who sits in the oldest balete, smoking a cigar that never burns out. " +
+                                "He is not cruel, only proud, and he has no patience for visitors who forget their manners.";
+            EditorUtility.SetDirty(kapre);
+
             AssetDatabase.SaveAssets();
+        }
+
+        /// <summary>Loads or creates a creature's data. Clip names are folder-name prefixes; null = not available.</summary>
+        private static CharacterDefinition Creature(string file, string folder, string displayName,
+                                                    string idle, string attack, string hurt, string death)
+        {
+            string path = DataFolder + file + ".asset";
+            var def = Load<CharacterDefinition>(path);
+            bool isNew = def == null;
+            if (isNew)
+            {
+                def = ScriptableObject.CreateInstance<CharacterDefinition>();
+                AssetDatabase.CreateAsset(def, path);
+            }
+            def.displayName = displayName;
+            def.idle   = idle != null ? Clip(folder, idle) : new Texture2D[0];
+            def.attack = Clip(folder, attack);
+            def.hurt   = hurt != null ? Clip(folder, hurt) : new Texture2D[0];
+            def.death  = death != null ? Clip(folder, death) : new Texture2D[0];
+            def.cast   = new Texture2D[0];
+            def.walk   = new Texture2D[0];
+            if (def.idle.Length == 0)
+            {
+                // No idle animation: use the front-facing still from the rotations folder
+                var still = Load<Texture2D>(CharFolder + folder + "/Idle/rotations/south.png");
+                def.idle = still != null ? new[] { still } : def.attack.Take(1).ToArray();
+            }
+            if (isNew)
+            {
+                // Starting stats only; tune them in the Inspector afterwards
+                def.maxHP = 30; def.attackDamage = 3; def.framesPerSecond = 10f;
+                if (file.Contains("Kapre")) { def.maxHP = 50; def.attackDamage = 5; }
+                if (file.Contains("Mushroom")) def.attackDamage = 2;
+            }
+            return def;
         }
 
         private static Texture2D[] Clip(string character, string prefix)
         {
             string anims = CharFolder + character + "/Idle/animations";
             var clipFolder = AssetDatabase.GetSubFolders(anims)
-                .FirstOrDefault(f => Path.GetFileName(f) == prefix || Path.GetFileName(f).StartsWith(prefix + "_"));
+                .FirstOrDefault(f => Path.GetFileName(f) == prefix || Path.GetFileName(f).StartsWith(prefix + "_")
+                                     || Path.GetFileName(f).StartsWith(prefix));
             if (clipFolder == null) return new Texture2D[0];
             var dir = AssetDatabase.GetSubFolders(clipFolder).FirstOrDefault() ?? clipFolder;
             return AssetDatabase.FindAssets("t:Texture2D", new[] { dir })
@@ -411,13 +527,24 @@ namespace Orasyon.EditorTools
             return prefab;
         }
 
-        private static ParallaxBackground BuildBackground(RectTransform stage)
+        private static void SetPointFilter(string folder)
+        {
+            foreach (var guid in AssetDatabase.FindAssets("t:Texture2D", new[] { folder }))
+            {
+                var ti = (TextureImporter)AssetImporter.GetAtPath(AssetDatabase.GUIDToAssetPath(guid));
+                if (ti.filterMode == FilterMode.Point) continue;
+                ti.filterMode = FilterMode.Point;
+                ti.SaveAndReimport();
+            }
+        }
+
+        private static ParallaxBackground BuildBackground(RectTransform stage, string backgroundPack)
         {
             var bgRoot = Node("Background", stage);
             Anchor(bgRoot, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), Vector2.zero, new Vector2(1920, 1080));
             var parallax = bgRoot.gameObject.AddComponent<ParallaxBackground>();
 
-            var layerPaths = Directory.GetFiles(BackgroundPack, "*.png")
+            var layerPaths = Directory.GetFiles(backgroundPack, "*.png")
                 .Select(p => p.Replace('\\', '/'))
                 .Where(p => int.TryParse(Path.GetFileNameWithoutExtension(p), out _))
                 .OrderBy(p => int.Parse(Path.GetFileNameWithoutExtension(p)))

@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde939564cab4924aa400c211a29d387, type: 3}
+  m_Name: Prologue
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Story.StoryScript
+  title: Prologue
+  subtitle: The Book of Orasyon
+  background: {fileID: 2800000, guid: 6149edabf493ece4abb2373cafa28218, type: 3}
+  lines:
+  - speaker: 0
+    text: At the edge of a quiet village, the old albularya Lola Isidra keeps a house
+      full of herbs, candles and very old books.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+  - speaker: 2
+    text: There you are, apo. Come, sit with me. The sun is setting, and the spirits
+      are restless tonight.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+  - speaker: 1
+    text: Lola, the neighbors keep saying strange things. Lights in the balete tree,
+      voices from the mounds in the backyard...
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+  - speaker: 2
+    text: They are not imagining it. Something has upset the balance between our
+      world and theirs.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+  - speaker: 2
+    text: This is the Book of Orasyon. It has passed from albularyo to albularyo
+      for generations. Tonight, it passes to you.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+  - speaker: 1
+    text: To me? But Lola, I barely remember the old prayers.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+  - speaker: 2
+    text: You know words, apo. That is all the book needs. Speak them with intent,
+      and they become power.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+  - speaker: 1
+    text: The pages... they're glowing! Lola, what's happening?
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+  - speaker: 2
+    text: The book has chosen you. Go where it takes you, and remember your manners.
+      Tabi tabi po.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+  - speaker: 0
+    text: A rush of light and wind. When it fades, the house is gone.
+    flash: 1
+    changeBackground: {fileID: 2800000, guid: ee93e8cf3145f834c9b770fa902c85e0, type: 3}
+    lolaOnStage: 0
+  - speaker: 1
+    text: Where am I? It looks like our backyard... but bigger. Brighter. Older.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 2
+    text: You are inside the stories now, apo. I will speak to you through the pages.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  - speaker: 2
+    text: Start with the backyard mound. The Duwende King has grown bold, and his
+      servants are everywhere. Be brave.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+  nextScene: Level1

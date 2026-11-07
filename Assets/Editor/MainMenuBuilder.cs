@@ -199,7 +199,7 @@ namespace Orasyon.EditorTools
             var ctrlGo = Node("MainMenuController", canvas);
             var ctrl = ctrlGo.gameObject.AddComponent<MainMenuController>();
             var c = new SerializedObject(ctrl);
-            c.FindProperty("firstSceneName").stringValue = "Level1";
+            c.FindProperty("firstSceneName").stringValue = "Story";   // the prologue plays first, then Level1
             c.FindProperty("titleGroup").objectReferenceValue = titleGroup;
             c.FindProperty("menuGroup").objectReferenceValue = menuGroup;
             c.FindProperty("fadeGroup").objectReferenceValue = fadeGroup;
