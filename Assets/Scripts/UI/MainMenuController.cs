@@ -88,6 +88,7 @@ namespace Orasyon.UI
             }
 
             busy = true;
+            Orasyon.Battle.PlayerProgress.ResetAll();   // a new adventure starts without treasures
             StartCoroutine(LoadSceneRoutine());
         }
 

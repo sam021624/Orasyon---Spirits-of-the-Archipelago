@@ -72,6 +72,16 @@ namespace Orasyon.Battle
         [SerializeField] private Button          resultMenuButton;
         [SerializeField] private string          mainMenuScene = "MainMenu";
 
+        [Header("Treasure (boss drop)")]
+        [Tooltip("Permanent item the chapter boss drops. Empty = no drop.")]
+        [SerializeField] private TreasureDefinition bossReward;
+        [SerializeField] private TreasureShelf      treasureShelf;
+        [SerializeField] private Image              dropIconTemplate;
+        [SerializeField] private GameObject         rewardGroup;
+        [SerializeField] private Image              rewardIcon;
+        [SerializeField] private TextMeshProUGUI    rewardName;
+        [SerializeField] private TextMeshProUGUI    rewardEffect;
+
         [Header("Story")]
         [Tooltip("Dialogue played after the chapter is won (it then loads the next chapter). Empty = Play Again.")]
         [SerializeField] private Orasyon.Story.StoryScript nextStory;
@@ -86,6 +96,8 @@ namespace Orasyon.Battle
         // ── Runtime ──────────────────────────────────────────────────────────
         private readonly System.Random rng = new System.Random();
         private int  playerHP;
+        private int  playerMaxHP;
+        private bool newTreasure;
         private int  enemyHP;
         private int  enemyIndex;
         private bool busy;
@@ -108,7 +120,8 @@ namespace Orasyon.Battle
 
             if (chapterLabel != null) chapterLabel.text = chapterTitle;
             if (playerNameLabel != null) playerNameLabel.text = player.displayName;
-            playerHP = player.maxHP;
+            playerMaxHP = player.maxHP + PlayerProgress.BonusMaxHP;   // treasures add hearts
+            playerHP = playerMaxHP;
             SetupAnimator(playerAnimator, player);
             SetX(PlayerRect, player, playerHomeX - offscreenX);
 
@@ -128,6 +141,10 @@ namespace Orasyon.Battle
             retryButton.onClick.AddListener(Retry);
             resultMenuButton.onClick.AddListener(LoadMainMenu);
             buffs.OnBuffUsed += UseBuff;
+            if (treasureShelf != null)
+                treasureShelf.OnTreasureClicked += t => ShowFeedback($"<b>{t.displayName}</b>  <color=#9FE2BF>{t.EffectText}</color>\n{t.description}", true);
+            if (dropIconTemplate != null) dropIconTemplate.gameObject.SetActive(false);
+            if (rewardGroup != null) rewardGroup.SetActive(false);
             letterGrid.OnSelectionChanged += RefreshInput;
 
             resultPanel.SetActive(false);
@@ -177,7 +194,7 @@ namespace Orasyon.Battle
             switch (type)
             {
                 case BuffType.HealingPotion:
-                    int healed = Mathf.Min(healingPotionAmount, player.maxHP - playerHP);
+                    int healed = Mathf.Min(healingPotionAmount, playerMaxHP - playerHP);
                     playerHP += healed;
                     playerAnimator.PlayOnce(player.cast);
                     Popup(PlayerRect, "+" + healed, new Color(1f, 0.45f, 0.45f));
@@ -210,7 +227,7 @@ namespace Orasyon.Battle
             var enemy = CurrentEnemy;
             bool weakness = IsThemeWord(enemy, word);
             bool empowered = damageMultiplier > 1;
-            int damage = LetterScoring.Damage(word);
+            int damage = Mathf.RoundToInt(LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier);   // treasures add damage
             if (weakness) damage = Mathf.RoundToInt(damage * 1.5f);
             damage *= damageMultiplier;
             damageMultiplier = 1;
@@ -247,6 +264,11 @@ namespace Orasyon.Battle
                 {
                     battleOver = true;
                     RefreshInput();
+                    if (bossReward != null)
+                    {
+                        newTreasure = PlayerProgress.Grant(bossReward);
+                        yield return TreasureDropRoutine(bossReward);
+                    }
                     ShowResult(victory: true);
                     yield break;
                 }
@@ -333,6 +355,49 @@ namespace Orasyon.Battle
         {
             yield return DefeatRoutine(playerAnimator, player, fadeOut: false);
             ShowResult(victory: false);
+        }
+
+        /// <summary>Bookworm-style drop: the treasure pops out where the boss fell, then flies to its shelf slot.</summary>
+        private IEnumerator TreasureDropRoutine(TreasureDefinition treasure)
+        {
+            ShowFeedback($"<color=#FFD700>Destroyed!</color>  The {enemies[enemies.Length - 1].displayName} dropped <b>{treasure.displayName}</b>!", true);
+            if (dropIconTemplate == null || treasure.icon == null) { yield return new WaitForSeconds(1f); yield break; }
+
+            var drop = Instantiate(dropIconTemplate, dropIconTemplate.transform.parent);
+            drop.gameObject.SetActive(true);
+            drop.sprite = treasure.icon;
+            var rt = (RectTransform)drop.transform;
+            rt.SetAsLastSibling();
+            rt.anchoredPosition = EnemyRect.anchoredPosition + new Vector2(0f, EnemyRect.sizeDelta.y * 0.4f);
+            Vector3 start = rt.position;
+
+            // Pop up with a little bounce and spin
+            for (float t = 0f; t < 1f; t += Time.deltaTime / 0.5f)
+            {
+                float s = Mathf.Sin(t * Mathf.PI * 0.5f);
+                rt.localScale = Vector3.one * Mathf.LerpUnclamped(0.2f, 1f, s + 0.15f * Mathf.Sin(t * Mathf.PI));
+                rt.position = start + Vector3.up * 90f * s * rt.lossyScale.y;
+                rt.localEulerAngles = new Vector3(0f, 0f, (1f - t) * 25f);
+                yield return null;
+            }
+            yield return new WaitForSeconds(0.8f);
+
+            // Fly to the shelf
+            var target = treasureShelf != null ? treasureShelf.SlotTarget(treasure) : null;
+            if (target != null)
+            {
+                Vector3 from = rt.position, to = target.position;
+                for (float t = 0f; t < 1f; t += Time.deltaTime / 0.6f)
+                {
+                    float e = t * t * (3f - 2f * t);
+                    rt.position = Vector3.Lerp(from, to, e) + Vector3.up * Mathf.Sin(e * Mathf.PI) * 120f * rt.lossyScale.y;
+                    rt.localScale = Vector3.one * Mathf.Lerp(1f, 0.6f, e);
+                    yield return null;
+                }
+            }
+            Destroy(drop.gameObject);
+            if (treasureShelf != null) treasureShelf.Refresh();
+            yield return new WaitForSeconds(0.4f);
         }
 
         private IEnumerator DefeatRoutine(UIFrameAnimator anim, CharacterDefinition def, bool fadeOut)
@@ -486,7 +551,7 @@ namespace Orasyon.Battle
 
         private void RefreshHearts()
         {
-            if (playerHearts != null) playerHearts.Set(playerHP, player.maxHP);
+            if (playerHearts != null) playerHearts.Set(playerHP, playerMaxHP);
             var enemy = CurrentEnemy;
             if (enemyHearts != null && enemy != null) enemyHearts.Set(enemyHP, enemy.maxHP);
         }
@@ -539,6 +604,16 @@ namespace Orasyon.Battle
             won = victory;
             resultPanel.SetActive(true);
             var retryLabel = retryButton.GetComponentInChildren<TextMeshProUGUI>();
+            bool showReward = victory && bossReward != null;
+            if (rewardGroup != null) rewardGroup.SetActive(showReward);
+            if (showReward)
+            {
+                if (rewardIcon != null) rewardIcon.sprite = bossReward.icon;
+                if (rewardName != null)
+                    rewardName.text = (newTreasure ? "Treasure found: " : "Already owned: ") + $"<b>{bossReward.displayName}</b>";
+                if (rewardEffect != null) rewardEffect.text = bossReward.EffectText;
+            }
+
             if (victory)
             {
                 resultTitle.text = "Chapter Complete!";

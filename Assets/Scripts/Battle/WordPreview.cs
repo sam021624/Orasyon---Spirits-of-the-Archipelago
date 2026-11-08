@@ -57,7 +57,7 @@ namespace Orasyon.Battle
                 if (word.Length == 0)                              hintLabel.text = "";
                 else if (word.Length < WordDictionary.MinLength)   hintLabel.text = "Words need at least 3 letters";
                 else if (!valid)                                   hintLabel.text = "Not a word in your book";
-                else                                               hintLabel.text = $"{LetterScoring.Damage(word)} damage";
+                else hintLabel.text = $"{Mathf.RoundToInt(LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier)} damage";
             }
         }
     }

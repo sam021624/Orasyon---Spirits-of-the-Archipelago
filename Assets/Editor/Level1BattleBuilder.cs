@@ -23,6 +23,7 @@ namespace Orasyon.EditorTools
         private const string DataFolder     = "Assets/Data/Characters/";
         private const string CharFolder     = "Assets/Sprites/Characters/";
         private const string StoryFolder    = "Assets/Data/Story/";
+        private const string TreasureFolder = "Assets/Resources/Treasures/";
         private const string HeartSprite    = "Assets/Sprites/Icons/Hearts/PNG/basic/heart.png";
 
         /// <summary>Everything that differs between chapters.</summary>
@@ -36,6 +37,7 @@ namespace Orasyon.EditorTools
             public string   firstBoard;       // fixed first board (tutorial) or "" for random
             public string   nextStoryAsset;   // dialogue after the boss, or null
             public string   victoryMessage;
+            public string   rewardAsset;      // treasure the boss drops (Resources/Treasures)
         }
 
         private static readonly ChapterSpec Chapter1 = new ChapterSpec
@@ -47,6 +49,7 @@ namespace Orasyon.EditorTools
             tutorial       = true,
             firstBoard     = "WORDATESLINGBUKA",
             nextStoryAsset = "Interlude_Chapter1",
+            rewardAsset    = "KalasagNgPunso",
             victoryMessage = "The Duwende King retreats into his mound.\nThe backyard is quiet again.",
         };
 
@@ -59,6 +62,7 @@ namespace Orasyon.EditorTools
             tutorial       = false,
             firstBoard     = "",
             nextStoryAsset = null,
+            rewardAsset    = "PanaNgBalete",
             victoryMessage = "The Kapre's smoke drifts away from the old balete.\nHe nods, impressed, and lets you pass.",
         };
 
@@ -85,6 +89,7 @@ namespace Orasyon.EditorTools
             circleSprite  = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
 
             UpdateCharacterData();
+            TreasureAssets.Ensure();
             SetPointFilter(spec.backgroundPack);
             var tilePrefab = BuildTilePrefab();
 
@@ -122,6 +127,10 @@ namespace Orasyon.EditorTools
 
             var popup = Text("DamagePopupTemplate", characters, "-10", 46, Color.white, TextAlignmentOptions.Center, FontStyles.Bold);
             Anchor(popup.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), Vector2.zero, new Vector2(320, 64));
+            var dropIcon = Panel("TreasureDropTemplate", characters, Color.white);
+            dropIcon.type = Image.Type.Simple; dropIcon.preserveAspect = true; dropIcon.raycastTarget = false;
+            Anchor(dropIcon.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(150, 150));
+            dropIcon.gameObject.SetActive(false);   // template: copies are made when a boss drops its treasure
             popup.outlineWidth = 0.2f;
             popup.outlineColor = new Color32(40, 20, 10, 255);
 
@@ -195,8 +204,34 @@ namespace Orasyon.EditorTools
             var shelf = Panel("Shelf", left.transform, new Color(0.36f, 0.22f, 0.12f, 1f));
             Anchor(shelf.rectTransform, new Vector2(0, 1), new Vector2(1, 1), new Vector2(0.5f, 1), new Vector2(0, -196), new Vector2(-24, 12));
             AddOutline(shelf.gameObject, new Color(0.10f, 0.06f, 0.03f, 1f), 2);
-            var itemArea = Node("ItemSlots", left.transform);   // reserved: boss drops go here later
+            // Treasure shelf: 5 slots, one per final boss. Empty until a boss drops its treasure.
+            var itemArea = Node("TreasureSlots", left.transform);
             Anchor(itemArea, new Vector2(0, 0), new Vector2(1, 0), new Vector2(0.5f, 0), new Vector2(0, 12), new Vector2(-24, 180));
+            var treasureShelf = itemArea.gameObject.AddComponent<TreasureShelf>();
+            var tso = new SerializedObject(treasureShelf);
+            var tslots = tso.FindProperty("slots");
+            tslots.arraySize = 5;
+            for (int i = 0; i < 5; i++)
+            {
+                var slotBg = Panel("Slot_" + (i + 1), itemArea, new Color(0.10f, 0.06f, 0.04f, 0.85f), panelSprite);
+                Anchor(slotBg.rectTransform, new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(4 + i * 111, 0), new Vector2(104, 170));
+                AddOutline(slotBg.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.35f), 1);
+                var slotBtn = slotBg.gameObject.AddComponent<Button>();
+                slotBtn.targetGraphic = slotBg;
+                var slotColors = slotBtn.colors;
+                slotColors.disabledColor = Color.white;   // empty slots keep their look
+                slotBtn.colors = slotColors;
+                var slotIcon = Panel("Icon", slotBg.transform, Color.white);
+                slotIcon.type = Image.Type.Simple; slotIcon.preserveAspect = true; slotIcon.raycastTarget = false;
+                Anchor(slotIcon.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -12), new Vector2(84, 84));
+                var slotLabel = Text("Name", slotBg.transform, "", 15, Gold, TextAlignmentOptions.Top, FontStyles.Bold);
+                Anchor(slotLabel.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 8), new Vector2(98, 62));
+                var e = tslots.GetArrayElementAtIndex(i);
+                e.FindPropertyRelative("icon").objectReferenceValue = slotIcon;
+                e.FindPropertyRelative("label").objectReferenceValue = slotLabel;
+                e.FindPropertyRelative("button").objectReferenceValue = slotBtn;
+            }
+            tso.ApplyModifiedPropertiesWithoutUndo();
             var scramble = MakeButton("ScrambleButton", bottom.transform, "SCRAMBLE", new Color(0.66f, 0.32f, 0.12f), Cream, 28);
             Anchor((RectTransform)scramble.transform, Vector2.zero, Vector2.zero, Vector2.zero, new Vector2(16, 20), new Vector2(580, 64));
 
@@ -268,12 +303,24 @@ namespace Orasyon.EditorTools
             var result = Panel("ResultPanel", canvas, new Color(0, 0, 0, 0.75f));
             Stretch(result.rectTransform);
             var resultBox = Panel("Box", result.transform, Wood, panelSprite);
-            Anchor(resultBox.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(680, 340));
+            Anchor(resultBox.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(680, 470));
             AddOutline(resultBox.gameObject, Gold, 3);
             var resultTitle = Text("Title", resultBox.transform, "Chapter Complete!", 48, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
             Anchor(resultTitle.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -24), new Vector2(640, 64));
             var resultBody = Text("Body", resultBox.transform, "", 24, Cream, TextAlignmentOptions.Center);
             Anchor(resultBody.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -100), new Vector2(620, 110));
+            // Reward row: the boss's treasure (hidden on defeat)
+            var rewardRow = Panel("Reward", resultBox.transform, WoodDark, panelSprite);
+            Anchor(rewardRow.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -222), new Vector2(600, 120));
+            AddOutline(rewardRow.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.6f), 1);
+            var rewardIcon = Panel("Icon", rewardRow.transform, Color.white);
+            rewardIcon.type = Image.Type.Simple; rewardIcon.preserveAspect = true;
+            Anchor(rewardIcon.rectTransform, new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(18, 0), new Vector2(96, 96));
+            var rewardName = Text("Name", rewardRow.transform, "", 26, Gold, TextAlignmentOptions.Left);
+            Anchor(rewardName.rectTransform, new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(132, 18), new Vector2(450, 40));
+            var rewardEffect = Text("Effect", rewardRow.transform, "", 22, new Color(0.62f, 0.95f, 0.58f), TextAlignmentOptions.Left, FontStyles.Bold);
+            Anchor(rewardEffect.rectTransform, new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(0, 0.5f), new Vector2(132, -22), new Vector2(450, 34));
+
             var retry = MakeButton("RetryButton", resultBox.transform, "PLAY AGAIN", new Color(0.32f, 0.62f, 0.28f), Cream, 24);
             Anchor((RectTransform)retry.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-150, 28), new Vector2(260, 60));
             var resultMenu = MakeButton("MainMenuButton", resultBox.transform, "MAIN MENU", new Color(0.62f, 0.46f, 0.12f), Cream, 24);
@@ -344,6 +391,13 @@ namespace Orasyon.EditorTools
             Set(m, "resultBody", resultBody);
             Set(m, "retryButton", retry);
             Set(m, "resultMenuButton", resultMenu);
+            Set(m, "bossReward", Load<TreasureDefinition>(TreasureFolder + spec.rewardAsset + ".asset"));
+            Set(m, "treasureShelf", treasureShelf);
+            Set(m, "dropIconTemplate", dropIcon);
+            Set(m, "rewardGroup", rewardRow.gameObject);
+            Set(m, "rewardIcon", rewardIcon);
+            Set(m, "rewardName", rewardName);
+            Set(m, "rewardEffect", rewardEffect);
             m.ApplyModifiedPropertiesWithoutUndo();
 
             // ── Tutorial manager (first chapter only) ────────────────────────
