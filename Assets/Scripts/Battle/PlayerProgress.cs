@@ -48,11 +48,34 @@ namespace Orasyon.Battle
 
         public static float DamageMultiplier => 1f + Owned.Sum(t => t.damageBonusPercent) / 100f;
 
+        public static int BonusHints => Owned.Sum(t => t.bonusHints);
+
+        public static int StartingWardingPotions => Owned.Sum(t => t.startingWardingPotions);
+
+        public static int PotionLengthBonus => Owned.Sum(t => t.potionLengthBonus);
+
+        // ── Chapter unlocking ────────────────────────────────────────────────
+        private const string StageKey = "orasyon.highestStage";
+        public const int FinalStage = 5;
+
+        /// <summary>The furthest chapter the player has unlocked (1 on a new game).</summary>
+        public static int HighestStage => Mathf.Clamp(PlayerPrefs.GetInt(StageKey, 1), 1, FinalStage);
+
+        /// <summary>Call when a chapter is won: unlocks the next one.</summary>
+        public static void CompleteStage(int stage)
+        {
+            int next = Mathf.Min(FinalStage, stage + 1);
+            if (next <= HighestStage) return;
+            PlayerPrefs.SetInt(StageKey, next);
+            PlayerPrefs.Save();
+        }
+
         public static void ResetAll()
         {
             Load();
             owned.Clear();
             PlayerPrefs.DeleteKey(Key);
+            PlayerPrefs.DeleteKey(StageKey);
             PlayerPrefs.Save();
         }
 

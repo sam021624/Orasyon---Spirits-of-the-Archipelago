@@ -340,7 +340,7 @@ namespace Orasyon.EditorTools
                     Atk("Shell Guard",  0, 0, weight: 1, effect: AttackEffect.Guard, turns: 2, power: 50, vfx: "siyokoy_shell"),
                 } } },
             { "bakunawa", new Creature {
-                displayName = "Bakunawa", hp = 100, size = 560f,
+                displayName = "Bakunawa", hp = 100, size = 470f,
                 weak = new[] { "MOON", "ECLIPSE", "GONG", "SERPENT", "DRAGON" },
                 description = "The great sea serpent who swallows the moon. Long ago the people banged pots and gongs " +
                               "until it spat the moon back out. Tonight there are no pots, only you and the Book of Orasyon.",

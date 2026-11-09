@@ -45,6 +45,12 @@ namespace Orasyon.Story
         [SerializeField] private TextMeshProUGUI titleText;
         [SerializeField] private TextMeshProUGUI subtitleText;
 
+        [Header("Credits")]
+        [SerializeField] private CanvasGroup     creditsGroup;
+        [SerializeField] private RectTransform   creditsContent;
+        [SerializeField] private TextMeshProUGUI creditsLabel;
+        [SerializeField] private float           creditsSpeed = 70f;
+
         [Header("Effects")]
         [SerializeField] private CanvasGroup flashGroup;
         [SerializeField] private CanvasGroup fadeGroup;
@@ -139,7 +145,42 @@ namespace Orasyon.Story
                 continueHint.gameObject.SetActive(false);
             }
 
+            if (!string.IsNullOrWhiteSpace(script.creditsText) && creditsGroup != null)
+                yield return CreditsRoutine();
+
             Finish();
+        }
+
+        /// <summary>Hides the dialogue and scrolls the credits text up the screen. Click / Space speeds it up, Skip leaves.</summary>
+        private IEnumerator CreditsRoutine()
+        {
+            yield return Fade(dialogueGroup, 0f, 0.4f);
+            if (lolaGroup != null) StartCoroutine(Fade(lolaGroup, 0f, 0.6f));
+            if (albularyo != null) StartCoroutine(albularyo.FadeTo(0f, 0.6f));
+
+            creditsLabel.text = script.creditsText;
+            creditsLabel.ForceMeshUpdate();
+            float viewHeight = ((RectTransform)creditsGroup.transform).rect.height;
+            float textHeight = creditsLabel.preferredHeight;
+            creditsContent.sizeDelta = new Vector2(creditsContent.sizeDelta.x, textHeight);
+
+            yield return Fade(creditsGroup, 1f, 0.6f);
+
+            // The content hangs from its top edge, anchored to the bottom of the screen:
+            // y = 0 keeps it just below the view, and it is done once the last line has left the top.
+            float y = 0f;
+            float end = viewHeight + textHeight;
+            advanceRequested = false;
+            while (y < end)
+            {
+                float speed = advanceRequested || (UnityEngine.InputSystem.Mouse.current != null && UnityEngine.InputSystem.Mouse.current.leftButton.isPressed)
+                    ? creditsSpeed * 4f : creditsSpeed;
+                y += speed * Time.deltaTime;
+                creditsContent.anchoredPosition = new Vector2(0f, y);
+                advanceRequested = false;
+                yield return null;
+            }
+            yield return Fade(creditsGroup, 0f, 0.6f);
         }
 
         private void ShowSpeaker(StoryLine line)

@@ -26,15 +26,24 @@ namespace Orasyon.Battle
         public int bonusHearts;
         [Tooltip("Extra damage on every word, in percent (20 = +20%).")]
         public int damageBonusPercent;
+        [Tooltip("Extra hints in every chapter.")]
+        public int bonusHints;
+        [Tooltip("Warding potions you start every battle chapter with.")]
+        public int startingWardingPotions;
+        [Tooltip("Potions are earned with words this many letters shorter (1 = a 4-letter word already earns a Healing Potion).")]
+        public int potionLengthBonus;
 
         public string EffectText
         {
             get
             {
-                string s = "";
-                if (bonusHearts > 0) s += $"+{bonusHearts} heart{(bonusHearts > 1 ? "s" : "")}";
-                if (damageBonusPercent > 0) s += (s.Length > 0 ? ", " : "") + $"+{damageBonusPercent}% damage";
-                return s;
+                var parts = new System.Collections.Generic.List<string>();
+                if (bonusHearts > 0) parts.Add($"+{bonusHearts} heart{(bonusHearts > 1 ? "s" : "")}");
+                if (damageBonusPercent > 0) parts.Add($"+{damageBonusPercent}% damage");
+                if (bonusHints > 0) parts.Add($"+{bonusHints} hints per chapter");
+                if (startingWardingPotions > 0) parts.Add($"start with {startingWardingPotions} Warding Potion{(startingWardingPotions > 1 ? "s" : "")}");
+                if (potionLengthBonus > 0) parts.Add("potions from shorter words");
+                return string.Join(", ", parts);
             }
         }
     }

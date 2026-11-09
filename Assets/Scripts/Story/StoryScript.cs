@@ -52,5 +52,9 @@ namespace Orasyon.Story
 
         [Tooltip("Scene to load when the dialogue ends (must be in Build Settings).")]
         public string nextScene = "Level1";
+
+        [Header("Credits (optional)")]
+        [Tooltip("If filled in, these credits scroll up after the last line. Use TextMeshPro tags such as <size=60%> and <b>. Edit freely.")]
+        [TextArea(8, 24)] public string creditsText;
     }
 }

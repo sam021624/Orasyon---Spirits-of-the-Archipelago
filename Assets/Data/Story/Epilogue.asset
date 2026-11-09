@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde939564cab4924aa400c211a29d387, type: 3}
+  m_Name: Epilogue
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Story.StoryScript
+  title: Epilogue
+  subtitle: The Moon Returns
+  background: {fileID: 2800000, guid: 3808d6a0ae88fce4b896dceafebcfe7c, type: 3}
+  lines:
+  - speaker: 0
+    text: The Bakunawa lets go. The moon rises, whole and silver, over the sea.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 1
+    text: It's over. The moon is back, Lola. I can see it!
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 2
+    text: I never doubted you, apo. Not for a moment.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 0
+    text: A rush of light and wind. When it fades, the albularyo stands again before
+      the old house.
+    flash: 1
+    changeBackground: {fileID: 2800000, guid: 6149edabf493ece4abb2373cafa28218, type: 3}
+    lolaOnStage: 1
+    lolaPose: 0
+  - speaker: 2
+    text: Welcome home, apo. Your hands are still shaking.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+    lolaPose: 0
+  - speaker: 1
+    text: Lola, I was so scared. But the words... they just kept coming.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+    lolaPose: 0
+  - speaker: 2
+    text: That is the whole secret. The book only ever needed someone who could speak
+      with courage.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+    lolaPose: 2
+  - speaker: 1
+    text: Then I'll keep it close, and keep learning.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+    lolaPose: 0
+  - speaker: 0
+    text: And so the Book of Orasyon was closed, until the next time the spirits
+      stirred.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 1
+    lolaPose: 0
+  nextScene: MainMenu
+  creditsText: '<size=120%><b>ORASYON</b></size>
+
+    <size=70%>Spirits of the Archipelago</size>
+
+
+
+    <color=#E8B04A>Game
+    Programmer</color>
+
+    Your name here
+
+
+    <color=#E8B04A>Game Designer / Project
+    Manager</color>
+
+    Your name here
+
+
+    <color=#E8B04A>2D Artist</color>
+
+    Your
+    name here
+
+
+    <color=#E8B04A>Audio / QA Support</color>
+
+    Your name here
+
+
+
+    <color=#E8B04A>Inspired
+    by</color>
+
+    Bookworm Adventures
+
+    The folklore of the Philippine archipelago
+
+
+    <color=#E8B04A>Word
+    list</color>
+
+    ENABLE word list (public domain)
+
+
+    <color=#E8B04A>Art and
+    sound licenses</color>
+
+    See the project documentation
+
+
+
+    <size=120%><b>Thank
+    you for playing!</b></size>
+
+
+
+
+
+'

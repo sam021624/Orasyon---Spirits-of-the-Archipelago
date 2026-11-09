@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde939564cab4924aa400c211a29d387, type: 3}
+  m_Name: Interlude_Chapter2
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Story.StoryScript
+  title: Chapter 2 Complete
+  subtitle: Lights in the Dark
+  background: {fileID: 2800000, guid: 94755aca10b64c14a84f75766027ec33, type: 3}
+  lines:
+  - speaker: 0
+    text: The smoke thins, and the old balete falls silent. The Book of Orasyon glows
+      warmer in the albularyo's hands.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 1
+    text: Lola, the Kapre let me pass. The book is... brighter. It feels like it's
+      waking up.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 2
+    text: Every spirit you answer with a true word gives it strength, apo. But listen.
+      Do you see those lights?
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 1
+    text: Little blue flames, floating between the trees. They seem to want me to
+      follow them.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 2
+    text: Santelmo. Never follow it blindly. And deeper in that forest, I hear a
+      baby crying. Do not go to it.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 1
+    text: A baby? All alone in the forest?
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 2
+    text: That is exactly what it wants you to think. Keep your wits, and keep your
+      words sharp.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 0
+    text: The pages turn, and blue light fills the deep forest.
+    flash: 1
+    changeBackground: {fileID: 2800000, guid: 21e53a5d9d8e26748bd2b468f196cd8c, type: 3}
+    lolaOnStage: 0
+    lolaPose: 0
+  nextScene: Level3
+  creditsText: 

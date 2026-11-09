@@ -61,6 +61,14 @@ namespace Orasyon.Battle
 
         public int Count(BuffType type) => counts.TryGetValue(type, out int n) ? n : 0;
 
+        /// <summary>Gives potions directly (treasure bonuses).</summary>
+        public void Add(BuffType type, int amount)
+        {
+            if (amount <= 0) return;
+            counts[type] = Mathf.Min(maxStack, Count(type) + amount);
+            Refresh();
+        }
+
         /// <summary>Awards the best buff this word length qualifies for. Returns null if none.</summary>
         public BuffSlot AwardForWord(int wordLength)
         {

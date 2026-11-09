@@ -22,6 +22,8 @@ namespace Orasyon.UI
         [SerializeField] private GameObject howToRoot;
         [SerializeField] private CanvasGroup howToGroup;
         [SerializeField] private GameObject firstSelected;
+        [Tooltip("Shown only when the player has unlocked more than Chapter 1.")]
+        [SerializeField] private GameObject continueButton;
 
         [Header("Motion")]
         [SerializeField] private float titleBobHeight = 8f;
@@ -58,7 +60,17 @@ namespace Orasyon.UI
         private void Start()
         {
             StartCoroutine(IntroRoutine());
-            Select(firstSelected);
+            RefreshContinue();
+            Select(continueButton != null && continueButton.activeSelf ? continueButton : firstSelected);
+        }
+
+        private void RefreshContinue()
+        {
+            if (continueButton == null) return;
+            int stage = Orasyon.Battle.PlayerProgress.HighestStage;
+            continueButton.SetActive(stage > 1);
+            var label = continueButton.GetComponentInChildren<TMPro.TMP_Text>();
+            if (label != null) label.text = $"CONTINUE  <size=55%>CH. {stage}</size>";
         }
 
         private void Update()
@@ -89,6 +101,15 @@ namespace Orasyon.UI
 
             busy = true;
             Orasyon.Battle.PlayerProgress.ResetAll();   // a new adventure starts without treasures
+            StartCoroutine(LoadSceneRoutine());
+        }
+
+        /// <summary>Resumes at the furthest unlocked chapter, keeping collected treasures.</summary>
+        public void ContinueGame()
+        {
+            if (busy) return;
+            busy = true;
+            firstSceneName = "Level" + Orasyon.Battle.PlayerProgress.HighestStage;
             StartCoroutine(LoadSceneRoutine());
         }
 

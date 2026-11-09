@@ -60,9 +60,49 @@ namespace Orasyon.EditorTools
             chapter        = 2,
             tutorial       = false,
             firstBoard     = "",
-            nextStoryAsset = null,
+            nextStoryAsset = "Interlude_Chapter2",
             rewardAsset    = "PanaNgBalete",
             victoryMessage = "The Kapre's smoke drifts away from the old balete.\nHe nods, impressed, and lets you pass.",
+        };
+
+        // Chapters 3 to 5. Backgrounds are the closest Terrains packs; swap backgroundPack to change them.
+        private static readonly ChapterSpec Chapter3 = new ChapterSpec
+        {
+            scenePath      = "Assets/Levels/Level3.unity",
+            chapterTitle   = "Chapter 3: The Deep Forest",
+            backgroundPack = "Assets/Sprites/Terrains/5",   // moonlit blue forest
+            chapter        = 3,
+            tutorial       = false,
+            firstBoard     = "",
+            nextStoryAsset = "Interlude_Chapter3",
+            rewardAsset    = "KampanaNgGubat",
+            victoryMessage = "The Tiyanak's cry fades between the trees.\nThe forest path is quiet at last.",
+        };
+
+        private static readonly ChapterSpec Chapter4 = new ChapterSpec
+        {
+            scenePath      = "Assets/Levels/Level4.unity",
+            chapterTitle   = "Chapter 4: The Village Rooftops",
+            backgroundPack = "Assets/Sprites/Terrains/2",   // dusk silhouette sky
+            chapter        = 4,
+            tutorial       = false,
+            firstBoard     = "",
+            nextStoryAsset = "Interlude_Chapter4",
+            rewardAsset    = "AgimatNgBubong",
+            victoryMessage = "The Manananggal shrieks and vanishes before the dawn.\nThe rooftops are safe again.",
+        };
+
+        private static readonly ChapterSpec Chapter5 = new ChapterSpec
+        {
+            scenePath      = "Assets/Levels/Level5.unity",
+            chapterTitle   = "Chapter 5: The Cosmic Ocean",
+            backgroundPack = "Assets/Sprites/Terrains/7",   // water along the shore
+            chapter        = 5,
+            tutorial       = false,
+            firstBoard     = "",
+            nextStoryAsset = "Epilogue",
+            rewardAsset    = "MataNgBuwan",
+            victoryMessage = "The Bakunawa spits out the moon and sinks into the deep.\nLight returns to the whole archipelago.",
         };
 
         private static readonly Color Wood      = new Color(0.16f, 0.10f, 0.06f, 1f);
@@ -81,6 +121,30 @@ namespace Orasyon.EditorTools
         [MenuItem("Tools/Orasyon/Rebuild Level 2 Battle UI")]
         public static void BuildLevel2() => BuildChapter(Chapter2);
 
+        [MenuItem("Tools/Orasyon/Rebuild Level 3 Battle UI")]
+        public static void BuildLevel3() => BuildChapter(Chapter3);
+
+        [MenuItem("Tools/Orasyon/Rebuild Level 4 Battle UI")]
+        public static void BuildLevel4() => BuildChapter(Chapter4);
+
+        [MenuItem("Tools/Orasyon/Rebuild Level 5 Battle UI")]
+        public static void BuildLevel5() => BuildChapter(Chapter5);
+
+        [MenuItem("Tools/Orasyon/Rebuild All Battle Levels (1-5)")]
+        public static void BuildAll()
+        {
+            foreach (var c in new[] { Chapter1, Chapter2, Chapter3, Chapter4, Chapter5 }) BuildChapter(c);
+        }
+
+        /// <summary>New chapter scenes start as a copy of Level 2 (camera and event system), then the canvas is rebuilt.</summary>
+        private static void EnsureScene(ChapterSpec spec)
+        {
+            if (File.Exists(spec.scenePath)) return;
+            if (!AssetDatabase.CopyAsset("Assets/Levels/Level2.unity", spec.scenePath))
+                Debug.LogError($"[Orasyon] Could not create {spec.scenePath}");
+            AssetDatabase.Refresh();
+        }
+
         private static void BuildChapter(ChapterSpec spec)
         {
             roundedSprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
@@ -92,6 +156,7 @@ namespace Orasyon.EditorTools
             SetPointFilter(spec.backgroundPack);
             var tilePrefab = BuildTilePrefab();
 
+            EnsureScene(spec);
             var scene = EditorSceneManager.OpenScene(spec.scenePath, OpenSceneMode.Single);
             foreach (var root in scene.GetRootGameObjects())
                 if (root.name == "BattleCanvas") Object.DestroyImmediate(root);
@@ -393,6 +458,7 @@ namespace Orasyon.EditorTools
             enemies.arraySize = foes.Length;
             for (int i = 0; i < foes.Length; i++) enemies.GetArrayElementAtIndex(i).objectReferenceValue = foes[i];
             m.FindProperty("chapterTitle").stringValue = spec.chapterTitle;
+            m.FindProperty("chapterNumber").intValue = spec.chapter;
             m.FindProperty("firstBoard").stringValue = spec.firstBoard;
             m.FindProperty("victoryMessage").stringValue = spec.victoryMessage;
             if (!string.IsNullOrEmpty(spec.nextStoryAsset))

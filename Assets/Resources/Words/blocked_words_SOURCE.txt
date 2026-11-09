@@ -1,0 +1,4 @@
+﻿blocked_words.txt is derived from the "List of Dirty, Naughty, Obscene, and Otherwise Bad Words" (LDNOOBW),
+https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words
+Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+Changes: only single alphabetic words of 3+ letters that also appear in words.txt were kept.

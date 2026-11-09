@@ -24,17 +24,17 @@ Order of work: art, VFX and the refill fix first, then all five stages playable 
   - [x] 1.9 Checkpoint: play Chapters 1 and 2 end to end. The board has 16 tiles every turn, the tutorial still passes (Duwende Minion is now the tutorial enemy), no console errors. Then remove the old assets `01_` to `06_` after asking you.
     - _Requirements: 5.1, 5.2, 7.1_
 
-- [ ] 2. Five playable stages (simple attacks, no new board mechanics yet)
-  - [ ] 2.1 Pick backgrounds for stages 3 (deep forest), 4 (village rooftops) and 5 (cosmic ocean) from `Terrains/3..8`, and show you the choices as screenshots before locking them in.
+- [x] 2. Five playable stages (simple attacks, no new board mechanics yet)
+  - [x] 2.1 Backgrounds picked from `Terrains`: stage 3 = pack 5 (moonlit blue forest), stage 4 = pack 2 (dusk silhouette sky), stage 5 = pack 7 (water along the shore). None of the packs has rooftops or an ocean, so 4 and 5 are the closest fits. Change `backgroundPack` in `Level1BattleBuilder` to swap one.
     - _Requirements: 3.3_
-  - [ ] 2.2 Add `Chapter3`, `Chapter4`, `Chapter5` specs, menu items and scenes `Level3` to `Level5` (Santelmo, Sigbin, Tiyanak / Amalanhig, Wak-Wak, Manananggal / Berberoka, Siyokoy, Bakunawa), with stats from design 4 and basic movesets (damage and the existing Poison/Stun/Weaken/Guard/Leech effects) plus their VFX.
+  - [x] 2.2 Add `Chapter3`, `Chapter4`, `Chapter5` specs, menu items and scenes `Level3` to `Level5` (Santelmo, Sigbin, Tiyanak / Amalanhig, Wak-Wak, Manananggal / Berberoka, Siyokoy, Bakunawa), with stats from design 4 and basic movesets (damage and the existing Poison/Stun/Weaken/Guard/Leech effects) plus their VFX.
     - _Requirements: 3.1, 2.2_
-  - [ ] 2.3 Rewards: Kampana ng Gubat (stage 3), Agimat ng Bubong (stage 4), Mata ng Buwan (stage 5) through `TreasureAssets` and the shelf slots.
+  - [x] 2.3 Rewards: Kampana ng Gubat (stage 3), Agimat ng Bubong (stage 4), Mata ng Buwan (stage 5) through `TreasureAssets` and the shelf slots.
     - _Requirements: 3.4_
-  - [ ] 2.4 Story: `Interlude_Chapter2`, `Interlude_Chapter3`, `Interlude_Chapter4`, `Epilogue` and a credits section; update `StoryBuilder.UpdateBuildSettings` (MainMenu, Story, Level1 to Level5) and wire each `nextStory` / `nextScene`.
+  - [x] 2.4 Story: `Interlude_Chapter2`, `Interlude_Chapter3`, `Interlude_Chapter4`, `Epilogue` and a credits section; update `StoryBuilder.UpdateBuildSettings` (MainMenu, Story, Level1 to Level5) and wire each `nextStory` / `nextScene`.
     - _Requirements: 3.2, 6.1, 6.2_
-  - [ ] 2.5 Save the highest stage in `PlayerProgress` and add Continue to the MainMenu.
-  - [ ] 2.6 Checkpoint: a full run from the main menu to the Bakunawa and the credits.
+  - [x] 2.5 Save the highest stage in `PlayerProgress` and add Continue to the MainMenu.
+  - [x] 2.6 Checkpoint: a full run from the main menu to the Bakunawa and the credits.
     - _Requirements: 3.1, 3.2_
 
 - [ ] 3. Phase A: core feel (IMPLEMENTATION.md section 11)

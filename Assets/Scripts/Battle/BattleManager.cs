@@ -15,6 +15,8 @@ namespace Orasyon.Battle
     public sealed class BattleManager : MonoBehaviour
     {
         [Header("Chapter")]
+        [Tooltip("1 to 5. Winning unlocks the next chapter.")]
+        [SerializeField] private int             chapterNumber = 1;
         [SerializeField] private string          chapterTitle = "Chapter 1: The Backyard Mound";
         [SerializeField] private TextMeshProUGUI chapterLabel;
         [SerializeField] private TextMeshProUGUI encounterLabel;
@@ -167,7 +169,8 @@ namespace Orasyon.Battle
             clearButton.onClick.AddListener(letterGrid.ClearSelection);
             scrambleButton.onClick.AddListener(OnScramblePressed);
             menuButton.onClick.AddListener(LoadMainMenu);
-            hintsLeft = hintsPerChapter;
+            hintsLeft = hintsPerChapter + PlayerProgress.BonusHints;   // Kampana ng Gubat
+            buffs.Add(BuffType.WardingPotion, PlayerProgress.StartingWardingPotions);   // Agimat ng Bubong
             if (hintButton != null) hintButton.onClick.AddListener(OnHintPressed);
             RefreshHintLabel();
             retryButton.onClick.AddListener(Retry);
@@ -330,7 +333,7 @@ namespace Orasyon.Battle
                 if (empowered) msg += "  <color=#7FB2FF>Power x2!</color>";
                 if (weakened)  msg += "  <color=#C9A2FF>(weakened)</color>";
                 if (guarded)   msg += "  <color=#8CC8FF>(guarded)</color>";
-                var reward = buffs.AwardForWord(word.Length);
+                var reward = buffs.AwardForWord(word.Length + PlayerProgress.PotionLengthBonus);   // Mata ng Buwan
                 if (reward != null) msg += $"\n<color=#9FE2BF>You found a {reward.displayName}!</color>";
                 ShowFeedback(msg, true);
             }
@@ -390,6 +393,7 @@ namespace Orasyon.Battle
                         newTreasure = PlayerProgress.Grant(bossReward);
                         yield return TreasureDropRoutine(bossReward);
                     }
+                    PlayerProgress.CompleteStage(chapterNumber);
                     ShowResult(victory: true);
                     yield break;
                 }

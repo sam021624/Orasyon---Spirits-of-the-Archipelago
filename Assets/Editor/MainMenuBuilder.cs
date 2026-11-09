@@ -150,7 +150,8 @@ namespace Orasyon.EditorTools
             var menu = Node("MenuGroup", canvas);
             Anchor(menu, Center, new Vector2(0, -150), new Vector2(460, 320));
             var menuGroup = menu.gameObject.AddComponent<CanvasGroup>();
-            var start = MenuButton(menu, "StartGameBtn", "START GAME", new Vector2(0, 100), true);
+            var cont  = MenuButton(menu, "ContinueBtn", "CONTINUE", new Vector2(0, 200), true);   // hidden until a chapter is unlocked
+            var start = MenuButton(menu, "StartGameBtn", "START GAME", new Vector2(0, 100), false);
             var howTo = MenuButton(menu, "HowtoPlayBtn", "HOW TO PLAY", new Vector2(0, 0), false);
             var quit  = MenuButton(menu, "QuitBtn", "QUIT", new Vector2(0, -100), false);
 
@@ -206,9 +207,11 @@ namespace Orasyon.EditorTools
             c.FindProperty("howToRoot").objectReferenceValue = howRoot.gameObject;
             c.FindProperty("howToGroup").objectReferenceValue = howGroup;
             c.FindProperty("firstSelected").objectReferenceValue = start.gameObject;
+            c.FindProperty("continueButton").objectReferenceValue = cont.gameObject;
             c.ApplyModifiedPropertiesWithoutUndo();
 
             UnityEventTools.AddPersistentListener(start.onClick, ctrl.StartGame);
+            UnityEventTools.AddPersistentListener(cont.onClick, ctrl.ContinueGame);
             UnityEventTools.AddPersistentListener(howTo.onClick, ctrl.ShowHowTo);
             UnityEventTools.AddPersistentListener(quit.onClick, ctrl.QuitGame);
             UnityEventTools.AddPersistentListener(close.onClick, ctrl.HideHowTo);

@@ -75,7 +75,7 @@ MonoBehaviour:
   - GONG
   - SERPENT
   - DRAGON
-  spriteSize: 560
+  spriteSize: 470
   hoverHeight: 0
   framesPerSecond: 12
   spriteFacesRight: 0

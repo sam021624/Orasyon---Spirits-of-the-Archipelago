@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde939564cab4924aa400c211a29d387, type: 3}
+  m_Name: Interlude_Chapter3
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Story.StoryScript
+  title: Chapter 3 Complete
+  subtitle: Wings Over the Rooftops
+  background: {fileID: 2800000, guid: 21e53a5d9d8e26748bd2b468f196cd8c, type: 3}
+  lines:
+  - speaker: 0
+    text: The crying stops. In the silence, the forest lets out a long breath.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 1
+    text: It's gone. The Tiyanak scrambled everything, Lola. Even my own thoughts.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 2
+    text: You held on to your words anyway. That is what matters. But the night is
+      not over, apo.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 1
+    text: I hear wings. Big ones, over a village. I can see the rooftops.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 2
+    text: The Wak-Wak calls before it comes. And behind it, the Manananggal, who
+      splits herself in two and hunts in the dark.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 2
+    text: 'Remember: salt is her weakness. Words that bring the dawn will drive her
+      off.'
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 1
+    text: Salt and dawn. I'll remember. Take me to the rooftops.
+    flash: 0
+    changeBackground: {fileID: 0}
+    lolaOnStage: 0
+    lolaPose: 0
+  - speaker: 0
+    text: The book flips its pages, and the dark village rises around you.
+    flash: 1
+    changeBackground: {fileID: 2800000, guid: 6149edabf493ece4abb2373cafa28218, type: 3}
+    lolaOnStage: 0
+    lolaPose: 0
+  nextScene: Level4
+  creditsText: 
