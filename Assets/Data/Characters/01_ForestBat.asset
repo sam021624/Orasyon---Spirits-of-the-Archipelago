@@ -17,6 +17,25 @@ MonoBehaviour:
   maxHP: 30
   attackDamage: 2
   attackName: Wing Gust
+  attacks:
+  - name: Wing Gust
+    minDamage: 1
+    maxDamage: 2
+    critChance: 0.1
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+  - name: Fang Bite
+    minDamage: 1
+    maxDamage: 1
+    critChance: 0
+    weight: 2
+    effect: 1
+    effectChance: 0.6
+    effectTurns: 2
+    effectPower: 1
   description: Little bats flit between the old trees after dusk, keeping watch for
     the bigger spirits of the forest. Alone they are only a nuisance. When they gather,
     something larger is never far behind.

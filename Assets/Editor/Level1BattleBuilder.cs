@@ -133,6 +133,7 @@ namespace Orasyon.EditorTools
             dropIcon.gameObject.SetActive(false);   // template: copies are made when a boss drops its treasure
             popup.outlineWidth = 0.2f;
             popup.outlineColor = new Color32(40, 20, 10, 255);
+            popup.gameObject.SetActive(false);   // template: copies are made for each popup
 
             // Word preview (current word as tiles), hint, feedback
             var previewRow = Node("WordPreview", stage);
@@ -146,6 +147,7 @@ namespace Orasyon.EditorTools
             AddShadow(letterTemplate.gameObject);
             var templateLetter = Text("Letter", letterTemplate.transform, "A", 44, Ink, TextAlignmentOptions.Center, FontStyles.Bold);
             Stretch(templateLetter.rectTransform);
+            letterTemplate.gameObject.SetActive(false);   // template for the word preview tiles
 
             var hint = Text("WordHint", stage, "", 22, Cream, TextAlignmentOptions.Center, FontStyles.Bold | FontStyles.Italic);
             Anchor(hint.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -184), new Vector2(700, 32));
@@ -158,6 +160,10 @@ namespace Orasyon.EditorTools
 
             var status = Text("PlayerStatus", stage, "", 20, Cream, TextAlignmentOptions.Left, FontStyles.Bold);
             Anchor(status.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -94), new Vector2(700, 30));
+            var enemyStatus = Text("EnemyStatus", stage, "", 20, Cream, TextAlignmentOptions.Right, FontStyles.Bold);
+            Anchor(enemyStatus.rectTransform, new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-20, -94), new Vector2(600, 30));
+            enemyStatus.outlineWidth = 0.25f;
+            enemyStatus.outlineColor = new Color32(20, 10, 5, 255);
             status.outlineWidth = 0.25f;
             status.outlineColor = new Color32(20, 10, 5, 255);
 
@@ -198,7 +204,7 @@ namespace Orasyon.EditorTools
             var cards = new[]
             {
                 PotionSlot(left.transform, 0, "Healing", "+1 heart",          "5-letter word", PotionSprite("potion_red")),
-                PotionSlot(left.transform, 1, "Warding", "Blocks next attack", "6-letter word", PotionSprite("potion_green")),
+                PotionSlot(left.transform, 1, "Warding", "Cures + blocks a hit", "6-letter word", PotionSprite("potion_green")),
                 PotionSlot(left.transform, 2, "Power",   "Next word x2",       "7+ letters",    PotionSprite("potion_blue")),
             };
             var shelf = Panel("Shelf", left.transform, new Color(0.36f, 0.22f, 0.12f, 1f));
@@ -223,6 +229,7 @@ namespace Orasyon.EditorTools
                 slotBtn.colors = slotColors;
                 var slotIcon = Panel("Icon", slotBg.transform, Color.white);
                 slotIcon.type = Image.Type.Simple; slotIcon.preserveAspect = true; slotIcon.raycastTarget = false;
+                slotIcon.enabled = false;   // shown once a treasure is owned
                 Anchor(slotIcon.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -12), new Vector2(84, 84));
                 var slotLabel = Text("Name", slotBg.transform, "", 15, Gold, TextAlignmentOptions.Top, FontStyles.Bold);
                 Anchor(slotLabel.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 8), new Vector2(98, 62));
@@ -251,9 +258,11 @@ namespace Orasyon.EditorTools
             gso.ApplyModifiedPropertiesWithoutUndo();
 
             var attack = MakeButton("AttackButton", bottom.transform, "ATTACK", new Color(0.32f, 0.62f, 0.28f), Cream, 34);
-            Anchor((RectTransform)attack.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-70, 20), new Vector2(330, 64));
+            Anchor((RectTransform)attack.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-5, 20), new Vector2(290, 64));
             var clear = MakeButton("ClearButton", bottom.transform, "CLEAR", new Color(0.40f, 0.24f, 0.32f), Cream, 22);
-            Anchor((RectTransform)clear.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(170, 20), new Vector2(130, 64));
+            Anchor((RectTransform)clear.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(222, 20), new Vector2(130, 64));
+            var hintBtn = MakeButton("HintButton", bottom.transform, "HINT (3)", new Color(0.20f, 0.42f, 0.55f), Cream, 22);
+            Anchor((RectTransform)hintBtn.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-232, 20), new Vector2(150, 64));
 
             // Right: enemy info
             var right = Panel("EnemyInfoPanel", bottom.transform, WoodLight, panelSprite);
@@ -267,14 +276,17 @@ namespace Orasyon.EditorTools
             portrait.raycastTarget = false;
             var infoName = Text("Name", right.transform, bat.displayName, 28, Gold, TextAlignmentOptions.Left, FontStyles.Bold);
             Anchor(infoName.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(160, -16), new Vector2(404, 40));
-            var infoAttack = Text("Attack", right.transform, "", 21, Cream, TextAlignmentOptions.Left);
-            Anchor(infoAttack.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(160, -60), new Vector2(404, 30));
             var infoWeak = Text("Weakness", right.transform, "", 18, new Color(0.62f, 0.95f, 0.58f), TextAlignmentOptions.TopLeft);
-            Anchor(infoWeak.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(160, -96), new Vector2(404, 54));
+            Anchor(infoWeak.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(160, -62), new Vector2(404, 80));
+            var attacksBox = Panel("AttacksBox", right.transform, WoodDark, panelSprite);
+            Anchor(attacksBox.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -156), new Vector2(552, 132));
+            var infoAttack = Text("Attacks", attacksBox.transform, "", 17, Cream, TextAlignmentOptions.TopLeft);
+            Stretch(infoAttack.rectTransform, 12);
+            infoAttack.lineSpacing = 6;
             var descBox = Panel("DescriptionBox", right.transform, WoodDark, panelSprite);
-            Anchor(descBox.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -160), new Vector2(552, 230));
-            var infoDesc = Text("Description", descBox.transform, "", 20, Cream, TextAlignmentOptions.TopLeft, FontStyles.Italic);
-            Stretch(infoDesc.rectTransform, 16);
+            Anchor(descBox.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -296), new Vector2(552, 96));
+            var infoDesc = Text("Description", descBox.transform, "", 16, Cream, TextAlignmentOptions.TopLeft, FontStyles.Italic);
+            Stretch(infoDesc.rectTransform, 12);
             var info = right.gameObject.AddComponent<EnemyInfoPanel>();
             var iso = new SerializedObject(info);
             iso.FindProperty("portrait").objectReferenceValue = portrait;
@@ -364,6 +376,9 @@ namespace Orasyon.EditorTools
             Set(m, "playerNameLabel", playerName);
             Set(m, "playerHearts", playerHearts);
             Set(m, "playerStatusLabel", status);
+            Set(m, "enemyStatusLabel", enemyStatus);
+            Set(m, "shakeTarget", stage);
+            Set(m, "fxSprite", AssetDatabase.LoadAllAssetsAtPath("Assets/Sprites/UI/soft_glow.png").OfType<Sprite>().FirstOrDefault() ?? circleSprite);
             var enemies = m.FindProperty("enemies");
             enemies.arraySize = foes.Length;
             for (int i = 0; i < foes.Length; i++) enemies.GetArrayElementAtIndex(i).objectReferenceValue = foes[i];
@@ -381,6 +396,7 @@ namespace Orasyon.EditorTools
             Set(m, "gridGroup", gridGroup);
             Set(m, "attackButton", attack);
             Set(m, "clearButton", clear);
+            Set(m, "hintButton", hintBtn);
             Set(m, "scrambleButton", scramble);
             Set(m, "menuButton", menu);
             Set(m, "buffs", buffInventory);
@@ -491,12 +507,61 @@ namespace Orasyon.EditorTools
             kapre.attackName = "Smoke Slam";
             kapre.themeWords = new[] { "SMOKE", "CIGAR", "GIANT", "BALETE", "ASH" };
             kapre.spriteSize = 430f;
+
+            // ── Movesets (overwritten on every rebuild; tune here or in the assets) ──
+            bat.attacks = new[]
+            {
+                Atk("Wing Gust", 1, 2, weight: 3, crit: 0.10f),
+                Atk("Fang Bite", 1, 1, weight: 2, effect: AttackEffect.Poison, chance: 0.6f, turns: 2, power: 1),
+            };
+            tree.attacks = new[]
+            {
+                Atk("Root Lash", 2, 3, weight: 3, crit: 0.10f),
+                Atk("Entangle",  1, 1, weight: 1, effect: AttackEffect.Stun, chance: 0.5f),
+            };
+            king.attacks = new[]
+            {
+                Atk("Staff Smash",   3, 4, weight: 3, crit: 0.20f),
+                Atk("Mischief Hex",  1, 2, weight: 2, effect: AttackEffect.Weaken, turns: 2, power: 40),
+                Atk("Mound Shelter", 0, 0, weight: 1, effect: AttackEffect.Guard,  turns: 2, power: 50),
+            };
+            mushroom.attacks = new[]
+            {
+                Atk("Spore Burst",  1, 2, weight: 3, effect: AttackEffect.Poison, chance: 0.6f, turns: 3, power: 1),
+                Atk("Sleepy Spores", 1, 1, weight: 1, effect: AttackEffect.Stun, chance: 0.5f),
+            };
+            minion.attacks = new[]
+            {
+                Atk("Club Bonk", 2, 3, weight: 3, crit: 0.25f),
+                Atk("Dirt Toss", 1, 1, weight: 1, effect: AttackEffect.Weaken, chance: 0.8f, turns: 2, power: 30),
+            };
+            kapre.attacks = new[]
+            {
+                Atk("Smoke Slam",    3, 5, weight: 3, crit: 0.15f),
+                Atk("Choking Smoke", 2, 2, weight: 2, effect: AttackEffect.Poison, chance: 0.8f, turns: 2, power: 2),
+                Atk("Ground Stomp",  2, 3, weight: 1, effect: AttackEffect.Stun, chance: 0.5f),
+                Atk("Long Drag",     0, 0, weight: 1, effect: AttackEffect.Leech, power: 6),
+            };
+            foreach (var d in new[] { bat, tree, king, mushroom, minion, kapre })
+            {
+                d.attackName = d.attacks[0].name;   // keep the legacy single-attack fields in sync
+                d.attackDamage = d.attacks[0].maxDamage;
+                EditorUtility.SetDirty(d);
+            }
             kapre.description = "A towering spirit who sits in the oldest balete, smoking a cigar that never burns out. " +
                                 "He is not cruel, only proud, and he has no patience for visitors who forget their manners.";
             EditorUtility.SetDirty(kapre);
 
             AssetDatabase.SaveAssets();
         }
+
+        private static EnemyAttack Atk(string name, int min, int max, float weight = 1f, float crit = 0f,
+                                       AttackEffect effect = AttackEffect.None, float chance = 1f, int turns = 2, int power = 1)
+            => new EnemyAttack
+            {
+                name = name, minDamage = min, maxDamage = max, weight = weight, critChance = crit,
+                effect = effect, effectChance = chance, effectTurns = turns, effectPower = power,
+            };
 
         /// <summary>Loads or creates a creature's data. Clip names are folder-name prefixes; null = not available.</summary>
         private static CharacterDefinition Creature(string file, string folder, string displayName,

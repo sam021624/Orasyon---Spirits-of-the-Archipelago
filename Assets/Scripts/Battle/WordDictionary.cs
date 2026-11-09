@@ -44,6 +44,24 @@ namespace Orasyon.Battle
                 Debug.LogError("[WordDictionary] No words loaded. Expected Assets/Resources/Words/words.txt");
         }
 
+        private static HashSet<string> common;
+
+        /// <summary>
+        /// True for everyday words (Resources/Words/common_words.txt, ~8,000 of the most used English words).
+        /// Used to pick hints the player will actually recognise.
+        /// </summary>
+        public static bool IsCommon(string word)
+        {
+            if (common == null)
+            {
+                var list = new List<string>();
+                AddFrom(list, Resources.Load<TextAsset>("Words/common_words"));
+                AddFrom(list, Resources.Load<TextAsset>("Words/custom_words"));   // folklore words count as known
+                common = new HashSet<string>(list);
+            }
+            return !string.IsNullOrEmpty(word) && common.Contains(word.ToUpperInvariant());
+        }
+
         /// <summary>True if <paramref name="word"/> is a valid word of at least MinLength letters.</summary>
         public static bool IsWord(string word)
         {

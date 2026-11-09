@@ -17,6 +17,43 @@ MonoBehaviour:
   maxHP: 50
   attackDamage: 5
   attackName: Smoke Slam
+  attacks:
+  - name: Smoke Slam
+    minDamage: 3
+    maxDamage: 5
+    critChance: 0.15
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+  - name: Choking Smoke
+    minDamage: 2
+    maxDamage: 2
+    critChance: 0
+    weight: 2
+    effect: 1
+    effectChance: 0.8
+    effectTurns: 2
+    effectPower: 2
+  - name: Ground Stomp
+    minDamage: 2
+    maxDamage: 3
+    critChance: 0
+    weight: 1
+    effect: 2
+    effectChance: 0.5
+    effectTurns: 2
+    effectPower: 1
+  - name: Long Drag
+    minDamage: 0
+    maxDamage: 0
+    critChance: 0
+    weight: 1
+    effect: 5
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 6
   description: A towering spirit who sits in the oldest balete, smoking a cigar that
     never burns out. He is not cruel, only proud, and he has no patience for visitors
     who forget their manners.

@@ -15,8 +15,20 @@ namespace Orasyon.Battle
 
         [Header("Stats")]
         public int    maxHP        = 50;
+        [Tooltip("Used only when the Attacks list below is empty.")]
         public int    attackDamage = 8;
+        [Tooltip("Used only when the Attacks list below is empty.")]
         public string attackName   = "Strike";
+
+        [Header("Attacks (enemies pick one at random each turn, by weight)")]
+        public EnemyAttack[] attacks;
+
+        /// <summary>The attack list, or a single plain attack built from attackName / attackDamage.</summary>
+        public EnemyAttack[] GetAttacks()
+        {
+            if (attacks != null && attacks.Length > 0) return attacks;
+            return new[] { new EnemyAttack { name = attackName, minDamage = attackDamage, maxDamage = attackDamage } };
+        }
 
         [Header("Info Panel")]
         [TextArea(3, 6)]

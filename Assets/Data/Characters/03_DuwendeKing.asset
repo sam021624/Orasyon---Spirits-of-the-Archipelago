@@ -17,6 +17,34 @@ MonoBehaviour:
   maxHP: 50
   attackDamage: 4
   attackName: Staff Smash
+  attacks:
+  - name: Staff Smash
+    minDamage: 3
+    maxDamage: 4
+    critChance: 0.2
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+  - name: Mischief Hex
+    minDamage: 1
+    maxDamage: 2
+    critChance: 0
+    weight: 2
+    effect: 3
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 40
+  - name: Mound Shelter
+    minDamage: 0
+    maxDamage: 0
+    critChance: 0
+    weight: 1
+    effect: 4
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 50
   description: Ruler of the backyard mounds. Walk past his home without a respectful
     "tabi tabi po" and his mischief will follow you for days. Today, he is not in
     a forgiving mood.

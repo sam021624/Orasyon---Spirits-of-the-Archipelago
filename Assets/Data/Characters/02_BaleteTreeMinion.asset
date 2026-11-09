@@ -17,6 +17,25 @@ MonoBehaviour:
   maxHP: 30
   attackDamage: 3
   attackName: Root Lash
+  attacks:
+  - name: Root Lash
+    minDamage: 2
+    maxDamage: 3
+    critChance: 0.1
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+  - name: Entangle
+    minDamage: 1
+    maxDamage: 1
+    critChance: 0
+    weight: 1
+    effect: 2
+    effectChance: 0.5
+    effectTurns: 2
+    effectPower: 1
   description: Elders warn children never to point at a balete tree. Its tangled
     roots remember every insult, and sometimes they pull themselves out of the ground
     to settle the score.

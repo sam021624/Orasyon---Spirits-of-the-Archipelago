@@ -21,6 +21,9 @@ namespace Orasyon.Battle
 
         private readonly List<GameObject> pool = new List<GameObject>();
 
+        /// <summary>Set by BattleManager so the hint matches real damage (weakness, weaken, guard, potions).</summary>
+        public static System.Func<string, int> DamageEstimator;
+
         private void Start()
         {
             if (letterTemplate != null) letterTemplate.SetActive(false);
@@ -57,7 +60,13 @@ namespace Orasyon.Battle
                 if (word.Length == 0)                              hintLabel.text = "";
                 else if (word.Length < WordDictionary.MinLength)   hintLabel.text = "Words need at least 3 letters";
                 else if (!valid)                                   hintLabel.text = "Not a word in your book";
-                else hintLabel.text = $"{Mathf.RoundToInt(LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier)} damage";
+                else
+                {
+                    int dmg = DamageEstimator != null ? DamageEstimator(word)
+                                                      : Mathf.RoundToInt(LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier);
+                    string tier = word.Length >= 7 ? "  <color=#FFD700>Brilliant!</color>" : word.Length >= 5 ? "  <color=#9CFF7A>Spell!</color>" : "";
+                    hintLabel.text = $"{dmg} damage{tier}";
+                }
             }
         }
     }

@@ -17,6 +17,25 @@ MonoBehaviour:
   maxHP: 30
   attackDamage: 3
   attackName: Club Bonk
+  attacks:
+  - name: Club Bonk
+    minDamage: 2
+    maxDamage: 3
+    critChance: 0.25
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+  - name: Dirt Toss
+    minDamage: 1
+    maxDamage: 1
+    critChance: 0
+    weight: 1
+    effect: 3
+    effectChance: 0.8
+    effectTurns: 2
+    effectPower: 30
   description: A loyal servant of the Duwende King, still sore about his master's
     defeat. He followed you into the forest looking for revenge, and for the club
     he keeps dropping.

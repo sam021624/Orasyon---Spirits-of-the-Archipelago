@@ -218,6 +218,37 @@ namespace Orasyon.Battle
             return empties.Count;
         }
 
+        // ── Hints ────────────────────────────────────────────────────────────
+        /// <summary>
+        /// Picks a word to suggest from the tiles on the board: the longest common word if there is one,
+        /// otherwise the longest valid word. Returns null if no word can be made.
+        /// </summary>
+        public string FindHintWord()
+        {
+            var words = BoardGenerator.FindWords(RemainingLetters);
+            if (words.Count == 0) return null;
+            return words.FirstOrDefault(WordDictionary.IsCommon) ?? words[0];   // list is longest-first
+        }
+
+        /// <summary>Clears the current selection and lights up tiles that spell <paramref name="word"/>.</summary>
+        public void HighlightWord(string word)
+        {
+            EnsureTiles();
+            ClearSelectionSilently();
+            ClearHighlights();
+            var used = new HashSet<LetterTileData>();
+            foreach (char ch in word.ToUpperInvariant())
+            {
+                var tile = tiles.Cast<LetterTileData>().FirstOrDefault(t => !t.IsEmpty && t.Letter == ch && !used.Contains(t));
+                if (tile == null) continue;
+                used.Add(tile);
+                tile.IsHighlighted = true;
+                tile.View.Pop();
+                tile.View.Refresh();
+            }
+            Changed();
+        }
+
         // ── Tutorial helpers ─────────────────────────────────────────────────
         public void SetHighlight(int row, int col, bool on)
         {

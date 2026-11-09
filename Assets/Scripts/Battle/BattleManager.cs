@@ -32,6 +32,13 @@ namespace Orasyon.Battle
         [SerializeField] private TextMeshProUGUI     enemyNameLabel;
         [SerializeField] private HeartBar            enemyHearts;
         [SerializeField] private EnemyInfoPanel      enemyInfo;
+        [SerializeField] private TextMeshProUGUI     enemyStatusLabel;
+
+        [Header("Effects")]
+        [Tooltip("Soft round sprite used for spell orbs, sparks and impact bursts.")]
+        [SerializeField] private Sprite        fxSprite;
+        [Tooltip("Shaken on big hits (usually the battle stage).")]
+        [SerializeField] private RectTransform shakeTarget;
 
         [Header("Stage")]
         [SerializeField] private ParallaxBackground background;
@@ -55,6 +62,9 @@ namespace Orasyon.Battle
         [SerializeField] private Button clearButton;
         [SerializeField] private Button scrambleButton;
         [SerializeField] private Button menuButton;
+        [SerializeField] private Button hintButton;
+        [Tooltip("Hints available per chapter. Each one lights up a word on the board.")]
+        [SerializeField] private int    hintsPerChapter = 3;
 
         [Header("Potions")]
         [SerializeField] private BuffInventory buffs;
@@ -107,6 +117,19 @@ namespace Orasyon.Battle
         private bool gridLocked;
         private bool actionsLocked;
 
+        private int  hintsLeft;
+
+        // Status effects
+        private int  poisonTurns, poisonDamage;    // on the player
+        private int  weakenTurns, weakenPercent;   // on the player
+        private bool stunned, stunImmune;          // on the player (immune right after a stun, so it can't chain)
+        private int  guardTurns, guardPercent;     // on the enemy
+        private Vector2 shakeBase;
+        private bool    shaking;
+
+        private static readonly Color MagicGreen = new Color(0.55f, 1f, 0.45f, 1f);
+        private static readonly Color MagicGold  = new Color(1f, 0.85f, 0.35f, 1f);
+
         private CharacterDefinition CurrentEnemy =>
             enemies != null && enemyIndex < enemies.Length ? enemies[enemyIndex] : null;
 
@@ -138,6 +161,9 @@ namespace Orasyon.Battle
             clearButton.onClick.AddListener(letterGrid.ClearSelection);
             scrambleButton.onClick.AddListener(OnScramblePressed);
             menuButton.onClick.AddListener(LoadMainMenu);
+            hintsLeft = hintsPerChapter;
+            if (hintButton != null) hintButton.onClick.AddListener(OnHintPressed);
+            RefreshHintLabel();
             retryButton.onClick.AddListener(Retry);
             resultMenuButton.onClick.AddListener(LoadMainMenu);
             buffs.OnBuffUsed += UseBuff;
@@ -146,6 +172,9 @@ namespace Orasyon.Battle
             if (dropIconTemplate != null) dropIconTemplate.gameObject.SetActive(false);
             if (rewardGroup != null) rewardGroup.SetActive(false);
             letterGrid.OnSelectionChanged += RefreshInput;
+
+            WordPreview.DamageEstimator = PreviewDamage;
+            if (shakeTarget != null) shakeBase = shakeTarget.anchoredPosition;
 
             resultPanel.SetActive(false);
             damagePopupTemplate.gameObject.SetActive(false);
@@ -178,7 +207,37 @@ namespace Orasyon.Battle
         private void OnAttackPressed()
         {
             if (!CanAct || !letterGrid.CurrentWordIsValid) return;
-            StartCoroutine(AttackRoutine(letterGrid.ConsumeSelection()));
+            string word = letterGrid.ConsumeSelection();
+            letterGrid.ClearHighlights();   // any hint glow goes away once you attack
+            StartCoroutine(AttackRoutine(word));
+        }
+
+        /// <summary>Lights up the tiles of a word the player can make (common words preferred).</summary>
+        private void OnHintPressed()
+        {
+            if (!CanAct || hintsLeft <= 0) return;
+
+            string word = letterGrid.FindHintWord();
+            if (word == null)
+            {
+                // Nothing can be made from what's left: refill the gaps instead (doesn't use a hint)
+                letterGrid.RefillEmpty(minWordsOnBoard);
+                ShowFeedback("No words left. New letters fill the empty spaces.", true);
+                return;
+            }
+
+            hintsLeft--;
+            RefreshHintLabel();
+            letterGrid.HighlightWord(word);
+            ShowFeedback($"Lola whispers through the book: <b>\"{word}\"</b>  <color=#9FE2BF>({hintsLeft} hint{(hintsLeft == 1 ? "" : "s")} left)</color>", true);
+            RefreshInput();
+        }
+
+        private void RefreshHintLabel()
+        {
+            if (hintButton == null) return;
+            var label = hintButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null) label.text = $"HINT ({hintsLeft})";
         }
 
         /// <summary>Shuffles the tiles still on the board. Free: the letters stay the same, only their places change.</summary>
@@ -201,10 +260,13 @@ namespace Orasyon.Battle
                     ShowFeedback($"Healing Potion restores {healed} HP.", true);
                     break;
                 case BuffType.WardingPotion:
+                    // Like Bookworm's green potion: cures ailments, plus a ward against the next attack
+                    bool cured = poisonTurns > 0 || weakenTurns > 0;
+                    poisonTurns = 0; weakenTurns = 0;
                     shieldCharges++;
                     playerAnimator.PlayOnce(player.cast);
                     Popup(PlayerRect, "Warded", new Color(0.45f, 1f, 0.5f));
-                    ShowFeedback("A green ward surrounds you. The next attack will be blocked.", true);
+                    ShowFeedback((cured ? "Your ailments fade. " : "") + "A green ward surrounds you. The next attack will be blocked.", true);
                     break;
                 case BuffType.PowerPotion:
                     damageMultiplier = 2;
@@ -225,35 +287,67 @@ namespace Orasyon.Battle
             OnPlayerAttack?.Invoke(word);
 
             var enemy = CurrentEnemy;
-            bool weakness = IsThemeWord(enemy, word);
+            int damage = ComputeDamage(word, out bool weakness);
             bool empowered = damageMultiplier > 1;
-            int damage = Mathf.RoundToInt(LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier);   // treasures add damage
-            if (weakness) damage = Mathf.RoundToInt(damage * 1.5f);
-            damage *= damageMultiplier;
+            bool weakened  = weakenTurns > 0;
+            bool guarded   = guardTurns > 0;
             damageMultiplier = 1;
+            if (weakenTurns > 0) weakenTurns--;   // these last a number of words
+            if (guardTurns > 0)  guardTurns--;
             RefreshStatus();
-            ShowFeedback($"<b>{word}</b>!", true);
 
-            // Walk up to the enemy and strike
-            yield return WalkTo(playerAnimator, player, enemyHomeX - meleeGap);
-            float swing = playerAnimator.Duration(player.attack);
-            playerAnimator.PlayOnce(player.attack);
-            yield return new WaitForSeconds(swing * 0.55f);
+            // Longer words look (and hit) bigger: 3-4 letters = staff swing, 5-6 = spell, 7+ = brilliant spell
+            int tier = word.Length >= 7 ? 3 : word.Length >= 5 ? 2 : 1;
+            ShowFeedback(tier == 3 ? $"<b>{word}</b>!  <color=#FFD700>Brilliant!</color>"
+                       : tier == 2 ? $"<b>{word}</b>!  <color=#9CFF7A>The book glows...</color>"
+                       : $"<b>{word}</b>!", true);
 
-            enemyHP = Mathf.Max(0, enemyHP - damage);
-            RefreshHearts();
-            PlayHurt(enemyAnimator, enemy);
-            Popup(EnemyRect, "-" + damage, new Color(1f, 0.85f, 0.3f));
+            void Hit()
+            {
+                enemyHP = Mathf.Max(0, enemyHP - damage);
+                RefreshHearts();
+                PlayHurt(enemyAnimator, enemy);
+                Popup(EnemyRect, "-" + damage, new Color(1f, 0.85f, 0.3f), 1f + 0.25f * (tier - 1));
+                StartCoroutine(Burst(EnemyCenter, 140f + tier * 70f, tier == 1 ? new Color(1f, 0.95f, 0.75f, 0.9f) : tier == 3 ? MagicGold : MagicGreen));
+                if (tier == 3)
+                {
+                    StartCoroutine(Shake(0.35f, 16f));
+                    PopupAt((PlayerRect.anchoredPosition + EnemyRect.anchoredPosition) * 0.5f + new Vector2(0f, 330f), "BRILLIANT!", MagicGold, 1.7f);
+                }
 
-            string msg = $"<b>{word}</b> deals {damage} damage!";
-            if (weakness)  msg += "  <color=#9CFF7A>Weakness!</color>";
-            if (empowered) msg += "  <color=#7FB2FF>Power x2!</color>";
-            var reward = buffs.AwardForWord(word.Length);
-            if (reward != null) msg += $"\n<color=#9FE2BF>You found a {reward.displayName}!</color>";
-            ShowFeedback(msg, true);
+                string msg = $"<b>{word}</b> deals {damage} damage!";
+                if (weakness)  msg += "  <color=#9CFF7A>Weakness!</color>";
+                if (empowered) msg += "  <color=#7FB2FF>Power x2!</color>";
+                if (weakened)  msg += "  <color=#C9A2FF>(weakened)</color>";
+                if (guarded)   msg += "  <color=#8CC8FF>(guarded)</color>";
+                var reward = buffs.AwardForWord(word.Length);
+                if (reward != null) msg += $"\n<color=#9FE2BF>You found a {reward.displayName}!</color>";
+                ShowFeedback(msg, true);
+            }
 
-            yield return new WaitForSeconds(swing * 0.45f);
-            yield return WalkTo(playerAnimator, player, playerHomeX);
+            if (tier == 1)
+            {
+                // Walk up to the enemy and strike with the staff
+                yield return WalkTo(playerAnimator, player, enemyHomeX - meleeGap);
+                float swing = playerAnimator.Duration(player.attack);
+                playerAnimator.PlayOnce(player.attack);
+                yield return new WaitForSeconds(swing * 0.55f);
+                Hit();
+                yield return new WaitForSeconds(swing * 0.45f);
+                yield return WalkTo(playerAnimator, player, playerHomeX);
+            }
+            else
+            {
+                // Cast from where he stands: raise the staff, a spell orb flies to the enemy
+                var clip = player.cast != null && player.cast.Length > 0 ? player.cast : player.attack;
+                float castTime = playerAnimator.Duration(clip);
+                playerAnimator.PlayOnce(clip);
+                StartCoroutine(Burst(PlayerStaff, tier == 3 ? 200f : 130f, tier == 3 ? MagicGold : MagicGreen));
+                yield return new WaitForSeconds(castTime * 0.5f);
+                yield return Projectile(tier);
+                Hit();
+                yield return new WaitForSeconds(Mathf.Max(0.35f, castTime * 0.5f));
+            }
 
             // Enemy defeated → next encounter (or victory)
             if (enemyHP <= 0)
@@ -278,19 +372,72 @@ namespace Orasyon.Battle
             }
 
             yield return new WaitForSeconds(0.25f);
-            yield return EnemyTurnRoutine(enemy);
+            yield return EnemyPhase(enemy);
             if (CheckPlayerDefeat()) yield break;
             FinishTurn();
         }
 
+        /// <summary>
+        /// The enemy acts, then the player's turn begins: poison ticks, and if stunned the player
+        /// loses the turn and the enemy acts again (once; a stun can't chain).
+        /// </summary>
+        private IEnumerator EnemyPhase(CharacterDefinition enemy)
+        {
+            yield return EnemyTurnRoutine(enemy);
+            while (playerHP > 0)
+            {
+                yield return PoisonTick();
+                if (playerHP <= 0 || !stunned) break;
+
+                stunned = false;
+                stunImmune = true;
+                RefreshStatus();
+                Popup(PlayerRect, "Stunned!", new Color(1f, 0.88f, 0.4f), 1.2f);
+                ShowFeedback("<color=#FFE066>You are stunned and lose your turn!</color>", false);
+                yield return new WaitForSeconds(1f);
+                yield return EnemyTurnRoutine(enemy);
+            }
+            stunImmune = false;
+        }
+
+        private IEnumerator PoisonTick()
+        {
+            if (poisonTurns <= 0) yield break;
+            poisonTurns--;
+            playerHP = Mathf.Max(0, playerHP - poisonDamage);
+            playerAnimator.Flash(new Color(0.55f, 1f, 0.5f), 0.25f);
+            Popup(PlayerRect, "Poison -" + poisonDamage, new Color(0.55f, 1f, 0.45f));
+            if (feedbackLabel != null) feedbackLabel.text += $"\n<color=#9CFF7A>Poison deals {poisonDamage} damage.</color>";
+            RefreshHearts();
+            RefreshStatus();
+            yield return new WaitForSeconds(0.7f);
+        }
+
         private IEnumerator EnemyTurnRoutine(CharacterDefinition enemy)
         {
+            var atk = PickAttack(enemy);
+            float strike = enemyAnimator.Duration(enemy.attack);
+
+            // Self-buff (guard, heal): performed in place
+            if (atk.IsSelfBuff)
+            {
+                ShowFeedback($"The {enemy.displayName} uses <b>{atk.name}</b>!", false);
+                enemyAnimator.PlayOnce(enemy.attack);
+                yield return new WaitForSeconds(strike * 0.5f);
+                StartCoroutine(Burst(EnemyCenter, 260f, atk.effect == AttackEffect.Leech ? new Color(1f, 0.55f, 0.7f, 0.9f) : new Color(0.55f, 0.8f, 1f, 0.9f)));
+                ShowFeedback($"The {enemy.displayName} uses <b>{atk.name}</b>!" + ApplyEffect(enemy, atk, 0), false);
+                RefreshHearts();
+                RefreshStatus();
+                yield return new WaitForSeconds(Mathf.Max(0.4f, strike * 0.5f));
+                yield break;
+            }
+
             // Close the distance to the player, strike, then go back
             float home = EnemyRect.anchoredPosition.x;
             float reach = (player.spriteSize + enemy.spriteSize) * 0.5f * 0.75f;
+            ShowFeedback($"The {enemy.displayName} uses <b>{atk.name}</b>!", false);
             yield return WalkTo(enemyAnimator, enemy, playerHomeX + reach);
 
-            float strike = enemyAnimator.Duration(enemy.attack);
             enemyAnimator.PlayOnce(enemy.attack);
             yield return new WaitForSeconds(strike * 0.6f);
 
@@ -298,14 +445,32 @@ namespace Orasyon.Battle
             {
                 shieldCharges--;
                 Popup(PlayerRect, "Blocked!", new Color(0.55f, 0.8f, 1f));
-                ShowFeedback($"Your ward blocks {enemy.attackName}!", true);
+                StartCoroutine(Burst(PlayerCenter, 300f, new Color(0.45f, 1f, 0.5f, 0.8f)));
+                ShowFeedback($"Your ward blocks {atk.name}!", true);
             }
             else
             {
-                playerHP = Mathf.Max(0, playerHP - enemy.attackDamage);
+                int dmg = atk.RollDamage(rng);
+                bool crit = rng.NextDouble() < atk.critChance;
+                if (crit) dmg *= 2;
+                playerHP = Mathf.Max(0, playerHP - dmg);
                 PlayHurt(playerAnimator, player);
-                Popup(PlayerRect, "-" + enemy.attackDamage, new Color(1f, 0.4f, 0.35f));
-                ShowFeedback($"The {enemy.displayName} uses {enemy.attackName}! -{enemy.attackDamage} HP", false);
+                StartCoroutine(Burst(PlayerCenter, crit ? 300f : 180f, new Color(1f, 0.45f, 0.35f, 0.85f)));
+                if (crit)
+                {
+                    Popup(PlayerRect, "CRIT -" + dmg, new Color(1f, 0.3f, 0.25f), 1.45f);
+                    StartCoroutine(Shake(0.3f, 14f));
+                }
+                else
+                {
+                    Popup(PlayerRect, "-" + dmg, new Color(1f, 0.4f, 0.35f));
+                }
+
+                string msg = (crit ? "<color=#FF6B6B>Critical hit!</color>  " : "") +
+                             $"The {enemy.displayName} uses <b>{atk.name}</b>! -{dmg} HP";
+                if (atk.effect != AttackEffect.None && rng.NextDouble() < atk.effectChance)
+                    msg += ApplyEffect(enemy, atk, dmg);
+                ShowFeedback(msg, false);
             }
             RefreshHearts();
             RefreshStatus();
@@ -314,9 +479,178 @@ namespace Orasyon.Battle
             yield return WalkTo(enemyAnimator, enemy, home);
         }
 
+        private EnemyAttack PickAttack(CharacterDefinition enemy)
+        {
+            var list = enemy.GetAttacks();
+            float total = 0f;
+            foreach (var a in list) total += Mathf.Max(0f, a.weight);
+            if (total <= 0f) return list[0];
+
+            double roll = rng.NextDouble() * total;
+            foreach (var a in list)
+            {
+                roll -= Mathf.Max(0f, a.weight);
+                if (roll < 0) return a;
+            }
+            return list[list.Length - 1];
+        }
+
+        /// <summary>Applies an attack's status effect and returns the extra feedback line.</summary>
+        private string ApplyEffect(CharacterDefinition enemy, EnemyAttack atk, int damageDealt)
+        {
+            string c = EnemyAttack.EffectColor(atk.effect);
+            switch (atk.effect)
+            {
+                case AttackEffect.Poison:
+                    poisonTurns  = Mathf.Max(poisonTurns, atk.effectTurns);
+                    poisonDamage = Mathf.Max(poisonDamage, atk.effectPower);
+                    playerAnimator.Flash(new Color(0.55f, 1f, 0.5f), 0.3f);
+                    return $"\n<color={c}>You are poisoned! ({poisonDamage} per turn, {poisonTurns} turns)</color>";
+
+                case AttackEffect.Stun:
+                    if (stunImmune) return "";
+                    stunned = true;
+                    return $"\n<color={c}>You are stunned!</color>";
+
+                case AttackEffect.Weaken:
+                    weakenTurns   = Mathf.Max(weakenTurns, atk.effectTurns);
+                    weakenPercent = Mathf.Max(weakenPercent, atk.effectPower);
+                    return $"\n<color={c}>You feel weakened! Your next {weakenTurns} words deal -{weakenPercent}% damage.</color>";
+
+                case AttackEffect.Guard:
+                    guardTurns   = atk.effectTurns;
+                    guardPercent = atk.effectPower;
+                    Popup(EnemyRect, "Guard", new Color(0.55f, 0.8f, 1f));
+                    return $"\n<color={c}>It takes -{guardPercent}% damage from your next {guardTurns} words.</color>";
+
+                case AttackEffect.Leech:
+                    int heal = damageDealt > 0 ? Mathf.Max(1, damageDealt * atk.effectPower / 100) : atk.effectPower;
+                    heal = Mathf.Min(heal, enemy.maxHP - enemyHP);
+                    if (heal <= 0) return "";
+                    enemyHP += heal;
+                    Popup(EnemyRect, "+" + heal, new Color(1f, 0.55f, 0.7f));
+                    return $"\n<color={c}>The {enemy.displayName} heals {heal} HP!</color>";
+            }
+            return "";
+        }
+
+        private void ClearStatuses()
+        {
+            poisonTurns = weakenTurns = guardTurns = 0;
+            stunned = stunImmune = false;
+            RefreshStatus();
+        }
+
+        // ── Damage ───────────────────────────────────────────────────────────
+        private int ComputeDamage(string word, out bool weakness)
+        {
+            weakness = IsThemeWord(CurrentEnemy, word);
+            float d = LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier;   // treasures add damage
+            if (weakness) d *= 1.5f;
+            d *= damageMultiplier;
+            if (weakenTurns > 0) d *= 1f - weakenPercent / 100f;
+            if (guardTurns > 0)  d *= 1f - guardPercent / 100f;
+            return Mathf.Max(1, Mathf.RoundToInt(d));
+        }
+
+        private int PreviewDamage(string word) => ComputeDamage(word, out _);
+
+        private void OnDestroy()
+        {
+            if (WordPreview.DamageEstimator == (Func<string, int>)PreviewDamage) WordPreview.DamageEstimator = null;
+        }
+
+        // ── Visual effects (spells, sparks, shake) ───────────────────────────
+        private Vector2 PlayerCenter => PlayerRect.anchoredPosition + new Vector2(0f, player.spriteSize * 0.45f);
+        private Vector2 PlayerStaff  => PlayerRect.anchoredPosition + new Vector2(70f, player.spriteSize * 0.75f);
+        private Vector2 EnemyCenter  => EnemyRect.anchoredPosition + new Vector2(0f, (CurrentEnemy != null ? CurrentEnemy.spriteSize : 300f) * 0.45f);
+
+        private Image MakeFx(Vector2 pos, float size, Color color)
+        {
+            var go = new GameObject("FX", typeof(RectTransform), typeof(Image));
+            var rt = (RectTransform)go.transform;
+            rt.SetParent(PlayerRect.parent, false);
+            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition = pos;
+            rt.sizeDelta = new Vector2(size, size);
+            rt.SetAsLastSibling();
+            var img = go.GetComponent<Image>();
+            img.sprite = fxSprite;
+            img.color = color;
+            img.raycastTarget = false;
+            return img;
+        }
+
+        /// <summary>A glowing spell orb arcs from the staff to the enemy, leaving sparks.</summary>
+        private IEnumerator Projectile(int tier)
+        {
+            if (fxSprite == null) yield break;
+            Color color = tier == 3 ? MagicGold : MagicGreen;
+            float size = tier == 3 ? 150f : 95f;
+            var orb = MakeFx(PlayerStaff, size, color);
+            var core = MakeFx(PlayerStaff, size * 0.45f, new Color(1f, 1f, 0.92f, 1f));
+            Vector2 from = PlayerStaff, to = EnemyCenter;
+            float duration = tier == 3 ? 0.45f : 0.35f;
+            int frame = 0;
+
+            for (float t = 0f; t < 1f; t += Time.deltaTime / duration)
+            {
+                Vector2 p = Vector2.Lerp(from, to, t) + Vector2.up * Mathf.Sin(t * Mathf.PI) * (tier == 3 ? 110f : 70f);
+                float pulse = 1f + 0.15f * Mathf.Sin(t * 30f);
+                orb.rectTransform.anchoredPosition = core.rectTransform.anchoredPosition = p;
+                orb.rectTransform.localScale = Vector3.one * pulse;
+                if (frame++ % 2 == 0)
+                {
+                    var c = color; c.a = 0.7f;
+                    StartCoroutine(FadeFx(MakeFx(p + UnityEngine.Random.insideUnitCircle * 18f, size * 0.4f, c), 0.35f, 0.3f));
+                }
+                yield return null;
+            }
+            Destroy(orb.gameObject);
+            Destroy(core.gameObject);
+        }
+
+        /// <summary>Expanding, fading flash (impacts, casting, guarding).</summary>
+        private IEnumerator Burst(Vector2 pos, float size, Color color)
+        {
+            if (fxSprite == null) yield break;
+            var fx = MakeFx(pos, size, color);
+            yield return FadeFx(fx, 0.35f, 1.5f);
+        }
+
+        private static IEnumerator FadeFx(Image fx, float duration, float endScale)
+        {
+            Color c = fx.color;
+            float startAlpha = c.a;
+            for (float t = 0f; t < 1f; t += Time.deltaTime / duration)
+            {
+                if (fx == null) yield break;
+                fx.rectTransform.localScale = Vector3.one * Mathf.Lerp(0.4f, endScale, 1f - (1f - t) * (1f - t));
+                c.a = startAlpha * (1f - t);
+                fx.color = c;
+                yield return null;
+            }
+            if (fx != null) Destroy(fx.gameObject);
+        }
+
+        private IEnumerator Shake(float duration, float magnitude)
+        {
+            if (shakeTarget == null || shaking) yield break;
+            shaking = true;
+            for (float t = 0f; t < duration; t += Time.deltaTime)
+            {
+                shakeTarget.anchoredPosition = shakeBase + UnityEngine.Random.insideUnitCircle * magnitude * (1f - t / duration);
+                yield return null;
+            }
+            shakeTarget.anchoredPosition = shakeBase;
+            shaking = false;
+        }
+
         /// <summary>Player walks forward while the background scrolls and the next enemy approaches.</summary>
         private IEnumerator TravelRoutine()
         {
+            ClearStatuses();   // ailments and guards fade between fights
             LoadEnemy(enemyIndex);
             var next = CurrentEnemy;
             SetX(EnemyRect, next, enemyHomeX + travelDistance);
@@ -546,6 +880,7 @@ namespace Orasyon.Battle
             if (attackButton != null)   attackButton.interactable   = canAct && !actionsLocked && letterGrid.CurrentWordIsValid;
             if (scrambleButton != null) scrambleButton.interactable = canAct && !actionsLocked;
             if (clearButton != null)    clearButton.interactable    = canAct && !gridLocked;
+            if (hintButton != null)     hintButton.interactable     = canAct && !actionsLocked && hintsLeft > 0;
             if (buffs != null)          buffs.Interactable          = canAct && !actionsLocked;
         }
 
@@ -558,11 +893,18 @@ namespace Orasyon.Battle
 
         private void RefreshStatus()
         {
-            if (playerStatusLabel == null) return;
-            string s = "";
-            if (shieldCharges > 0)     s += $"<color=#7CFF8A>Warded x{shieldCharges}</color>   ";
-            if (damageMultiplier > 1)  s += "<color=#7FB2FF>Powered: next word x2</color>";
-            playerStatusLabel.text = s;
+            if (playerStatusLabel != null)
+            {
+                string s = "";
+                if (shieldCharges > 0)    s += $"<color=#7CFF8A>Warded x{shieldCharges}</color>   ";
+                if (damageMultiplier > 1) s += "<color=#7FB2FF>Powered x2</color>   ";
+                if (poisonTurns > 0)      s += $"<color=#9CFF7A>Poisoned ({poisonDamage}/turn, {poisonTurns})</color>   ";
+                if (weakenTurns > 0)      s += $"<color=#C9A2FF>Weakened -{weakenPercent}% ({weakenTurns})</color>   ";
+                if (stunned)              s += "<color=#FFE066>Stunned</color>";
+                playerStatusLabel.text = s;
+            }
+            if (enemyStatusLabel != null)
+                enemyStatusLabel.text = guardTurns > 0 ? $"<color=#8CC8FF>Guarded -{guardPercent}% ({guardTurns})</color>" : "";
         }
 
         private void ShowFeedback(string msg, bool good)
@@ -572,7 +914,12 @@ namespace Orasyon.Battle
             feedbackLabel.text = msg;
         }
 
-        private void Popup(RectTransform target, string text, Color color)
+        private void Popup(RectTransform target, string text, Color color, float scale = 1f)
+        {
+            PopupAt(target.anchoredPosition + new Vector2(0f, target.sizeDelta.y * 0.85f), text, color, scale);
+        }
+
+        private void PopupAt(Vector2 position, string text, Color color, float scale = 1f)
         {
             if (damagePopupTemplate == null) return;
             var popup = Instantiate(damagePopupTemplate, damagePopupTemplate.transform.parent);
@@ -580,7 +927,9 @@ namespace Orasyon.Battle
             popup.text = text;
             popup.color = color;
             var rt = (RectTransform)popup.transform;
-            rt.anchoredPosition = target.anchoredPosition + new Vector2(0f, target.sizeDelta.y * 0.85f);
+            rt.anchoredPosition = position;
+            rt.localScale = Vector3.one * scale;
+            rt.SetAsLastSibling();
             StartCoroutine(PopupRoutine(popup));
         }
 
