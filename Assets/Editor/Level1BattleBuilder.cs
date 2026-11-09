@@ -539,7 +539,8 @@ namespace Orasyon.EditorTools
             Set(m, "intentUI", intentUi);
 
             m.FindProperty("hintsPerChapter").intValue = 2;
-            m.FindProperty("maxHintLength").intValue = 5;
+            m.FindProperty("maxHintLength").intValue = 5;          // regular enemies
+            m.FindProperty("maxHintLengthBoss").intValue = 0;      // bosses: no limit, long hints
             m.FindProperty("scramblesPerEnemy").intValue = 3;
             m.FindProperty("maxPowerPotionsPerEnemy").intValue = 2;
             Set(m, "fxSprite", AssetDatabase.LoadAllAssetsAtPath("Assets/Sprites/UI/soft_glow.png").OfType<Sprite>().FirstOrDefault() ?? circleSprite);

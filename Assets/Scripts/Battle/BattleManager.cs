@@ -73,8 +73,10 @@ namespace Orasyon.Battle
         [SerializeField] private Button hintButton;
         [Tooltip("Hints available per chapter. Each one lights up a short everyday word on the board.")]
         [SerializeField] private int    hintsPerChapter = 2;
-        [Tooltip("Hints never suggest words longer than this, so they cannot hand out a big attack for free.")]
+        [Tooltip("Against regular enemies, hints never suggest words longer than this, so they cannot one-shot a minion.")]
         [SerializeField] private int    maxHintLength = 5;
+        [Tooltip("Against bosses (big HP pools) hints may suggest long words. 0 = no limit: the longest everyday word on the board.")]
+        [SerializeField] private int    maxHintLengthBoss = 0;
         [Tooltip("Scrambles allowed against each enemy.")]
         [SerializeField] private int    scramblesPerEnemy = 3;
 
@@ -86,8 +88,9 @@ namespace Orasyon.Battle
         [Header("Orasyon (the book's prayer)")]
         [SerializeField] private OrasyonMeter  orasyonMeter;
         [SerializeField] private VfxDefinition flurryHitVfx;
-        [Tooltip("Fixed damage of the prayer. It ignores the enemy's guard.")]
-        [SerializeField] private int           orasyonDamage = 10;
+        [Tooltip("Damage of EACH blow of the prayer (it strikes 5 times, so the total is 5x this). Ignores the enemy's guard.")]
+        [SerializeField] private int           orasyonHitDamage = 5;
+        [SerializeField] private int           orasyonHits = 5;
 
         [Header("Potions")]
         [Tooltip("Power potions (double damage) a single enemy fight can award, so bosses cannot be skipped by stacking them.")]
@@ -275,11 +278,12 @@ namespace Orasyon.Battle
         {
             if (!CanAct || hintsLeft <= 0) return;
 
-            string word = letterGrid.FindHintWord(maxHintLength);
+            int cap = CurrentEnemy != null && CurrentEnemy.isBoss ? maxHintLengthBoss : maxHintLength;
+            string word = letterGrid.FindHintWord(cap > 0 ? cap : int.MaxValue);
             if (word == null)
             {
                 // Costs nothing: the hint is only spent when a word is shown
-                ShowFeedback("Lola can't find a short word here. Try Scramble.", true);
+                ShowFeedback("Lola can't find a word here. Try Scramble.", true);
                 return;
             }
 
@@ -585,14 +589,12 @@ namespace Orasyon.Battle
             StartCoroutine(Burst(PlayerStaff, 240f, MagicGold));
             StartCoroutine(Shake(0.3f, 8f));
 
-            // Five blows spread through the middle of the animation
-            const int hits = 5;
+            // The blows are spread through the middle of the animation
+            int hits = Mathf.Max(1, orasyonHits);
             yield return new WaitForSeconds(dur * 0.25f);
-            int remaining = orasyonDamage;
             for (int i = 0; i < hits; i++)
             {
-                int part = i == hits - 1 ? remaining : orasyonDamage / hits;
-                remaining -= part;
+                int part = orasyonHitDamage;
                 enemyHP = Mathf.Max(0, enemyHP - part);
                 RefreshHearts();
                 PlayHurt(enemyAnimator, enemy);

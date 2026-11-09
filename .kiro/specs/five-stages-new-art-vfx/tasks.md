@@ -38,7 +38,7 @@ Order of work: art, VFX and the refill fix first, then all five stages playable 
     - _Requirements: 3.1, 3.2_
 
 - [x] 3. Phase A: core feel (IMPLEMENTATION.md section 11)
-  - [x] 3.1 Scramble limit 3 per enemy with a counter on the button. Hints nerfed (your request): 2 per chapter, never longer than 5 letters, a random everyday word among the longest allowed; Kampana ng Gubat now gives +1 hint; power potions capped at 2 per fight.
+  - [x] 3.1 Scramble limit 3 per enemy with a counter on the button. Hints nerfed (your request): 2 per chapter, a random everyday word among the longest allowed. Regular enemies cap hints at 5 letters; bosses have no cap (long hints return, since boss HP is now high; setting `maxHintLengthBoss`); Kampana ng Gubat now gives +1 hint; power potions capped at 2 per fight.
   - [x] 3.2 Invalid-word feedback (red shake, no turn consumed).
   - [x] 3.3 Board quality was done in 1.8; the offensive-word blocklist is in (`blocked_words.txt`, 145 words from LDNOOBW, CC BY 4.0, credited in the credits).
   - [x] 3.4 Enemy intent above the enemy's head and marked in the info panel, boss signature moves on every 3rd enemy turn (never the same move 3x in a row, no stun right after a stun). The multi-hit and grid-effect fields wait for task 5.
@@ -50,7 +50,7 @@ Order of work: art, VFX and the refill fix first, then all five stages playable 
   - [x] 4.1 `TileKind`, extended `LetterTileData` (kind + turn timer), corner badge and timer labels on `TilePrefab`. Badges are short words (+20%, +5HP, x2, WARD, SMOKE, LOCK, -2HP, -5HP) so colour is never the only cue. Also done here (your request): tapping a tile in the word row sends that tile back to the board.
   - [x] 4.2 Good tiles (Ginto, Dahon, Pilak, Agimat) with spawn rules and effects.
   - [x] 4.3 Bad tiles (Usok, Gapos, Alab, Sumpa, Wala) and the `LetterGrid` API.
-  - [x] 4.4 `OrasyonMeter` (fills by word length up to 30, empties on each new enemy) and the cast: hero `flurry` clip, `hero_flurry_hit`, 10 fixed damage ignoring guard, cures poison/weaken, clears all bad tiles. Warding also clears Smoked and Locked. Tutorial gained a special-tiles step.
+  - [x] 4.4 `OrasyonMeter` (fills by word length up to 30, empties on each new enemy) and the cast: hero `flurry` clip, `hero_flurry_hit`, 5 blows of 5 fixed damage (25 total) ignoring guard (raised from 5 x 2 on your request), cures poison/weaken, clears all bad tiles. Warding also clears Smoked and Locked. Tutorial gained a special-tiles step.
     - _Requirements: 4.4_
   - [x] 4.5 Debug menu (`Tools/Orasyon/Debug`) that places every tile kind, clears bad tiles and fills the meter. Checkpoint: every kind verified in Play mode.
 

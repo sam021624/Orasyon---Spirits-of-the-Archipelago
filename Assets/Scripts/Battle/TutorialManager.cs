@@ -100,7 +100,7 @@ namespace Orasyon.Battle
                         "Used tiles are replaced with <b>new letters</b> right away, so your board is always full.\n" +
                         "Words of <b>5+ letters</b> earn potions on the left shelf. Click one to drink it.\n" +
                         "The right panel shows your foe's <b>moves</b> as icons (hover one for details). The move above its head is what it does <b>next</b>.\n" +
-                        "Words of 5+ letters become <b>spells</b>. Stuck? <b>Scramble</b> shuffles your tiles (3 per foe), and <b>Hint</b> shows a short word (2 per chapter).",
+                        "Words of 5+ letters become <b>spells</b>. Stuck? <b>Scramble</b> shuffles your tiles (3 per foe), and <b>Hint</b> shows a word (2 per chapter).",
                         "Next");
                     break;
 
