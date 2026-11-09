@@ -86,9 +86,8 @@ namespace Orasyon.Battle
                 if (!on) continue;
 
                 var kind = i < selected.Count ? selected[i].Kind : TileKind.Normal;
-                string badge = TileKindInfo.Badge(kind);
-                pool[i].GetComponentInChildren<TextMeshProUGUI>().text =
-                    word[i] + (badge.Length > 0 ? $"<size=32%> {badge}</size>" : "");
+                // Just the letter, centred. The tile colour shows the kind; the badge stays on the board tile.
+                pool[i].GetComponentInChildren<TextMeshProUGUI>().text = word[i].ToString();
 
                 var img = pool[i].GetComponent<Image>();
                 img.color = rejecting ? rejectTile

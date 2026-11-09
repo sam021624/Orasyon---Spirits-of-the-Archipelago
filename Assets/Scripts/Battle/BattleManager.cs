@@ -575,6 +575,9 @@ namespace Orasyon.Battle
                          (cured ? "  <color=#9FE2BF>Your ailments fade.</color>" : "") +
                          (cleared > 0 ? "  <color=#9FE2BF>The board is cleansed.</color>" : ""), true);
 
+            // Like a short word: run up to the enemy and strike it up close
+            yield return WalkTo(playerAnimator, player, enemyHomeX - meleeGap);
+
             var clip = player.flurry != null && player.flurry.Length > 0 ? player.flurry
                      : player.cast != null && player.cast.Length > 0 ? player.cast : player.attack;
             float dur = playerAnimator.Duration(clip);
@@ -600,6 +603,7 @@ namespace Orasyon.Battle
                 yield return new WaitForSeconds(dur * 0.5f / hits);
             }
             yield return new WaitForSeconds(dur * 0.25f);
+            yield return WalkTo(playerAnimator, player, playerHomeX);
 
             if (enemyHP <= 0)
             {

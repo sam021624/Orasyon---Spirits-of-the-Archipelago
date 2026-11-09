@@ -54,6 +54,8 @@ Order of work: art, VFX and the refill fix first, then all five stages playable 
     - _Requirements: 4.4_
   - [x] 4.5 Debug menu (`Tools/Orasyon/Debug`) that places every tile kind, clears bad tiles and fills the meter. Checkpoint: every kind verified in Play mode.
 
+- [x] 4b. UI polish (your feedback): enemy moves shown as icons in the info panel and above the enemy's head (the move's own VFX picture, plus damage / crit / status icons; hover a move for its description), clearer enemy description and weakness line, tutorial panel no longer overlaps its button, no text on gold tiles, tapping a word-row tile returns it to the board.
+
 - [ ] 5. Board mechanics, stage by stage (design section 5)
   - [ ] 5.1 Stage 1: `GridEffect` base, `StealTilesEffect`; Duwende Minion and King Pilfer (off during the tutorial); mini-tutorial panels.
     - _Requirements: 4.1, 4.2_

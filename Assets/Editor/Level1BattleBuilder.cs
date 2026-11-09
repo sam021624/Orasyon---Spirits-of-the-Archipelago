@@ -151,6 +151,7 @@ namespace Orasyon.EditorTools
             panelSprite   = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
             circleSprite  = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
 
+            MoveIconAssets.Ensure();
             CharacterAssets.EnsureAll();
             TreasureAssets.Ensure();
             SetPointFilter(spec.backgroundPack);
@@ -202,10 +203,18 @@ namespace Orasyon.EditorTools
             // Enemy intent: the next move floats above the enemy's head
             var intentBg = Panel("EnemyIntent", characters, new Color(0.08f, 0.05f, 0.04f, 0.88f), roundedSprite);
             intentBg.raycastTarget = false;
-            Anchor(intentBg.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(560, 300), new Vector2(430, 46));
+            Anchor(intentBg.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(560, 300), new Vector2(300, 48));
             AddOutline(intentBg.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.7f), 1);
-            var intentLabel = Text("Label", intentBg.transform, "", 22, Cream, TextAlignmentOptions.Center, FontStyles.Normal);
-            Stretch(intentLabel.rectTransform);
+            var intentLabel = Text("Label", intentBg.transform, "", 24, Cream, TextAlignmentOptions.MidlineLeft, FontStyles.Bold);
+            var intentLayout = intentBg.gameObject.AddComponent<HorizontalLayoutGroup>();
+            intentLayout.padding = new RectOffset(8, 14, 4, 4);
+            intentLayout.spacing = 9;
+            intentLayout.childAlignment = TextAnchor.MiddleCenter;
+            intentLayout.childControlWidth = intentLayout.childControlHeight = true;
+            intentLayout.childForceExpandWidth = intentLayout.childForceExpandHeight = false;
+            var intentFit = intentBg.gameObject.AddComponent<ContentSizeFitter>();
+            intentFit.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            intentFit.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
             intentBg.gameObject.AddComponent<CanvasGroup>();
             var intentUi = intentBg.gameObject.AddComponent<EnemyIntentUI>();
             var intentSo = new SerializedObject(intentUi);
@@ -389,29 +398,38 @@ namespace Orasyon.EditorTools
             Anchor(right.rectTransform, new Vector2(1, 0), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-16, 100), new Vector2(580, 404));
             AddOutline(right.gameObject, Gold, 2);
             var portraitBg = Panel("PortraitFrame", right.transform, WoodDark, panelSprite);
-            Anchor(portraitBg.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -14), new Vector2(132, 132));
+            Anchor(portraitBg.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -14), new Vector2(100, 100));
             var portraitGo = Node("Portrait", portraitBg.transform);
             Stretch(portraitGo, 4);
             var portrait = portraitGo.gameObject.AddComponent<RawImage>();
             portrait.raycastTarget = false;
             var infoName = Text("Name", right.transform, bat.displayName, 28, Gold, TextAlignmentOptions.Left, FontStyles.Bold);
-            Anchor(infoName.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(160, -16), new Vector2(404, 40));
+            Anchor(infoName.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(126, -14), new Vector2(438, 38));
             var infoWeak = Text("Weakness", right.transform, "", 18, new Color(0.62f, 0.95f, 0.58f), TextAlignmentOptions.TopLeft);
-            Anchor(infoWeak.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(160, -62), new Vector2(404, 80));
+            Anchor(infoWeak.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(126, -52), new Vector2(438, 64));
             var attacksBox = Panel("AttacksBox", right.transform, WoodDark, panelSprite);
-            Anchor(attacksBox.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -156), new Vector2(552, 132));
-            var infoAttack = Text("Attacks", attacksBox.transform, "", 17, Cream, TextAlignmentOptions.TopLeft);
-            Stretch(infoAttack.rectTransform, 12);
-            infoAttack.lineSpacing = 6;
+            Anchor(attacksBox.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -122), new Vector2(552, 172));
+            // One icon row per move; EnemyInfoPanel fills this at runtime
+            var attackList = Node("AttackList", attacksBox.transform);
+            Stretch(attackList, 6);
+            var attackLayout = attackList.gameObject.AddComponent<VerticalLayoutGroup>();
+            attackLayout.spacing = 3;
+            attackLayout.childAlignment = TextAnchor.UpperLeft;
+            attackLayout.childControlWidth = attackLayout.childControlHeight = true;
+            attackLayout.childForceExpandWidth = true;
+            attackLayout.childForceExpandHeight = false;
             var descBox = Panel("DescriptionBox", right.transform, WoodDark, panelSprite);
-            Anchor(descBox.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -296), new Vector2(552, 96));
-            var infoDesc = Text("Description", descBox.transform, "", 16, Cream, TextAlignmentOptions.TopLeft, FontStyles.Italic);
-            Stretch(infoDesc.rectTransform, 12);
+            Anchor(descBox.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(14, -300), new Vector2(552, 96));
+            var infoDesc = Text("Description", descBox.transform, "", 19, new Color(1f, 0.97f, 0.88f), TextAlignmentOptions.TopLeft, FontStyles.Normal);
+            Stretch(infoDesc.rectTransform, 10);
+            infoDesc.enableAutoSizing = true;      // long lore shrinks a little instead of overflowing
+            infoDesc.fontSizeMin = 14f;
+            infoDesc.fontSizeMax = 19f;
             var info = right.gameObject.AddComponent<EnemyInfoPanel>();
             var iso = new SerializedObject(info);
             iso.FindProperty("portrait").objectReferenceValue = portrait;
             iso.FindProperty("nameLabel").objectReferenceValue = infoName;
-            iso.FindProperty("attackLabel").objectReferenceValue = infoAttack;
+            iso.FindProperty("attackList").objectReferenceValue = attackList;
             iso.FindProperty("weaknessLabel").objectReferenceValue = infoWeak;
             iso.FindProperty("descriptionLabel").objectReferenceValue = infoDesc;
             iso.ApplyModifiedPropertiesWithoutUndo();
@@ -422,12 +440,15 @@ namespace Orasyon.EditorTools
 
             // ── Tutorial popup ───────────────────────────────────────────────
             var tutPanel = Panel("TutorialPanel", canvas, new Color(0.07f, 0.05f, 0.12f, 0.96f), panelSprite);
-            Anchor(tutPanel.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -100), new Vector2(780, 340));
+            Anchor(tutPanel.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -96), new Vector2(780, 450));
             AddOutline(tutPanel.gameObject, Gold, 2);
             var tutTitle = Text("Title", tutPanel.transform, "Tutorial", 32, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
             Anchor(tutTitle.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -16), new Vector2(720, 44));
             var tutBody = Text("Body", tutPanel.transform, "", 22, Cream, TextAlignmentOptions.TopLeft);
-            Anchor(tutBody.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -70), new Vector2(720, 190));
+            Anchor(tutBody.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -68), new Vector2(720, 290));
+            tutBody.enableAutoSizing = true;       // long steps shrink to fit above the button instead of running under it
+            tutBody.fontSizeMin = 15f;
+            tutBody.fontSizeMax = 22f;
             var tutNext = MakeButton("NextButton", tutPanel.transform, "Got it!", Gold, Ink, 24);
             Anchor((RectTransform)tutNext.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 18), new Vector2(220, 54));
 

@@ -56,7 +56,7 @@ namespace Orasyon.Battle
         {
             switch (k)
             {
-                case TileKind.Gold:    return "+20%";
+                case TileKind.Gold:    return "";   // explained by the tutorial; the gold colour is enough
                 case TileKind.Heal:    return "+5HP";
                 case TileKind.Silver:  return "x2";
                 case TileKind.Shield:  return "WARD";

@@ -99,17 +99,17 @@ namespace Orasyon.Battle
                     Set("Keep Fighting",
                         "Used tiles are replaced with <b>new letters</b> right away, so your board is always full.\n" +
                         "Words of <b>5+ letters</b> earn potions on the left shelf. Click one to drink it.\n" +
-                        "The right panel lists your foe's <b>attacks</b>: watch for poison, stun and critical hits. Green potions cure them.\n" +
+                        "The right panel shows your foe's <b>moves</b> as icons (hover one for details). The move above its head is what it does <b>next</b>.\n" +
                         "Words of 5+ letters become <b>spells</b>. Stuck? <b>Scramble</b> shuffles your tiles (3 per foe), and <b>Hint</b> shows a short word (2 per chapter).",
                         "Next");
                     break;
 
                 case Step.SpecialTile:
                     Set("Special Tiles",
-                        "See the shining <b>gold</b> tile? Put it in a word for <b>+20% damage</b>.\n\n" +
-                        "Others you will find: a green <b>leaf</b> heals you, a <b>silver</b> tile doubles its letter, a blue <b>amulet</b> blocks a hit.\n" +
-                        "Enemies place <b>bad tiles</b> too: smoke hides a letter, locks stop it, flames burn you, hexes cost HP.\n\n" +
-                        "Spelling words fills the <b>Orasyon</b> meter. When it is full, the prayer hurts the enemy and cleanses the board.",
+                        "The shining <b>gold</b> tile adds <b>+20% damage</b> to its word.\n\n" +
+                        "A green <b>leaf</b> heals you, a <b>silver</b> tile doubles its letter, and a blue <b>amulet</b> blocks a hit.\n\n" +
+                        "Enemies place <b>bad tiles</b> too: smoke hides a letter, locks stop it, flames burn you and hexes cost HP.\n\n" +
+                        "Words also fill the <b>Orasyon</b> meter. When it is full, its prayer hurts the enemy and cleanses the board.",
                         "Let's fight!");
                     var gold = letterGrid.FindFirstOfKind(TileKind.Gold);
                     if (gold != null) letterGrid.SetHighlight(gold.Row, gold.Col, true);
