@@ -359,6 +359,31 @@ namespace Orasyon.EditorTools
             var hintBtn = MakeButton("HintButton", bottom.transform, "HINT (2)", new Color(0.20f, 0.42f, 0.55f), Cream, 22);
             Anchor((RectTransform)hintBtn.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-232, 20), new Vector2(150, 64));
 
+            // Between the grid and the enemy panel: the Orasyon meter (the book's prayer)
+            var oraPanel = Panel("OrasyonPanel", bottom.transform, WoodDark, panelSprite);
+            Anchor(oraPanel.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(292, 100), new Vector2(124, 404));
+            AddOutline(oraPanel.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.7f), 2);
+            var oraButton = MakeButton("OrasyonButton", oraPanel.transform, "ORASYON", new Color(0.30f, 0.24f, 0.18f), Ink, 17);
+            Anchor((RectTransform)oraButton.transform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -10), new Vector2(108, 64));
+            var oraCount = Text("Count", oraPanel.transform, "0/30", 22, Cream, TextAlignmentOptions.Center, FontStyles.Bold);
+            Anchor(oraCount.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -80), new Vector2(110, 30));
+            var oraBar = Panel("Bar", oraPanel.transform, new Color(0.04f, 0.03f, 0.02f, 1f), roundedSprite);
+            Anchor(oraBar.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -118), new Vector2(48, 232));
+            AddOutline(oraBar.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.5f), 1);
+            var oraFill = Panel("Fill", oraBar.transform, new Color(0.98f, 0.78f, 0.30f, 1f), roundedSprite);
+            oraFill.raycastTarget = false;
+            Stretch(oraFill.rectTransform);
+            var oraCaption = Text("Caption", oraPanel.transform, "THE BOOK", 15, new Color(Cream.r, Cream.g, Cream.b, 0.8f), TextAlignmentOptions.Center, FontStyles.Bold);
+            Anchor(oraCaption.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 12), new Vector2(110, 24));
+            var oraMeter = oraPanel.gameObject.AddComponent<OrasyonMeter>();
+            var oraSo = new SerializedObject(oraMeter);
+            oraSo.FindProperty("button").objectReferenceValue = oraButton;
+            oraSo.FindProperty("fill").objectReferenceValue = oraFill.rectTransform;
+            oraSo.FindProperty("countLabel").objectReferenceValue = oraCount;
+            oraSo.FindProperty("buttonFace").objectReferenceValue = oraButton.targetGraphic;
+            oraSo.FindProperty("buttonLabel").objectReferenceValue = oraButton.GetComponentInChildren<TextMeshProUGUI>();
+            oraSo.ApplyModifiedPropertiesWithoutUndo();
+
             // Right: enemy info
             var right = Panel("EnemyInfoPanel", bottom.transform, WoodLight, panelSprite);
             Anchor(right.rectTransform, new Vector2(1, 0), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-16, 100), new Vector2(580, 404));
@@ -485,6 +510,9 @@ namespace Orasyon.EditorTools
             Set(m, "heroKidlatVfx", VfxAssets.Load("hero_kidlat_bolt"));
             Set(m, "healVfx",       VfxAssets.Load("lola_heal"));
 
+            Set(m, "orasyonMeter", oraMeter);
+            Set(m, "flurryHitVfx", VfxAssets.Load("hero_flurry_hit"));
+
             // Turn feedback and balance
             Set(m, "turnIndicator", turnUi);
             Set(m, "intentUI", intentUi);
@@ -585,11 +613,21 @@ namespace Orasyon.EditorTools
             var letter = Text("Letter", root.transform, "A", 52, Ink, TextAlignmentOptions.Center, FontStyles.Bold);
             Stretch(letter.rectTransform);
 
+            // Special / bad tiles: a short word in the corner (colour is never the only cue) and a turn timer
+            var badge = Text("Badge", root.transform, "", 15, Ink, TextAlignmentOptions.TopLeft, FontStyles.Bold);
+            Anchor(badge.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(6, -4), new Vector2(80, 20));
+            badge.gameObject.SetActive(false);
+            var turnsText = Text("Turns", root.transform, "", 20, Ink, TextAlignmentOptions.BottomRight, FontStyles.Bold);
+            Anchor(turnsText.rectTransform, new Vector2(1, 0), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-7, 3), new Vector2(34, 24));
+            turnsText.gameObject.SetActive(false);
+
             var tile = root.AddComponent<LetterTile>();
             var so = new SerializedObject(tile);
             so.FindProperty("background").objectReferenceValue = bg;
             so.FindProperty("highlightRing").objectReferenceValue = ring;
             so.FindProperty("letterLabel").objectReferenceValue = letter;
+            so.FindProperty("badgeLabel").objectReferenceValue = badge;
+            so.FindProperty("turnsLabel").objectReferenceValue = turnsText;
             so.ApplyModifiedPropertiesWithoutUndo();
 
             var prefab = PrefabUtility.SaveAsPrefabAsset(root, TilePrefabPath);

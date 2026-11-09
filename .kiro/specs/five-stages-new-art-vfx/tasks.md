@@ -46,13 +46,13 @@ Order of work: art, VFX and the refill fix first, then all five stages playable 
   - [x] 3.5 Turn indicator, invalid-word reject feedback (no turn used), numeric HP on the name lines, and a damage breakdown in the word hint line (shown whenever a valid word is selected rather than only on hover).
   - [x] 3.6 Checkpoint: all five stages playable with telegraphs. Boss HP raised: King 80, Kapre 100, Tiyanak 120, Manananggal 140, Bakunawa 220 (enemy hearts are capped at 12 on screen).
 
-- [ ] 4. Phase B: tiles
-  - [ ] 4.1 `TileKind`, extended `LetterTileData`, overlay child on `TilePrefab`.
-  - [ ] 4.2 Good tiles (Ginto, Dahon, Pilak, Agimat) with spawn rules and effects.
-  - [ ] 4.3 Bad tiles (Usok, Gapos, Alab, Sumpa, Wala) and the `LetterGrid` API.
-  - [ ] 4.4 `OrasyonMeter` and button (casts the hero `flurry` clip and `hero_flurry_hit`); Warding also clears Smoked and Locked.
+- [x] 4. Phase B: tiles
+  - [x] 4.1 `TileKind`, extended `LetterTileData` (kind + turn timer), corner badge and timer labels on `TilePrefab`. Badges are short words (+20%, +5HP, x2, WARD, SMOKE, LOCK, -2HP, -5HP) so colour is never the only cue. Also done here (your request): tapping a tile in the word row sends that tile back to the board.
+  - [x] 4.2 Good tiles (Ginto, Dahon, Pilak, Agimat) with spawn rules and effects.
+  - [x] 4.3 Bad tiles (Usok, Gapos, Alab, Sumpa, Wala) and the `LetterGrid` API.
+  - [x] 4.4 `OrasyonMeter` (fills by word length up to 30, empties on each new enemy) and the cast: hero `flurry` clip, `hero_flurry_hit`, 10 fixed damage ignoring guard, cures poison/weaken, clears all bad tiles. Warding also clears Smoked and Locked. Tutorial gained a special-tiles step.
     - _Requirements: 4.4_
-  - [ ] 4.5 Debug menu that places every tile kind. Checkpoint: each kind behaves per spec.
+  - [x] 4.5 Debug menu (`Tools/Orasyon/Debug`) that places every tile kind, clears bad tiles and fills the meter. Checkpoint: every kind verified in Play mode.
 
 - [ ] 5. Board mechanics, stage by stage (design section 5)
   - [ ] 5.1 Stage 1: `GridEffect` base, `StealTilesEffect`; Duwende Minion and King Pilfer (off during the tutorial); mini-tutorial panels.

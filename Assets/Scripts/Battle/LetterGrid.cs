@@ -60,7 +60,7 @@ namespace Orasyon.Battle
             {
                 EnsureTiles();
                 foreach (var t in tiles)
-                    if (!t.IsEmpty) yield return t.Letter;
+                    if (t.IsSelectable) yield return t.Letter;   // locked tiles and holes cannot be used
             }
         }
 
@@ -88,6 +88,8 @@ namespace Orasyon.Battle
                     d.IsSelected = false;
                     d.IsHighlighted = false;
                     d.IsEmpty = false;
+                    d.Kind = TileKind.Normal;
+                    d.TurnsLeft = 0;
                     d.View.Refresh();
 
                     Vector2 pos = CellPosition(r, c);
@@ -119,7 +121,7 @@ namespace Orasyon.Battle
         // ── Selection ────────────────────────────────────────────────────────
         public void OnTileClicked(LetterTileData tile)
         {
-            if (tile.IsEmpty) return;
+            if (!tile.IsSelectable) return;   // gaps, holes and locked tiles
 
             int index = path.IndexOf(tile);
             if (index >= 0)
@@ -139,6 +141,27 @@ namespace Orasyon.Battle
             tile.IsSelected = true;
             path.Add(tile);
             tile.View.Refresh();
+            Changed();
+        }
+
+        /// <summary>The tiles of the current word, in the order they were picked.</summary>
+        public IReadOnlyList<LetterTileData> SelectedTiles => path;
+
+        /// <summary>
+        /// Sends one tile of the current word back to the board (tapping it in the word preview). The other
+        /// letters stay in the word in their order. Ignored while the board is locked (tutorial, enemy turn).
+        /// </summary>
+        public void RemoveFromSelection(int pathIndex)
+        {
+            if (pathIndex < 0 || pathIndex >= path.Count) return;
+            var group = GetComponentInParent<CanvasGroup>();
+            if (group != null && !group.interactable) return;
+
+            var tile = path[pathIndex];
+            path.RemoveAt(pathIndex);
+            tile.IsSelected = false;
+            tile.View.Refresh();
+            tile.View.Pop();
             Changed();
         }
 
@@ -164,6 +187,8 @@ namespace Orasyon.Battle
                 t.IsSelected = false;
                 t.IsHighlighted = false;
                 t.IsEmpty = true;
+                t.Kind = TileKind.Normal;
+                t.TurnsLeft = 0;
                 t.View.Refresh();
             }
             path.Clear();
@@ -180,7 +205,7 @@ namespace Orasyon.Battle
             var filled = tiles.Cast<LetterTileData>().Where(t => !t.IsEmpty).ToList();
             if (filled.Count < 2) return;
 
-            var original = filled.Select(t => t.Letter).ToList();
+            var original = filled.Select(t => (t.Letter, t.Kind, t.TurnsLeft)).ToList();
             var shuffled = original;
             for (int attempt = 0; attempt < 10; attempt++)
             {
@@ -190,7 +215,9 @@ namespace Orasyon.Battle
 
             for (int i = 0; i < filled.Count; i++)
             {
-                filled[i].Letter = shuffled[i];
+                filled[i].Letter = shuffled[i].Letter;
+                filled[i].Kind = shuffled[i].Kind;
+                filled[i].TurnsLeft = shuffled[i].TurnsLeft;
                 filled[i].IsHighlighted = false;
                 filled[i].View.Pop();
                 filled[i].View.Refresh();
@@ -205,7 +232,8 @@ namespace Orasyon.Battle
         public int RefillEmpty(int minWords)
         {
             EnsureTiles();
-            var empties = tiles.Cast<LetterTileData>().Where(t => t.IsEmpty).ToList();
+            var empties = tiles.Cast<LetterTileData>().Where(t => t.IsEmpty && t.Kind != TileKind.Void).ToList();
+            LastRefilled.Clear();
             if (empties.Count == 0) return 0;
 
             var kept = tiles.Cast<LetterTileData>().Where(t => !t.IsEmpty).Select(t => t.Letter).ToList();
@@ -234,7 +262,10 @@ namespace Orasyon.Battle
             int k = 0;
             foreach (var t in empties)
             {
+                LastRefilled.Add(t);
                 t.IsEmpty = false;
+                t.Kind = TileKind.Normal;
+                t.TurnsLeft = 0;
                 t.IsSelected = false;
                 t.IsHighlighted = false;
                 t.View.Refresh();
@@ -252,6 +283,112 @@ namespace Orasyon.Battle
             return BoardGenerator.IsHealthyMix(all)
                 && BoardGenerator.HasCommonWord(all)
                 && BoardGenerator.CountWords(all, minWords) >= minWords;
+        }
+
+        // ── Special and bad tiles ────────────────────────────────────────────
+        /// <summary>The tiles that received new letters in the last <see cref="RefillEmpty"/>.</summary>
+        public readonly List<LetterTileData> LastRefilled = new List<LetterTileData>();
+
+        public IEnumerable<LetterTileData> AllTiles { get { EnsureTiles(); return tiles.Cast<LetterTileData>(); } }
+
+        public int Index(int row, int col) => row * cols + col;
+
+        public LetterTileData TileAt(int index) { EnsureTiles(); return tiles[index / cols, index % cols]; }
+
+        public LetterTileData FindFirstOfKind(TileKind kind) => AllTiles.FirstOrDefault(t => t.Kind == kind && !t.IsEmpty);
+
+        public int CountKind(TileKind kind) => AllTiles.Count(t => t.Kind == kind);
+
+        /// <summary>Good special tiles currently on the board.</summary>
+        public int CountSpecials => AllTiles.Count(t => !t.IsEmpty && TileKindInfo.IsGood(t.Kind));
+
+        /// <summary>Bad tiles on the board (holes from Void are not counted).</summary>
+        public int CountBadTiles => AllTiles.Count(t => !t.IsEmpty && TileKindInfo.IsBad(t.Kind));
+
+        /// <summary>Random distinct tile indices (row * cols + col) of tiles passing <paramref name="filter"/>.</summary>
+        public List<int> PickTiles(int count, Func<LetterTileData, bool> filter)
+        {
+            return AllTiles.Where(filter).Select(t => Index(t.Row, t.Col)).OrderBy(_ => rng.Next()).Take(count).ToList();
+        }
+
+        /// <summary>
+        /// Changes what a tile is. Bad kinds are never placed on a tile that is part of the current word.
+        /// <paramref name="turns"/> is how many enemy turns a Smoked / Locked / Hex tile lasts (0 = until cleared).
+        /// Void turns the tile into a permanent hole.
+        /// </summary>
+        public void SetKind(int index, TileKind kind, int turns = 0)
+        {
+            var t = TileAt(index);
+            if (TileKindInfo.IsBad(kind) && t.IsSelected) return;
+
+            if (kind == TileKind.Void)
+            {
+                t.IsSelected = false;
+                t.IsHighlighted = false;
+                t.IsEmpty = true;
+                t.Kind = TileKind.Void;
+                t.TurnsLeft = 0;
+            }
+            else
+            {
+                if (t.IsEmpty) return;
+                t.Kind = kind;
+                t.TurnsLeft = turns;
+            }
+            t.View.Refresh();
+            t.View.Pop();
+            Changed();
+        }
+
+        /// <summary>Puts a good special tile on a random plain tile. Respects the limit of specials on the board.</summary>
+        public bool TryAddSpecial(TileKind kind, bool onlyRefilled = false)
+        {
+            if (CountSpecials >= TileKindInfo.MaxSpecials) return false;
+            var source = onlyRefilled ? (IEnumerable<LetterTileData>)LastRefilled : AllTiles;
+            var pool = source.Where(t => !t.IsEmpty && t.Kind == TileKind.Normal && !t.IsSelected && !t.IsHighlighted).ToList();
+            if (pool.Count == 0) return false;
+            var tile = pool[rng.Next(pool.Count)];
+            SetKind(Index(tile.Row, tile.Col), kind);
+            return true;
+        }
+
+        /// <summary>Call at the end of every enemy turn: Smoked, Locked and Hex tiles count down and wear off.</summary>
+        public int TickTileTimers()
+        {
+            int expired = 0;
+            foreach (var t in AllTiles)
+            {
+                if (t.IsEmpty || t.TurnsLeft <= 0) continue;
+                if (t.Kind != TileKind.Smoked && t.Kind != TileKind.Locked && t.Kind != TileKind.Hex) continue;
+                t.TurnsLeft--;
+                if (t.TurnsLeft <= 0) { t.Kind = TileKind.Normal; expired++; }
+                t.View.Refresh();
+            }
+            if (expired > 0) Changed();
+            return expired;
+        }
+
+        /// <summary>
+        /// Removes bad tiles. The Warding potion clears Smoked and Locked tiles only;
+        /// the Orasyon prayer also clears Burning and Hex tiles. Holes (Void) stay until the fight ends.
+        /// </summary>
+        public int ClearBadTiles(bool smokeAndLockOnly = false)
+        {
+            int n = 0;
+            foreach (var t in AllTiles)
+            {
+                if (t.IsEmpty) continue;
+                bool clear = t.Kind == TileKind.Smoked || t.Kind == TileKind.Locked
+                          || (!smokeAndLockOnly && (t.Kind == TileKind.Burning || t.Kind == TileKind.Hex));
+                if (!clear) continue;
+                t.Kind = TileKind.Normal;
+                t.TurnsLeft = 0;
+                t.View.Refresh();
+                t.View.Pop();
+                n++;
+            }
+            if (n > 0) Changed();
+            return n;
         }
 
         // ── Hints ────────────────────────────────────────────────────────────
@@ -285,7 +422,7 @@ namespace Orasyon.Battle
             var used = new HashSet<LetterTileData>();
             foreach (char ch in word.ToUpperInvariant())
             {
-                var tile = tiles.Cast<LetterTileData>().FirstOrDefault(t => !t.IsEmpty && t.Letter == ch && !used.Contains(t));
+                var tile = tiles.Cast<LetterTileData>().FirstOrDefault(t => t.IsSelectable && t.Letter == ch && !used.Contains(t));
                 if (tile == null) continue;
                 used.Add(tile);
                 tile.IsHighlighted = true;

@@ -49,10 +49,18 @@ namespace Orasyon.Battle
         }
 
         /// <summary>Damage for a valid word: sum of letter values x length bonus (+25% per letter past 3).</summary>
-        public static int Damage(string word)
+        public static int Damage(string word) => Damage(word, null);
+
+        /// <summary>Same, with Pilak (silver) tiles: <paramref name="silver"/>[i] doubles the value of letter i.</summary>
+        public static int Damage(string word, bool[] silver)
         {
             float sum = 0f;
-            foreach (char c in word) sum += Value(c);
+            for (int i = 0; i < word.Length; i++)
+            {
+                float v = Value(word[i]);
+                if (silver != null && i < silver.Length && silver[i]) v *= 2f;
+                sum += v;
+            }
             float lengthBonus = 1f + 0.25f * Mathf.Max(0, word.Length - 3);
             return Mathf.Max(1, Mathf.RoundToInt(sum * lengthBonus * 1.5f));
         }

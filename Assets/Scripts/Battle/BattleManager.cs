@@ -83,6 +83,12 @@ namespace Orasyon.Battle
         [SerializeField] private EnemyIntentUI intentUI;
 
 
+        [Header("Orasyon (the book's prayer)")]
+        [SerializeField] private OrasyonMeter  orasyonMeter;
+        [SerializeField] private VfxDefinition flurryHitVfx;
+        [Tooltip("Fixed damage of the prayer. It ignores the enemy's guard.")]
+        [SerializeField] private int           orasyonDamage = 10;
+
         [Header("Potions")]
         [Tooltip("Power potions (double damage) a single enemy fight can award, so bosses cannot be skipped by stacking them.")]
         [SerializeField] private int maxPowerPotionsPerEnemy = 2;
@@ -180,13 +186,18 @@ namespace Orasyon.Battle
             SetX(EnemyRect, CurrentEnemy, enemyHomeX);
 
             if (!string.IsNullOrEmpty(firstBoard) && firstBoard.Length >= letterGrid.Rows * letterGrid.Cols)
-                letterGrid.SetBoard(ParseBoard(firstBoard), dropIn: true);
+                {
+                    letterGrid.SetBoard(ParseBoard(firstBoard), dropIn: true);
+                    // The tutorial introduces special tiles: a gold tile away from the sample word (row 3, col 3 of the first board)
+                    if (chapterNumber <= 1) letterGrid.SetKind(letterGrid.Index(2, 2), TileKind.Gold);
+                }
             else
                 NewBoard();
 
             attackButton.onClick.AddListener(OnAttackPressed);
             clearButton.onClick.AddListener(letterGrid.ClearSelection);
             scrambleButton.onClick.AddListener(OnScramblePressed);
+            if (orasyonMeter != null && orasyonMeter.Button != null) orasyonMeter.Button.onClick.AddListener(OnOrasyonPressed);
             menuButton.onClick.AddListener(LoadMainMenu);
             hintsLeft = hintsPerChapter + PlayerProgress.BonusHints;   // Kampana ng Gubat
             buffs.Add(BuffType.WardingPotion, PlayerProgress.StartingWardingPotions);   // Agimat ng Bubong
@@ -240,9 +251,10 @@ namespace Orasyon.Battle
         {
             if (!CanAct) return;
             if (!letterGrid.CurrentWordIsValid) { RejectWord(); return; }
+            var fx = TileEffects.From(letterGrid.SelectedTiles);   // gold / heal / silver / ward / hex tiles in this word
             string word = letterGrid.ConsumeSelection();
             letterGrid.ClearHighlights();   // any hint glow goes away once you attack
-            StartCoroutine(AttackRoutine(word));
+            StartCoroutine(AttackRoutine(word, fx));
         }
 
         /// <summary>
@@ -321,9 +333,11 @@ namespace Orasyon.Battle
                     bool cured = poisonTurns > 0 || weakenTurns > 0;
                     poisonTurns = 0; weakenTurns = 0;
                     shieldCharges++;
+                    int unveiled = letterGrid.ClearBadTiles(smokeAndLockOnly: true);   // smoke and locks only; Orasyon clears the rest
                     playerAnimator.PlayOnce(player.cast);
                     Popup(PlayerRect, "Warded", new Color(0.45f, 1f, 0.5f));
-                    ShowFeedback((cured ? "Your ailments fade. " : "") + "A green ward surrounds you. The next attack will be blocked.", true);
+                    ShowFeedback((cured ? "Your ailments fade. " : "") + (unveiled > 0 ? "The smoke and locks lift. " : "") +
+                                 "A green ward surrounds you. The next attack will be blocked.", true);
                     break;
                 case BuffType.PowerPotion:
                     damageMultiplier = 2;
@@ -337,14 +351,14 @@ namespace Orasyon.Battle
         }
 
         // ── Turns ────────────────────────────────────────────────────────────
-        private IEnumerator AttackRoutine(string word)
+        private IEnumerator AttackRoutine(string word, TileEffects fx)
         {
             busy = true;
             RefreshInput();
             OnPlayerAttack?.Invoke(word);
 
             var enemy = CurrentEnemy;
-            int damage = ComputeDamage(word, out bool weakness);
+            int damage = ComputeDamage(word, fx, out bool weakness);
             bool empowered = damageMultiplier > 1;
             bool weakened  = weakenTurns > 0;
             bool guarded   = guardTurns > 0;
@@ -428,40 +442,172 @@ namespace Orasyon.Battle
                 yield return new WaitForSeconds(Mathf.Max(0.35f, castTime * 0.5f));
             }
 
+            // The tiles used in the word do their thing, and the book gains charge
+            if (orasyonMeter != null) orasyonMeter.Add(word.Length);
+            ApplyWordTileEffects(fx);
+            if (playerHP <= 0 && CheckPlayerDefeat()) yield break;   // a Sumpa (hex) tile can be fatal
+
             // Enemy defeated → next encounter (or victory)
             if (enemyHP <= 0)
             {
-                yield return DefeatRoutine(enemyAnimator, enemy, fadeOut: true);
-                enemyIndex++;
-                if (CurrentEnemy == null)
-                {
-                    battleOver = true;
-                    RefreshInput();
-                    HideIntent();
-                    if (turnIndicator != null) turnIndicator.Hide();
-                    if (bossReward != null)
-                    {
-                        newTreasure = PlayerProgress.Grant(bossReward);
-                        yield return TreasureDropRoutine(bossReward);
-                    }
-                    PlayerProgress.CompleteStage(chapterNumber);
-                    ShowResult(victory: true);
-                    yield break;
-                }
-                yield return TravelRoutine();
-                FinishTurn();
+                yield return ResolveEnemyDefeat(enemy);
                 yield break;
             }
 
             // Bookworm style: the used tiles are replaced right away, so the board is always full
             if (LetterGrid.RefillAfterEachWord)
+            {
                 letterGrid.RefillEmpty(Mathf.Min(minWordsOnBoard, 4));
+                MaybeDropSpecialTile(word.Length);
+            }
 
             yield return new WaitForSeconds(0.25f);
             if (turnIndicator != null) turnIndicator.ShowEnemyTurn();
             yield return EnemyPhase(enemy);
             if (CheckPlayerDefeat()) yield break;
             FinishTurn();
+        }
+
+        /// <summary>The enemy is down: death animation, then the next encounter, or the treasure and the victory screen.</summary>
+        private IEnumerator ResolveEnemyDefeat(CharacterDefinition enemy)
+        {
+            yield return DefeatRoutine(enemyAnimator, enemy, fadeOut: true);
+            enemyIndex++;
+            if (CurrentEnemy == null)
+            {
+                battleOver = true;
+                RefreshInput();
+                HideIntent();
+                if (turnIndicator != null) turnIndicator.Hide();
+                if (bossReward != null)
+                {
+                    newTreasure = PlayerProgress.Grant(bossReward);
+                    yield return TreasureDropRoutine(bossReward);
+                }
+                PlayerProgress.CompleteStage(chapterNumber);
+                ShowResult(victory: true);
+                yield break;
+            }
+            yield return TravelRoutine();
+            FinishTurn();
+        }
+
+        // ── Special tiles ────────────────────────────────────────────────────
+        /// <summary>Healing leaves, wards and hexes take effect once their word has been played.</summary>
+        private void ApplyWordTileEffects(TileEffects fx)
+        {
+            if (fx.heal > 0)
+            {
+                int healed = Mathf.Min(fx.heal * TileKindInfo.HealAmount, playerMaxHP - playerHP);
+                if (healed > 0)
+                {
+                    playerHP += healed;
+                    if (vfxPlayer != null) vfxPlayer.Play(healVfx, PlayerCenter, 1.0f);
+                    Popup(PlayerRect, "+" + healed, new Color(0.55f, 1f, 0.55f));
+                }
+            }
+            if (fx.shield > 0)
+            {
+                shieldCharges += fx.shield;
+                Popup(PlayerRect, "Agimat!", new Color(0.55f, 0.78f, 1f));
+            }
+            if (fx.hex > 0)
+            {
+                int cost = fx.hex * TileKindInfo.HexDamage;
+                playerHP = Mathf.Max(0, playerHP - cost);
+                playerAnimator.Flash(new Color(0.75f, 0.5f, 1f), 0.3f);
+                Popup(PlayerRect, "Sumpa -" + cost, new Color(0.78f, 0.55f, 1f));
+            }
+            if (fx.heal > 0 || fx.shield > 0 || fx.hex > 0)
+            {
+                RefreshHearts();
+                RefreshStatus();
+            }
+        }
+
+        /// <summary>The good tiles that can appear in this chapter.</summary>
+        private TileKind[] SpecialPool =>
+            chapterNumber <= 1 ? new[] { TileKind.Gold }
+          : chapterNumber == 2 ? new[] { TileKind.Gold, TileKind.Heal }
+          : new[] { TileKind.Gold, TileKind.Heal, TileKind.Silver, TileKind.Shield };
+
+        /// <summary>A fresh board gets 1 special tile in chapter 1 and 1-2 afterwards (at most 3 on the board).</summary>
+        private void SpawnBoardSpecials()
+        {
+            var pool = SpecialPool;
+            int count = chapterNumber <= 1 ? 1 : rng.Next(1, 3);
+            for (int i = 0; i < count; i++) letterGrid.TryAddSpecial(pool[rng.Next(pool.Length)]);
+        }
+
+        /// <summary>Long words are rewarded: 5-6 letters drop a special tile 50% of the time, 7+ letters always.</summary>
+        private void MaybeDropSpecialTile(int wordLength)
+        {
+            double chance = wordLength >= 7 ? 1.0 : wordLength >= 5 ? 0.5 : 0.0;
+            if (chance <= 0.0 || rng.NextDouble() >= chance) return;
+            var pool = SpecialPool;
+            letterGrid.TryAddSpecial(pool[rng.Next(pool.Length)], onlyRefilled: true);
+        }
+
+        // ── Orasyon ──────────────────────────────────────────────────────────
+        private void OnOrasyonPressed()
+        {
+            if (!CanAct || orasyonMeter == null || !orasyonMeter.IsFull) return;
+            StartCoroutine(OrasyonRoutine());
+        }
+
+        /// <summary>
+        /// The book's prayer: a free action. Fixed damage that ignores guard, cures poison and weakness,
+        /// and clears every bad tile. It does not end the player's turn.
+        /// </summary>
+        private IEnumerator OrasyonRoutine()
+        {
+            busy = true;
+            orasyonMeter.ResetCharge();
+            RefreshInput();
+            letterGrid.ClearSelection();
+
+            var enemy = CurrentEnemy;
+            bool cured = poisonTurns > 0 || weakenTurns > 0;
+            poisonTurns = 0; weakenTurns = 0;
+            int cleared = letterGrid.ClearBadTiles(smokeAndLockOnly: false);
+            RefreshStatus();
+            ShowFeedback("<color=#FFD700><b>ORASYON!</b></color>  The book answers your prayer." +
+                         (cured ? "  <color=#9FE2BF>Your ailments fade.</color>" : "") +
+                         (cleared > 0 ? "  <color=#9FE2BF>The board is cleansed.</color>" : ""), true);
+
+            var clip = player.flurry != null && player.flurry.Length > 0 ? player.flurry
+                     : player.cast != null && player.cast.Length > 0 ? player.cast : player.attack;
+            float dur = playerAnimator.Duration(clip);
+            playerAnimator.PlayOnce(clip);
+            StartCoroutine(Burst(PlayerStaff, 240f, MagicGold));
+            StartCoroutine(Shake(0.3f, 8f));
+
+            // Five blows spread through the middle of the animation
+            const int hits = 5;
+            yield return new WaitForSeconds(dur * 0.25f);
+            int remaining = orasyonDamage;
+            for (int i = 0; i < hits; i++)
+            {
+                int part = i == hits - 1 ? remaining : orasyonDamage / hits;
+                remaining -= part;
+                enemyHP = Mathf.Max(0, enemyHP - part);
+                RefreshHearts();
+                PlayHurt(enemyAnimator, enemy);
+                Vector2 jitter = new Vector2(UnityEngine.Random.Range(-60f, 60f), UnityEngine.Random.Range(-40f, 60f));
+                if (vfxPlayer != null && flurryHitVfx != null) vfxPlayer.Play(flurryHitVfx, EnemyCenter + jitter, 0.9f);
+                else StartCoroutine(Burst(EnemyCenter + jitter, 170f, MagicGold));
+                Popup(EnemyRect, "-" + part, MagicGold);
+                yield return new WaitForSeconds(dur * 0.5f / hits);
+            }
+            yield return new WaitForSeconds(dur * 0.25f);
+
+            if (enemyHP <= 0)
+            {
+                yield return ResolveEnemyDefeat(enemy);
+                yield break;
+            }
+            busy = false;
+            RefreshInput();
         }
 
         /// <summary>
@@ -505,6 +651,7 @@ namespace Orasyon.Battle
             var atk = nextAttack ?? PickNextAttack(enemy);
             HideIntent();
             yield return EnemyActRoutine(enemy, atk);
+            yield return TileTickRoutine();
 
             // Choose and show the next move at the END of this turn, so the player can plan for it
             olderAttack = previousAttack;
@@ -512,6 +659,23 @@ namespace Orasyon.Battle
             enemyTurnIndex++;
             nextAttack = PickNextAttack(enemy);
             if (playerHP > 0 && enemyHP > 0) ShowIntent();
+        }
+
+        /// <summary>End of an enemy turn: every Alab (burning) tile hurts you, and timed bad tiles wear off.</summary>
+        private IEnumerator TileTickRoutine()
+        {
+            int burning = letterGrid.CountKind(TileKind.Burning);
+            if (burning > 0 && playerHP > 0)
+            {
+                int dmg = burning * TileKindInfo.BurnDamage;
+                playerHP = Mathf.Max(0, playerHP - dmg);
+                playerAnimator.Flash(new Color(1f, 0.55f, 0.25f), 0.3f);
+                Popup(PlayerRect, "Alab -" + dmg, new Color(1f, 0.6f, 0.3f));
+                if (feedbackLabel != null) feedbackLabel.text += $"\n<color=#FFA866>{burning} burning tile{(burning > 1 ? "s" : "")} scorch you for {dmg}.</color>";
+                RefreshHearts();
+                yield return new WaitForSeconds(0.6f);
+            }
+            letterGrid.TickTileTimers();
         }
 
         private IEnumerator EnemyActRoutine(CharacterDefinition enemy, EnemyAttack atk)
@@ -688,10 +852,11 @@ namespace Orasyon.Battle
         }
 
         // ── Damage ───────────────────────────────────────────────────────────
-        private int ComputeDamage(string word, out bool weakness)
+        private int ComputeDamage(string word, TileEffects fx, out bool weakness)
         {
             weakness = IsThemeWord(CurrentEnemy, word);
-            float d = LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier;   // treasures add damage
+            // treasures and gold tiles share one additive bonus group
+            float d = LetterScoring.Damage(word, fx.silver) * (PlayerProgress.DamageMultiplier + TileKindInfo.GoldBonus * fx.gold);
             if (weakness) d *= 1.5f;
             d *= damageMultiplier;
             if (weakenTurns > 0) d *= 1f - weakenPercent / 100f;
@@ -699,15 +864,17 @@ namespace Orasyon.Battle
             return Mathf.Max(1, Mathf.RoundToInt(d));
         }
 
-        private int PreviewDamage(string word) => ComputeDamage(word, out _);
+        private int PreviewDamage(string word) => ComputeDamage(word, TileEffects.From(letterGrid.SelectedTiles), out _);
 
         /// <summary>"11 damage (base 7 x1.5 weakness x1.2 treasures)": teaches the system and helps balancing.</summary>
         private string DescribeDamage(string word)
         {
-            int total = ComputeDamage(word, out bool weakness);
-            var parts = new System.Collections.Generic.List<string> { $"base {LetterScoring.Damage(word)}" };
-            float treasures = PlayerProgress.DamageMultiplier;
-            if (treasures > 1f)     parts.Add($"x{treasures:0.##} treasures");
+            var fx = TileEffects.From(letterGrid.SelectedTiles);
+            int total = ComputeDamage(word, fx, out bool weakness);
+            var parts = new System.Collections.Generic.List<string> { $"base {LetterScoring.Damage(word, fx.silver)}" };
+            if (fx.SilverCount > 0) parts[0] += $" (silver x{fx.SilverCount})";
+            float bonus = PlayerProgress.DamageMultiplier + TileKindInfo.GoldBonus * fx.gold;
+            if (bonus > 1f)         parts.Add($"x{bonus:0.##}" + (fx.gold > 0 ? " treasures+gold" : " treasures"));
             if (weakness)           parts.Add("x1.5 weakness");
             if (damageMultiplier > 1) parts.Add($"x{damageMultiplier} power");
             if (weakenTurns > 0)    parts.Add($"x{1f - weakenPercent / 100f:0.##} weakened");
@@ -990,6 +1157,7 @@ namespace Orasyon.Battle
             enemyHP = enemy.maxHP;
             scramblesLeft = scramblesPerEnemy;
             powerPotionsAwarded = 0;
+            if (orasyonMeter != null) orasyonMeter.ResetCharge();
             enemyTurnIndex = 0;
             previousAttack = olderAttack = null;
             nextAttack = PickNextAttack(enemy);
@@ -1014,6 +1182,7 @@ namespace Orasyon.Battle
                 if (pick.Length <= letterGrid.Rows * letterGrid.Cols && WordDictionary.IsWord(pick)) plant = pick;
             }
             letterGrid.GenerateBoard(plant, minWordsOnBoard, dropIn: true);
+            SpawnBoardSpecials();
         }
 
         private char[,] ParseBoard(string letters)
@@ -1064,6 +1233,7 @@ namespace Orasyon.Battle
             if (scrambleButton != null) scrambleButton.interactable = canAct && !actionsLocked && scramblesLeft > 0;
             if (clearButton != null)    clearButton.interactable    = canAct && !gridLocked;
             if (hintButton != null)     hintButton.interactable     = canAct && !actionsLocked && hintsLeft > 0;
+            if (orasyonMeter != null)   orasyonMeter.SetInteractable(canAct && !actionsLocked);
             if (buffs != null)          buffs.Interactable          = canAct && !actionsLocked;
         }
 

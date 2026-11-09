@@ -7,7 +7,7 @@ namespace Orasyon.Battle
 {
     /// <summary>
     /// One clickable letter tile. Slides toward its target cell (used when tiles fall in),
-    /// and colours itself based on selection / tutorial highlight / hover.
+    /// and colours itself based on its kind (special / bad), selection, tutorial highlight and hover.
     /// </summary>
     [RequireComponent(typeof(Button))]
     public sealed class LetterTile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -16,6 +16,10 @@ namespace Orasyon.Battle
         [SerializeField] private Image           background;
         [SerializeField] private Image           highlightRing;
         [SerializeField] private TextMeshProUGUI letterLabel;
+        [Tooltip("Small text in the top-left corner naming the tile's effect, e.g. +20%.")]
+        [SerializeField] private TextMeshProUGUI badgeLabel;
+        [Tooltip("Small number in the bottom-right corner: enemy turns until the tile wears off.")]
+        [SerializeField] private TextMeshProUGUI turnsLabel;
 
         [Header("Colors")]
         [SerializeField] private Color normalColor         = new Color(0.96f, 0.89f, 0.70f);
@@ -31,6 +35,7 @@ namespace Orasyon.Battle
         private LetterTileData data;
         private LetterGrid     grid;
         private RectTransform  rect;
+        private Button         button;
         private Vector2        target;
         private bool           hovered;
         private float          pop = 1f;
@@ -40,7 +45,8 @@ namespace Orasyon.Battle
         private void Awake()
         {
             rect = (RectTransform)transform;
-            GetComponent<Button>().onClick.AddListener(OnClick);
+            button = GetComponent<Button>();
+            button.onClick.AddListener(OnClick);
         }
 
         public void Bind(LetterTileData tileData, LetterGrid owner)
@@ -68,22 +74,51 @@ namespace Orasyon.Battle
         public void Refresh()
         {
             if (data == null) return;
+            if (button == null) button = GetComponent<Button>();
 
-            // Used tiles leave an empty gap on the board
-            if (gameObject.activeSelf == data.IsEmpty) gameObject.SetActive(!data.IsEmpty);
-            if (data.IsEmpty) return;
+            bool isVoid = data.Kind == TileKind.Void;
 
-            if (letterLabel != null) letterLabel.text = data.Letter.ToString();
+            // Used tiles leave an empty gap on the board. A Void tile is a visible dark hole instead.
+            bool visible = !data.IsEmpty || isVoid;
+            if (gameObject.activeSelf != visible) gameObject.SetActive(visible);
+            if (!visible) return;
 
+            if (button != null) button.interactable = data.IsSelectable;
+
+            // Letter: smoked tiles hide it, voids have none
+            if (letterLabel != null)
+            {
+                letterLabel.text = isVoid ? "" : data.Kind == TileKind.Smoked ? "?" : data.Letter.ToString();
+                letterLabel.color = data.IsSelected ? selectedLetterColor
+                                  : data.Kind == TileKind.Locked ? new Color(0.70f, 0.62f, 0.55f)
+                                  : letterColor;
+            }
+
+            // Background: selection > tutorial highlight > the tile's own colour (hover brightens normal tiles)
             Color bg;
-            if (data.IsSelected)          bg = selectedColor;
-            else if (data.IsHighlighted)  bg = tutorialColor;
-            else if (hovered)             bg = hoverColor;
-            else                          bg = normalColor;
+            if (data.IsSelected)                 bg = selectedColor;
+            else if (data.IsHighlighted)         bg = tutorialColor;
+            else if (data.Kind != TileKind.Normal) bg = TileKindInfo.Fill(data.Kind);
+            else if (hovered)                    bg = hoverColor;
+            else                                 bg = normalColor;
+            if (hovered && data.IsSelectable && !data.IsSelected && data.Kind != TileKind.Normal)
+                bg = Color.Lerp(bg, Color.white, 0.25f);
 
-            if (background != null)  background.color = bg;
-            if (letterLabel != null) letterLabel.color = data.IsSelected ? selectedLetterColor : letterColor;
+            if (background != null)    background.color = bg;
             if (highlightRing != null) highlightRing.enabled = data.IsHighlighted && !data.IsSelected;
+
+            if (badgeLabel != null)
+            {
+                string badge = TileKindInfo.Badge(data.Kind);
+                badgeLabel.text = badge;
+                badgeLabel.gameObject.SetActive(badge.Length > 0);
+            }
+            if (turnsLabel != null)
+            {
+                bool timed = data.TurnsLeft > 0 && data.Kind != TileKind.Normal && !isVoid;
+                turnsLabel.text = timed ? data.TurnsLeft.ToString() : "";
+                turnsLabel.gameObject.SetActive(timed);
+            }
         }
 
         private void Update()

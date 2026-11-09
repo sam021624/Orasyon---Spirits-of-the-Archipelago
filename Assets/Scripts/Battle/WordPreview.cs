@@ -78,13 +78,40 @@ namespace Orasyon.Battle
             while (pool.Count < word.Length)
                 pool.Add(Instantiate(letterTemplate, row));
 
+            var selected = grid.SelectedTiles;
             for (int i = 0; i < pool.Count; i++)
             {
                 bool on = i < word.Length;
                 pool[i].SetActive(on);
                 if (!on) continue;
-                pool[i].GetComponentInChildren<TextMeshProUGUI>().text = word[i].ToString();
-                pool[i].GetComponent<Image>().color = rejecting ? rejectTile : valid ? validTile : normalTile;
+
+                var kind = i < selected.Count ? selected[i].Kind : TileKind.Normal;
+                string badge = TileKindInfo.Badge(kind);
+                pool[i].GetComponentInChildren<TextMeshProUGUI>().text =
+                    word[i] + (badge.Length > 0 ? $"<size=32%> {badge}</size>" : "");
+
+                var img = pool[i].GetComponent<Image>();
+                img.color = rejecting ? rejectTile
+                          : kind != TileKind.Normal ? TileKindInfo.Fill(kind)
+                          : valid ? validTile : normalTile;
+
+                // Tapping a letter in the word sends that tile back to the board (like Bookworm Adventures)
+                img.raycastTarget = true;
+                var btn = pool[i].GetComponent<Button>();
+                if (btn == null)
+                {
+                    btn = pool[i].AddComponent<Button>();
+                    btn.targetGraphic = img;
+                    var colors = btn.colors;
+                    colors.highlightedColor = new Color(0.88f, 0.88f, 0.88f, 1f);
+                    colors.pressedColor     = new Color(0.70f, 0.70f, 0.70f, 1f);
+                    colors.selectedColor    = Color.white;
+                    colors.fadeDuration     = 0.06f;
+                    btn.colors = colors;
+                }
+                int captured = i;
+                btn.onClick.RemoveAllListeners();
+                btn.onClick.AddListener(() => grid.RemoveFromSelection(captured));
             }
 
             if (hintLabel != null)

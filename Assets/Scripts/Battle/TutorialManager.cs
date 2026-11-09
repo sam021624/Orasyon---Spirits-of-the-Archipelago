@@ -31,7 +31,7 @@ namespace Orasyon.Battle
 
         [SerializeField] private float fadeDuration = 0.35f;
 
-        private enum Step { Welcome, Grid, Spell, Attack, Tips, Done }
+        private enum Step { Welcome, Grid, Spell, Attack, Tips, SpecialTile, Done }
 
         private Step step;
         private bool watchingForWord;
@@ -101,7 +101,18 @@ namespace Orasyon.Battle
                         "Words of <b>5+ letters</b> earn potions on the left shelf. Click one to drink it.\n" +
                         "The right panel lists your foe's <b>attacks</b>: watch for poison, stun and critical hits. Green potions cure them.\n" +
                         "Words of 5+ letters become <b>spells</b>. Stuck? <b>Scramble</b> shuffles your tiles (3 per foe), and <b>Hint</b> shows a short word (2 per chapter).",
+                        "Next");
+                    break;
+
+                case Step.SpecialTile:
+                    Set("Special Tiles",
+                        "See the shining <b>gold</b> tile? Put it in a word for <b>+20% damage</b>.\n\n" +
+                        "Others you will find: a green <b>leaf</b> heals you, a <b>silver</b> tile doubles its letter, a blue <b>amulet</b> blocks a hit.\n" +
+                        "Enemies place <b>bad tiles</b> too: smoke hides a letter, locks stop it, flames burn you, hexes cost HP.\n\n" +
+                        "Spelling words fills the <b>Orasyon</b> meter. When it is full, the prayer hurts the enemy and cleanses the board.",
                         "Let's fight!");
+                    var gold = letterGrid.FindFirstOfKind(TileKind.Gold);
+                    if (gold != null) letterGrid.SetHighlight(gold.Row, gold.Col, true);
                     break;
             }
         }
@@ -117,7 +128,11 @@ namespace Orasyon.Battle
                     battle.SetTutorialLocks(lockGrid: false, lockActions: true);
                     watchingForWord = true;
                     break;
-                case Step.Tips:    Show(Step.Done); break;
+                case Step.Tips:    Show(Step.SpecialTile); break;
+                case Step.SpecialTile:
+                    letterGrid.ClearHighlights();
+                    Show(Step.Done);
+                    break;
             }
         }
 

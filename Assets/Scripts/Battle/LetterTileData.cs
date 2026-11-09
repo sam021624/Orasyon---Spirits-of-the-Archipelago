@@ -12,7 +12,11 @@ namespace Orasyon.Battle
         public int    Col;
         public bool   IsSelected;
         public bool   IsHighlighted;   // used by tutorial to mark pre-chosen letters
-        public bool   IsEmpty;         // the tile was used in a word and removed (leaves a gap)
+        public bool   IsEmpty;         // the tile was used in a word and removed (leaves a gap), or is a Void hole
+        public TileKind Kind;          // Normal, a good special tile, or a bad tile placed by an enemy
+        public int    TurnsLeft;       // enemy turns until a Smoked / Locked / Hex tile wears off (0 = no timer)
         public LetterTile View;         // the MonoBehaviour attached to the UI button
+
+        public bool IsSelectable => !IsEmpty && Kind != TileKind.Locked;
     }
 }
