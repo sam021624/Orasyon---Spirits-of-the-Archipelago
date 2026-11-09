@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: Ch3_3_Tiyanak
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Tiyanak
+  isBoss: 1
+  maxHP: 55
+  attackDamage: 3
+  attackName: Scratch
+  attacks:
+  - name: Scratch
+    minDamage: 2
+    maxDamage: 3
+    critChance: 0.2
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: e8a52b68da8d76e4bb73d62ad24aaa3c, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Fake Smile
+    minDamage: 1
+    maxDamage: 2
+    critChance: 0
+    weight: 2
+    effect: 3
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 40
+    vfx: {fileID: 11400000, guid: e8a52b68da8d76e4bb73d62ad24aaa3c, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Wail
+    minDamage: 1
+    maxDamage: 1
+    critChance: 0
+    weight: 2
+    effect: 2
+    effectChance: 0.5
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 8fce143d83bd5cf43ac68d86ae00332a, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Mimic Cry
+    minDamage: 0
+    maxDamage: 0
+    critChance: 0
+    weight: 1
+    effect: 4
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 40
+    vfx: {fileID: 11400000, guid: 8fce143d83bd5cf43ac68d86ae00332a, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  description: It cries like a lost baby to lure travelers off the path. Take it
+    in your arms and the sweet face twists into something sharp-toothed and furious.
+  themeWords:
+  - LULLABY
+  - CRADLE
+  - BABY
+  - FOREST
+  - CRY
+  spriteSize: 340
+  hoverHeight: 0
+  framesPerSecond: 12
+  spriteFacesRight: 0
+  idle:
+    sheet: {fileID: 2800000, guid: 158b7e5f1b3d72a4d95c6e4a80fda437, type: 3}
+    frames: 8
+    fps: 0
+  walk:
+    sheet: {fileID: 2800000, guid: f3e6eea53b4923940ae6bd5ecf594e62, type: 3}
+    frames: 8
+    fps: 0
+  attack:
+    sheet: {fileID: 2800000, guid: b7d39ece88803b44980b4bbb9a51e877, type: 3}
+    frames: 9
+    fps: 0
+  cast:
+    sheet: {fileID: 2800000, guid: eb0afa1caf8ba9d49a14fe27078dbe64, type: 3}
+    frames: 9
+    fps: 0
+  hurt:
+    sheet: {fileID: 2800000, guid: ccef9d24c156bf74f8fe9220b5a5ea06, type: 3}
+    frames: 9
+    fps: 0
+  death:
+    sheet: {fileID: 2800000, guid: 6b4ab0a73c2da304a9f9c1c452aab59d, type: 3}
+    frames: 9
+    fps: 0
+  kidlat:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  flurry:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0

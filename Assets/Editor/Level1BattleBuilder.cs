@@ -21,7 +21,6 @@ namespace Orasyon.EditorTools
     {
         private const string TilePrefabPath = "Assets/Resources/TilePrefab.prefab";
         private const string DataFolder     = "Assets/Data/Characters/";
-        private const string CharFolder     = "Assets/Sprites/Characters/";
         private const string StoryFolder    = "Assets/Data/Story/";
         private const string TreasureFolder = "Assets/Resources/Treasures/";
         private const string HeartSprite    = "Assets/Sprites/Icons/Hearts/PNG/basic/heart.png";
@@ -32,7 +31,7 @@ namespace Orasyon.EditorTools
             public string   scenePath;
             public string   chapterTitle;
             public string   backgroundPack;
-            public string[] enemyAssets;      // fought in order, last = boss
+            public int      chapter;          // enemies come from Characters-New/Chapter N (folder order, last = boss)
             public bool     tutorial;
             public string   firstBoard;       // fixed first board (tutorial) or "" for random
             public string   nextStoryAsset;   // dialogue after the boss, or null
@@ -45,7 +44,7 @@ namespace Orasyon.EditorTools
             scenePath      = "Assets/Levels/Level1.unity",
             chapterTitle   = "Chapter 1: The Backyard Mound",
             backgroundPack = "Assets/Sprites/Terrains/1",
-            enemyAssets    = new[] { "01_ForestBat", "02_BaleteTreeMinion", "03_DuwendeKing" },
+            chapter        = 1,
             tutorial       = true,
             firstBoard     = "WORDATESLINGBUKA",
             nextStoryAsset = "Interlude_Chapter1",
@@ -58,7 +57,7 @@ namespace Orasyon.EditorTools
             scenePath      = "Assets/Levels/Level2.unity",
             chapterTitle   = "Chapter 2: The Old Balete",
             backgroundPack = "Assets/Sprites/Terrains/6",
-            enemyAssets    = new[] { "04_EnchantedMushroom", "05_DuwendeMinion", "06_Kapre" },
+            chapter        = 2,
             tutorial       = false,
             firstBoard     = "",
             nextStoryAsset = null,
@@ -88,7 +87,7 @@ namespace Orasyon.EditorTools
             panelSprite   = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
             circleSprite  = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
 
-            UpdateCharacterData();
+            CharacterAssets.EnsureAll();
             TreasureAssets.Ensure();
             SetPointFilter(spec.backgroundPack);
             var tilePrefab = BuildTilePrefab();
@@ -108,7 +107,7 @@ namespace Orasyon.EditorTools
             var canvas = canvasGo.transform;
 
             var albularyo = Load<CharacterDefinition>(DataFolder + "Albularyo.asset");
-            var foes = spec.enemyAssets.Select(n => Load<CharacterDefinition>(DataFolder + n + ".asset")).ToArray();
+            var foes = CharacterAssets.EnemyAssetNames(spec.chapter).Select(n => Load<CharacterDefinition>(DataFolder + n + ".asset")).ToArray();
             var bat = foes[0];   // first foe: shown in the scene before play starts
 
             // ── Stage (top 560px) ────────────────────────────────────────────
@@ -378,6 +377,17 @@ namespace Orasyon.EditorTools
             Set(m, "playerStatusLabel", status);
             Set(m, "enemyStatusLabel", enemyStatus);
             Set(m, "shakeTarget", stage);
+
+            // Sprite-sheet effects
+            var vfxPlayer = managers.gameObject.AddComponent<VfxPlayer>();
+            var vso = new SerializedObject(vfxPlayer);
+            vso.FindProperty("layer").objectReferenceValue = characters;
+            vso.ApplyModifiedPropertiesWithoutUndo();
+            Set(m, "vfxPlayer", vfxPlayer);
+            Set(m, "heroImpactVfx", VfxAssets.Load("hero_impact"));
+            Set(m, "heroBoltVfx",   VfxAssets.Load("hero_bolt"));
+            Set(m, "heroKidlatVfx", VfxAssets.Load("hero_kidlat_bolt"));
+            Set(m, "healVfx",       VfxAssets.Load("lola_heal"));
             Set(m, "fxSprite", AssetDatabase.LoadAllAssetsAtPath("Assets/Sprites/UI/soft_glow.png").OfType<Sprite>().FirstOrDefault() ?? circleSprite);
             var enemies = m.FindProperty("enemies");
             enemies.arraySize = foes.Length;
@@ -447,171 +457,6 @@ namespace Orasyon.EditorTools
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             Debug.Log($"[Orasyon] {spec.chapterTitle} battle UI rebuilt in {spec.scenePath}.");
-        }
-
-        // ── Character data ───────────────────────────────────────────────────
-        private static void UpdateCharacterData()
-        {
-            var albularyo = Load<CharacterDefinition>(DataFolder + "Albularyo.asset");
-            albularyo.walk = Clip("Main Character", "Walking");
-            albularyo.spriteSize = 320f;
-            EditorUtility.SetDirty(albularyo);
-
-            var bat = Load<CharacterDefinition>(DataFolder + "01_ForestBat.asset");
-            bat.attackName = "Wing Gust";
-            bat.themeWords = new[] { "BAT", "WING", "NIGHT", "CAVE", "FANG" };
-            bat.hoverHeight = 70f;
-            bat.spriteSize = 280f;
-            bat.description = "Little bats flit between the old trees after dusk, keeping watch for the bigger spirits of the forest. " +
-                              "Alone they are only a nuisance. When they gather, something larger is never far behind.";
-            EditorUtility.SetDirty(bat);
-
-            var tree = Load<CharacterDefinition>(DataFolder + "02_BaleteTreeMinion.asset");
-            tree.attackName = "Root Lash";
-            tree.themeWords = new[] { "ROOT", "TREE", "LEAF", "BARK", "VINE" };
-            tree.spriteSize = 320f;
-            tree.description = "Elders warn children never to point at a balete tree. " +
-                               "Its tangled roots remember every insult, and sometimes they pull themselves out of the ground to settle the score.";
-            EditorUtility.SetDirty(tree);
-
-            var king = Load<CharacterDefinition>(DataFolder + "03_DuwendeKing.asset");
-            king.attackName = "Staff Smash";
-            king.themeWords = new[] { "MOUND", "GOLD", "KING", "DIRT", "GNOME" };
-            king.spriteSize = 380f;
-            king.description = "Ruler of the backyard mounds. Walk past his home without a respectful \"tabi tabi po\" " +
-                               "and his mischief will follow you for days. Today, he is not in a forgiving mood.";
-            EditorUtility.SetDirty(king);
-
-            // ── Chapter 2 (created from the sprite folders the first time) ──
-            var mushroom = Creature("04_EnchantedMushroom", "Enchanted Mushroom 1st Enemy", "Enchanted Mushroom",
-                idle: null, attack: "Attack", hurt: null, death: null);
-            mushroom.attackName = "Spore Burst";
-            mushroom.themeWords = new[] { "SPORE", "MOSS", "DEW", "CAP", "GLOW" };
-            mushroom.spriteSize = 260f;
-            mushroom.description = "Glowing mushrooms sprout wherever the Kapre's smoke settles. " +
-                                   "Breathe too deeply near one and you wake up hours later, wondering where the path went.";
-            EditorUtility.SetDirty(mushroom);
-
-            var minion = Creature("05_DuwendeMinion", "Duwende_Minion 2nd Enemy", "Duwende Minion",
-                idle: "Idle", attack: "Attack", hurt: "Hurt", death: "The_Duwende_minion_becomes_dizzy");
-            minion.attackName = "Club Bonk";
-            minion.themeWords = new[] { "CLUB", "ELF", "IMP", "BEARD", "MOUND" };
-            minion.spriteSize = 280f;
-            minion.description = "A loyal servant of the Duwende King, still sore about his master's defeat. " +
-                                 "He followed you into the forest looking for revenge, and for the club he keeps dropping.";
-            EditorUtility.SetDirty(minion);
-
-            var kapre = Creature("06_Kapre", "Kapre_2nd_Stage_Boss", "Kapre",
-                idle: "Idle", attack: "The_Kapre_draws", hurt: "Hurt", death: "Death");
-            kapre.isBoss = true;
-            kapre.attackName = "Smoke Slam";
-            kapre.themeWords = new[] { "SMOKE", "CIGAR", "GIANT", "BALETE", "ASH" };
-            kapre.spriteSize = 430f;
-
-            // ── Movesets (overwritten on every rebuild; tune here or in the assets) ──
-            bat.attacks = new[]
-            {
-                Atk("Wing Gust", 1, 2, weight: 3, crit: 0.10f),
-                Atk("Fang Bite", 1, 1, weight: 2, effect: AttackEffect.Poison, chance: 0.6f, turns: 2, power: 1),
-            };
-            tree.attacks = new[]
-            {
-                Atk("Root Lash", 2, 3, weight: 3, crit: 0.10f),
-                Atk("Entangle",  1, 1, weight: 1, effect: AttackEffect.Stun, chance: 0.5f),
-            };
-            king.attacks = new[]
-            {
-                Atk("Staff Smash",   3, 4, weight: 3, crit: 0.20f),
-                Atk("Mischief Hex",  1, 2, weight: 2, effect: AttackEffect.Weaken, turns: 2, power: 40),
-                Atk("Mound Shelter", 0, 0, weight: 1, effect: AttackEffect.Guard,  turns: 2, power: 50),
-            };
-            mushroom.attacks = new[]
-            {
-                Atk("Spore Burst",  1, 2, weight: 3, effect: AttackEffect.Poison, chance: 0.6f, turns: 3, power: 1),
-                Atk("Sleepy Spores", 1, 1, weight: 1, effect: AttackEffect.Stun, chance: 0.5f),
-            };
-            minion.attacks = new[]
-            {
-                Atk("Club Bonk", 2, 3, weight: 3, crit: 0.25f),
-                Atk("Dirt Toss", 1, 1, weight: 1, effect: AttackEffect.Weaken, chance: 0.8f, turns: 2, power: 30),
-            };
-            kapre.attacks = new[]
-            {
-                Atk("Smoke Slam",    3, 5, weight: 3, crit: 0.15f),
-                Atk("Choking Smoke", 2, 2, weight: 2, effect: AttackEffect.Poison, chance: 0.8f, turns: 2, power: 2),
-                Atk("Ground Stomp",  2, 3, weight: 1, effect: AttackEffect.Stun, chance: 0.5f),
-                Atk("Long Drag",     0, 0, weight: 1, effect: AttackEffect.Leech, power: 6),
-            };
-            foreach (var d in new[] { bat, tree, king, mushroom, minion, kapre })
-            {
-                d.attackName = d.attacks[0].name;   // keep the legacy single-attack fields in sync
-                d.attackDamage = d.attacks[0].maxDamage;
-                EditorUtility.SetDirty(d);
-            }
-            kapre.description = "A towering spirit who sits in the oldest balete, smoking a cigar that never burns out. " +
-                                "He is not cruel, only proud, and he has no patience for visitors who forget their manners.";
-            EditorUtility.SetDirty(kapre);
-
-            AssetDatabase.SaveAssets();
-        }
-
-        private static EnemyAttack Atk(string name, int min, int max, float weight = 1f, float crit = 0f,
-                                       AttackEffect effect = AttackEffect.None, float chance = 1f, int turns = 2, int power = 1)
-            => new EnemyAttack
-            {
-                name = name, minDamage = min, maxDamage = max, weight = weight, critChance = crit,
-                effect = effect, effectChance = chance, effectTurns = turns, effectPower = power,
-            };
-
-        /// <summary>Loads or creates a creature's data. Clip names are folder-name prefixes; null = not available.</summary>
-        private static CharacterDefinition Creature(string file, string folder, string displayName,
-                                                    string idle, string attack, string hurt, string death)
-        {
-            string path = DataFolder + file + ".asset";
-            var def = Load<CharacterDefinition>(path);
-            bool isNew = def == null;
-            if (isNew)
-            {
-                def = ScriptableObject.CreateInstance<CharacterDefinition>();
-                AssetDatabase.CreateAsset(def, path);
-            }
-            def.displayName = displayName;
-            def.idle   = idle != null ? Clip(folder, idle) : new Texture2D[0];
-            def.attack = Clip(folder, attack);
-            def.hurt   = hurt != null ? Clip(folder, hurt) : new Texture2D[0];
-            def.death  = death != null ? Clip(folder, death) : new Texture2D[0];
-            def.cast   = new Texture2D[0];
-            def.walk   = new Texture2D[0];
-            if (def.idle.Length == 0)
-            {
-                // No idle animation: use the front-facing still from the rotations folder
-                var still = Load<Texture2D>(CharFolder + folder + "/Idle/rotations/south.png");
-                def.idle = still != null ? new[] { still } : def.attack.Take(1).ToArray();
-            }
-            if (isNew)
-            {
-                // Starting stats only; tune them in the Inspector afterwards
-                def.maxHP = 30; def.attackDamage = 3; def.framesPerSecond = 10f;
-                if (file.Contains("Kapre")) { def.maxHP = 50; def.attackDamage = 5; }
-                if (file.Contains("Mushroom")) def.attackDamage = 2;
-            }
-            return def;
-        }
-
-        private static Texture2D[] Clip(string character, string prefix)
-        {
-            string anims = CharFolder + character + "/Idle/animations";
-            var clipFolder = AssetDatabase.GetSubFolders(anims)
-                .FirstOrDefault(f => Path.GetFileName(f) == prefix || Path.GetFileName(f).StartsWith(prefix + "_")
-                                     || Path.GetFileName(f).StartsWith(prefix));
-            if (clipFolder == null) return new Texture2D[0];
-            var dir = AssetDatabase.GetSubFolders(clipFolder).FirstOrDefault() ?? clipFolder;
-            return AssetDatabase.FindAssets("t:Texture2D", new[] { dir })
-                .Select(AssetDatabase.GUIDToAssetPath)
-                .Where(p => Path.GetDirectoryName(p).Replace('\\', '/') == dir)
-                .OrderBy(p => p)
-                .Select(AssetDatabase.LoadAssetAtPath<Texture2D>)
-                .ToArray();
         }
 
         // ── Pieces ───────────────────────────────────────────────────────────
@@ -701,7 +546,7 @@ namespace Orasyon.EditorTools
             Anchor(rt, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(x, 30f + def.hoverHeight), Vector2.one * def.spriteSize);
             var raw = rt.gameObject.AddComponent<RawImage>();
             raw.raycastTarget = false;
-            raw.texture = def.idle.Length > 0 ? def.idle[0] : null;
+            def.idle.Apply(raw, 0);
             return rt.gameObject.AddComponent<UIFrameAnimator>();
         }
 

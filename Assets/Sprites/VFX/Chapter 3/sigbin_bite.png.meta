@@ -1,0 +1,546 @@
+fileFormatVersion: 2
+guid: 42a2c77dc7750f8489c0eff6868c3f16
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2405614835465665962
+    second: sigbin_bite_0
+  - first:
+      213: 6197640632612504405
+    second: sigbin_bite_1
+  - first:
+      213: -24242894283884676
+    second: sigbin_bite_2
+  - first:
+      213: -3286543966112991583
+    second: sigbin_bite_3
+  - first:
+      213: -5487842754654740650
+    second: sigbin_bite_4
+  - first:
+      213: -1073126741031273892
+    second: sigbin_bite_5
+  - first:
+      213: 8363309136543364737
+    second: sigbin_bite_6
+  - first:
+      213: 5854494070733318501
+    second: sigbin_bite_7
+  - first:
+      213: 904541466841458421
+    second: sigbin_bite_8
+  - first:
+      213: -2252677633256667353
+    second: sigbin_bite_9
+  - first:
+      213: -8653394466560550237
+    second: sigbin_bite_10
+  - first:
+      213: 8588662432785795913
+    second: sigbin_bite_11
+  - first:
+      213: 5345224963470713607
+    second: sigbin_bite_12
+  - first:
+      213: -2538552073905650739
+    second: sigbin_bite_13
+  - first:
+      213: 178115393003821675
+    second: sigbin_bite_14
+  - first:
+      213: -4215972158909697419
+    second: sigbin_bite_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: sigbin_bite_0
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 15
+        width: 107
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aad375682f5726120800000000000000
+      internalID: 2405614835465665962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_1
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 27
+        width: 107
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5534560a151720650800000000000000
+      internalID: 6197640632612504405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_2
+      rect:
+        serializedVersion: 2
+        x: 267
+        y: 29
+        width: 107
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c77b1e1573fd9aff0800000000000000
+      internalID: -24242894283884676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_3
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 26
+        width: 110
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a6b129fca9d362d0800000000000000
+      internalID: -3286543966112991583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_4
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 24
+        width: 120
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65f5a99271447d3b0800000000000000
+      internalID: -5487842754654740650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_5
+      rect:
+        serializedVersion: 2
+        x: 641
+        y: 24
+        width: 126
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5abbd92aec7b11f0800000000000000
+      internalID: -1073126741031273892
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_6
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 82
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18632765951701470800000000000000
+      internalID: 8363309136543364737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_7
+      rect:
+        serializedVersion: 2
+        x: 712
+        y: 81
+        width: 25
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 569a0b1c6575f3150800000000000000
+      internalID: 5854494070733318501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_8
+      rect:
+        serializedVersion: 2
+        x: 767
+        y: 40
+        width: 130
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f622bfeba39d8c00800000000000000
+      internalID: 904541466841458421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_9
+      rect:
+        serializedVersion: 2
+        x: 784
+        y: 78
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 727c444b0a1ecb0e0800000000000000
+      internalID: -2252677633256667353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_10
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 86
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3aad35f8497f8e780800000000000000
+      internalID: -8653394466560550237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_11
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 81
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94b80f95afe013770800000000000000
+      internalID: 8588662432785795913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_12
+      rect:
+        serializedVersion: 2
+        x: 703
+        y: 22
+        width: 25
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 703e838b8cd0e2a40800000000000000
+      internalID: 5345224963470713607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_13
+      rect:
+        serializedVersion: 2
+        x: 791
+        y: 24
+        width: 24
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc3c50fa65045ccd0800000000000000
+      internalID: -2538552073905650739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_14
+      rect:
+        serializedVersion: 2
+        x: 825
+        y: 19
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6a9509910bc87200800000000000000
+      internalID: 178115393003821675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sigbin_bite_15
+      rect:
+        serializedVersion: 2
+        x: 857
+        y: 27
+        width: 23
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 572304d98abdd75c0800000000000000
+      internalID: -4215972158909697419
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      sigbin_bite_0: 2405614835465665962
+      sigbin_bite_1: 6197640632612504405
+      sigbin_bite_10: -8653394466560550237
+      sigbin_bite_11: 8588662432785795913
+      sigbin_bite_12: 5345224963470713607
+      sigbin_bite_13: -2538552073905650739
+      sigbin_bite_14: 178115393003821675
+      sigbin_bite_15: -4215972158909697419
+      sigbin_bite_2: -24242894283884676
+      sigbin_bite_3: -3286543966112991583
+      sigbin_bite_4: -5487842754654740650
+      sigbin_bite_5: -1073126741031273892
+      sigbin_bite_6: 8363309136543364737
+      sigbin_bite_7: 5854494070733318501
+      sigbin_bite_8: 904541466841458421
+      sigbin_bite_9: -2252677633256667353
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

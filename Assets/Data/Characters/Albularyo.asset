@@ -23,52 +23,36 @@ MonoBehaviour:
   spriteSize: 320
   hoverHeight: 0
   framesPerSecond: 10
+  spriteFacesRight: 1
   idle:
-  - {fileID: 2800000, guid: 8083d3c9add4c6b4db00894882bcc6ed, type: 3}
-  - {fileID: 2800000, guid: a7989f0ced0672341857a5a7535a8c19, type: 3}
-  - {fileID: 2800000, guid: 17a158a777c211045869dc3a05d35a66, type: 3}
-  - {fileID: 2800000, guid: f2eddbd234365d145a6b60342faa51f2, type: 3}
-  - {fileID: 2800000, guid: ec835965241b75544a46524002177ba2, type: 3}
-  - {fileID: 2800000, guid: 7b57393ce4758094d874527109b578b0, type: 3}
-  - {fileID: 2800000, guid: f0802ec05c14deb4db3dc224f95b54bb, type: 3}
-  - {fileID: 2800000, guid: 678b21fd887162c4c83602d65c239275, type: 3}
+    sheet: {fileID: 2800000, guid: c026dd0b9fead2046bb1c6578bfda3d9, type: 3}
+    frames: 8
+    fps: 0
   walk:
-  - {fileID: 2800000, guid: 6a16b03daa0c8604e8886d34dcbf2644, type: 3}
-  - {fileID: 2800000, guid: 8536f7b8f53744d438050930eb473a88, type: 3}
-  - {fileID: 2800000, guid: 426dd65ea61eee34ca8d24319614b151, type: 3}
-  - {fileID: 2800000, guid: a273d874470701c4384b70f57a7d9f69, type: 3}
-  - {fileID: 2800000, guid: b3d1e805450b1264182fdd4de2872d45, type: 3}
-  - {fileID: 2800000, guid: 2c472c5489b28e04e9f7facbf5e386a9, type: 3}
-  - {fileID: 2800000, guid: 65c65279b7207c7469b41c50bb08ecb0, type: 3}
-  - {fileID: 2800000, guid: c6cee09b262ad5f4288d1010d6cb24ab, type: 3}
+    sheet: {fileID: 2800000, guid: 3c63f9b14b7c1c046a69a57265fd7acd, type: 3}
+    frames: 8
+    fps: 0
   attack:
-  - {fileID: 2800000, guid: d461264f4f6f0804c8e68c12a3581493, type: 3}
-  - {fileID: 2800000, guid: b002f37311893874e896eca7660f4d99, type: 3}
-  - {fileID: 2800000, guid: 5d5bbfd068fd206409c10a8cb3b22970, type: 3}
-  - {fileID: 2800000, guid: 27c4a061f6762fc479dcc29543cb2894, type: 3}
-  - {fileID: 2800000, guid: 57a720bf35014fd498727c24f2065421, type: 3}
-  - {fileID: 2800000, guid: 4c0f202db7258ea418835488f70da25e, type: 3}
-  - {fileID: 2800000, guid: 09a2f79a9fb608a4dbee1e37a0a3e61d, type: 3}
-  - {fileID: 2800000, guid: d28bdc985de60b04ca97bb628abbee17, type: 3}
-  - {fileID: 2800000, guid: 3d541cfcff524284cb945619baff2181, type: 3}
+    sheet: {fileID: 2800000, guid: ea9c9e8abc9ad874f9265b44fa25b860, type: 3}
+    frames: 9
+    fps: 0
   cast:
-  - {fileID: 2800000, guid: a72eecc65c37fc44d9e836678bb98a6e, type: 3}
-  - {fileID: 2800000, guid: 970b72e7ed8bed342b85cd4c6d5fc520, type: 3}
-  - {fileID: 2800000, guid: 6d14aa319e58b7a4a90891ba980f5939, type: 3}
-  - {fileID: 2800000, guid: e7933b28f8685eb4985d15f42c9d5116, type: 3}
-  - {fileID: 2800000, guid: c8ba027a164fb714eb36b1eb1cca7a4e, type: 3}
-  - {fileID: 2800000, guid: 5d3eb2f99ac238b4e9e6577422c915f7, type: 3}
-  - {fileID: 2800000, guid: 9059dab37416fa64f80c944070b9e545, type: 3}
-  - {fileID: 2800000, guid: 751ce5e894bc91b4386b5a0e0538afe8, type: 3}
-  - {fileID: 2800000, guid: 116decb458341ff448eb5b299f1991c7, type: 3}
-  hurt: []
+    sheet: {fileID: 2800000, guid: a3adeb00958d78042a109206a8c0e8d0, type: 3}
+    frames: 9
+    fps: 0
+  hurt:
+    sheet: {fileID: 2800000, guid: cc35a52102a4a7b408a9d28a0ae2e188, type: 3}
+    frames: 9
+    fps: 0
   death:
-  - {fileID: 2800000, guid: b288a8eaa0b746749abf9df5b2680d78, type: 3}
-  - {fileID: 2800000, guid: cb2499c1aa4ee1c42b6c77d1f785e207, type: 3}
-  - {fileID: 2800000, guid: e909a1ef9cffedb4c8258b13e9259df0, type: 3}
-  - {fileID: 2800000, guid: 23147538feb64564cbb3e33c78afc067, type: 3}
-  - {fileID: 2800000, guid: 4846063fc3a09df43a1b26a2c49add5e, type: 3}
-  - {fileID: 2800000, guid: ae52fba3c7cf95249970ba77837526ee, type: 3}
-  - {fileID: 2800000, guid: 81cd991c6ef91294aa3d53fd9e5e47c9, type: 3}
-  - {fileID: 2800000, guid: 0bcbc8a86ee32ef45a0fc02994cf3cf5, type: 3}
-  - {fileID: 2800000, guid: 811f020bb07032a47829d399bfcca040, type: 3}
+    sheet: {fileID: 2800000, guid: 8c38df9ee3fa81e4b871c5f2f302d5e7, type: 3}
+    frames: 9
+    fps: 0
+  kidlat:
+    sheet: {fileID: 2800000, guid: 3a899de6d66c2494ea826b3c09375820, type: 3}
+    frames: 11
+    fps: 0
+  flurry:
+    sheet: {fileID: 2800000, guid: e9ddb7629cea9b14abc3fa2de24e2feb, type: 3}
+    frames: 23
+    fps: 16

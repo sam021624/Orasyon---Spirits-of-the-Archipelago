@@ -97,7 +97,7 @@ namespace Orasyon.Battle
 
                 case Step.Tips:
                     Set("Keep Fighting",
-                        "Used tiles are removed. When no words are left, new letters fill the gaps.\n" +
+                        "Used tiles are replaced with <b>new letters</b> right away, so your board is always full.\n" +
                         "Words of <b>5+ letters</b> earn potions on the left shelf. Click one to drink it.\n" +
                         "The right panel lists your foe's <b>attacks</b>: watch for poison, stun and critical hits. Green potions cure them.\n" +
                         "Words of 5+ letters become <b>spells</b>. Stuck? <b>Scramble</b> shuffles your tiles, and <b>Hint</b> shows a word (3 per chapter).",

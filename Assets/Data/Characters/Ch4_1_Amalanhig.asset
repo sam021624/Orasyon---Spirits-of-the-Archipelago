@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: Ch4_1_Amalanhig
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Amalanhig
+  isBoss: 0
+  maxHP: 40
+  attackDamage: 4
+  attackName: Grave Grip
+  attacks:
+  - name: Grave Grip
+    minDamage: 2
+    maxDamage: 4
+    critChance: 0.15
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: a9ba7f3e515caf74ebb983a2f1c65ff6, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Cold Touch
+    minDamage: 2
+    maxDamage: 2
+    critChance: 0
+    weight: 2
+    effect: 5
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 100
+    vfx: {fileID: 11400000, guid: a9ba7f3e515caf74ebb983a2f1c65ff6, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  description: A restless dead man who climbs out of his grave to bite the living.
+    He moves slowly, but he never tires, and he never lets go.
+  themeWords:
+  - GRAVE
+  - TOMB
+  - BONES
+  - DUST
+  - SPIRIT
+  spriteSize: 400
+  hoverHeight: 0
+  framesPerSecond: 12
+  spriteFacesRight: 0
+  idle:
+    sheet: {fileID: 2800000, guid: 396a4ad572c1a8140a1d71ab2da93f81, type: 3}
+    frames: 8
+    fps: 0
+  walk:
+    sheet: {fileID: 2800000, guid: 556da8687edce09409826c7d98ee4a1d, type: 3}
+    frames: 8
+    fps: 0
+  attack:
+    sheet: {fileID: 2800000, guid: 07f85d9730603384abda72a8b71cd0a0, type: 3}
+    frames: 9
+    fps: 0
+  cast:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  hurt:
+    sheet: {fileID: 2800000, guid: 8066d5c49e742d641816cea210c7b71e, type: 3}
+    frames: 9
+    fps: 0
+  death:
+    sheet: {fileID: 2800000, guid: 94dbeb1a664b7e14ba516cfd73f922d9, type: 3}
+    frames: 10
+    fps: 0
+  kidlat:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  flurry:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0

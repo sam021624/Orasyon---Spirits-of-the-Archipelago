@@ -35,8 +35,14 @@ namespace Orasyon.Battle
         [SerializeField] private TextMeshProUGUI     enemyStatusLabel;
 
         [Header("Effects")]
-        [Tooltip("Soft round sprite used for spell orbs, sparks and impact bursts.")]
+        [Tooltip("Soft round sprite used for spell orbs, sparks and impact bursts (fallback when a sprite effect is missing).")]
         [SerializeField] private Sprite        fxSprite;
+        [Tooltip("Plays the sprite-sheet effects below.")]
+        [SerializeField] private VfxPlayer     vfxPlayer;
+        [SerializeField] private VfxDefinition heroImpactVfx;
+        [SerializeField] private VfxDefinition heroBoltVfx;
+        [SerializeField] private VfxDefinition heroKidlatVfx;
+        [SerializeField] private VfxDefinition healVfx;
         [Tooltip("Shaken on big hits (usually the battle stage).")]
         [SerializeField] private RectTransform shakeTarget;
 
@@ -256,6 +262,7 @@ namespace Orasyon.Battle
                     int healed = Mathf.Min(healingPotionAmount, playerMaxHP - playerHP);
                     playerHP += healed;
                     playerAnimator.PlayOnce(player.cast);
+                    if (vfxPlayer != null) vfxPlayer.Play(healVfx, PlayerCenter, 1.1f);
                     Popup(PlayerRect, "+" + healed, new Color(1f, 0.45f, 0.45f));
                     ShowFeedback($"Healing Potion restores {healed} HP.", true);
                     break;
@@ -308,7 +315,10 @@ namespace Orasyon.Battle
                 RefreshHearts();
                 PlayHurt(enemyAnimator, enemy);
                 Popup(EnemyRect, "-" + damage, new Color(1f, 0.85f, 0.3f), 1f + 0.25f * (tier - 1));
-                StartCoroutine(Burst(EnemyCenter, 140f + tier * 70f, tier == 1 ? new Color(1f, 0.95f, 0.75f, 0.9f) : tier == 3 ? MagicGold : MagicGreen));
+                if (vfxPlayer != null && heroImpactVfx != null)
+                    vfxPlayer.Play(heroImpactVfx, EnemyCenter, 0.9f + 0.35f * (tier - 1));
+                else
+                    StartCoroutine(Burst(EnemyCenter, 140f + tier * 70f, tier == 1 ? new Color(1f, 0.95f, 0.75f, 0.9f) : tier == 3 ? MagicGold : MagicGreen));
                 if (tier == 3)
                 {
                     StartCoroutine(Shake(0.35f, 16f));
@@ -336,6 +346,20 @@ namespace Orasyon.Battle
                 yield return new WaitForSeconds(swing * 0.45f);
                 yield return WalkTo(playerAnimator, player, playerHomeX);
             }
+            else if (tier == 3 && vfxPlayer != null && heroKidlatVfx != null)
+            {
+                // Long words call down lightning (kidlat) on the enemy
+                var clip = player.kidlat != null && player.kidlat.Length > 0 ? player.kidlat
+                         : player.cast != null && player.cast.Length > 0 ? player.cast : player.attack;
+                float castTime = playerAnimator.Duration(clip);
+                playerAnimator.PlayOnce(clip);
+                StartCoroutine(Burst(PlayerStaff, 200f, MagicGold));
+                yield return new WaitForSeconds(castTime * 0.55f);
+                vfxPlayer.Play(heroKidlatVfx, EnemyRect.anchoredPosition, 1f);
+                yield return new WaitForSeconds(0.18f);
+                Hit();
+                yield return new WaitForSeconds(Mathf.Max(0.45f, castTime * 0.45f));
+            }
             else
             {
                 // Cast from where he stands: raise the staff, a spell orb flies to the enemy
@@ -344,7 +368,10 @@ namespace Orasyon.Battle
                 playerAnimator.PlayOnce(clip);
                 StartCoroutine(Burst(PlayerStaff, tier == 3 ? 200f : 130f, tier == 3 ? MagicGold : MagicGreen));
                 yield return new WaitForSeconds(castTime * 0.5f);
-                yield return Projectile(tier);
+                if (vfxPlayer != null && heroBoltVfx != null)
+                    yield return vfxPlayer.TravelRoutine(heroBoltVfx, PlayerStaff, EnemyCenter, 0.35f, tier == 3 ? 1.5f : 1f);
+                else
+                    yield return Projectile(tier);
                 Hit();
                 yield return new WaitForSeconds(Mathf.Max(0.35f, castTime * 0.5f));
             }
@@ -370,6 +397,10 @@ namespace Orasyon.Battle
                 FinishTurn();
                 yield break;
             }
+
+            // Bookworm style: the used tiles are replaced right away, so the board is always full
+            if (LetterGrid.RefillAfterEachWord)
+                letterGrid.RefillEmpty(Mathf.Min(minWordsOnBoard, 4));
 
             yield return new WaitForSeconds(0.25f);
             yield return EnemyPhase(enemy);
@@ -424,7 +455,10 @@ namespace Orasyon.Battle
                 ShowFeedback($"The {enemy.displayName} uses <b>{atk.name}</b>!", false);
                 enemyAnimator.PlayOnce(enemy.attack);
                 yield return new WaitForSeconds(strike * 0.5f);
-                StartCoroutine(Burst(EnemyCenter, 260f, atk.effect == AttackEffect.Leech ? new Color(1f, 0.55f, 0.7f, 0.9f) : new Color(0.55f, 0.8f, 1f, 0.9f)));
+                if (vfxPlayer != null && atk.vfx != null)
+                    vfxPlayer.Play(atk.vfx, EnemyCenter, 1.1f);
+                else
+                    StartCoroutine(Burst(EnemyCenter, 260f, atk.effect == AttackEffect.Leech ? new Color(1f, 0.55f, 0.7f, 0.9f) : new Color(0.55f, 0.8f, 1f, 0.9f)));
                 ShowFeedback($"The {enemy.displayName} uses <b>{atk.name}</b>!" + ApplyEffect(enemy, atk, 0), false);
                 RefreshHearts();
                 RefreshStatus();
@@ -441,6 +475,14 @@ namespace Orasyon.Battle
             enemyAnimator.PlayOnce(enemy.attack);
             yield return new WaitForSeconds(strike * 0.6f);
 
+            bool spriteFx = vfxPlayer != null && (atk.vfx != null || atk.hitVfx != null);
+            if (vfxPlayer != null && atk.vfx != null)
+            {
+                if (atk.vfxTravels) yield return vfxPlayer.TravelRoutine(atk.vfx, EnemyCenter, PlayerCenter, 0.3f, 1f);
+                else                vfxPlayer.Play(atk.vfx, PlayerCenter, 1.1f);
+            }
+            if (vfxPlayer != null && atk.hitVfx != null) vfxPlayer.Play(atk.hitVfx, PlayerCenter, 1.1f);
+
             if (shieldCharges > 0)
             {
                 shieldCharges--;
@@ -455,7 +497,7 @@ namespace Orasyon.Battle
                 if (crit) dmg *= 2;
                 playerHP = Mathf.Max(0, playerHP - dmg);
                 PlayHurt(playerAnimator, player);
-                StartCoroutine(Burst(PlayerCenter, crit ? 300f : 180f, new Color(1f, 0.45f, 0.35f, 0.85f)));
+                if (!spriteFx) StartCoroutine(Burst(PlayerCenter, crit ? 300f : 180f, new Color(1f, 0.45f, 0.35f, 0.85f)));
                 if (crit)
                 {
                     Popup(PlayerRect, "CRIT -" + dmg, new Color(1f, 0.3f, 0.25f), 1.45f);
@@ -775,8 +817,8 @@ namespace Orasyon.Battle
 
             if (hasWalk)
             {
-                float dir = Mathf.Sign(targetX - startX);
-                rt.localScale = new Vector3(dir < 0 ? -1f : 1f, 1f, 1f);
+                bool movingRight = targetX >= startX;
+                rt.localScale = new Vector3(def.spriteFacesRight == movingRight ? 1f : -1f, 1f, 1f);
                 anim.PlayLoop(def.walk);
             }
 
@@ -796,8 +838,18 @@ namespace Orasyon.Battle
             }
 
             rt.anchoredPosition = new Vector2(targetX, baseY);
-            rt.localScale = Vector3.one;
+            rt.localScale = new Vector3(RestFacing(def), 1f, 1f);
             if (hasWalk) anim.ReturnToIdle();
+        }
+
+        /// <summary>
+        /// Horizontal scale that makes a character look at the opponent: the player stands on the left
+        /// looking right, enemies stand on the right looking left. Artwork that faces the other way is mirrored.
+        /// </summary>
+        private float RestFacing(CharacterDefinition def)
+        {
+            bool shouldFaceRight = def == player;
+            return def.spriteFacesRight == shouldFaceRight ? 1f : -1f;
         }
 
         private void SetX(RectTransform rt, CharacterDefinition def, float x)
@@ -850,13 +902,13 @@ namespace Orasyon.Battle
             return false;
         }
 
-        private static void SetupAnimator(UIFrameAnimator anim, CharacterDefinition def)
+        private void SetupAnimator(UIFrameAnimator anim, CharacterDefinition def)
         {
             if (anim == null || def == null) return;
             anim.FramesPerSecond = def.framesPerSecond;
             var rt = (RectTransform)anim.transform;
             rt.sizeDelta = new Vector2(def.spriteSize, def.spriteSize);
-            rt.localScale = Vector3.one;
+            rt.localScale = new Vector3(RestFacing(def), 1f, 1f);
             anim.SetAlpha(1f);
             anim.SetIdle(def.idle);
         }

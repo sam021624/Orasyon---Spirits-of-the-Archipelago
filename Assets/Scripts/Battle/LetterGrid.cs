@@ -8,8 +8,9 @@ namespace Orasyon.Battle
 {
     /// <summary>
     /// The 4x4 letter board, Bookworm style: click any tiles in any order to spell a word.
-    /// Tiles used in an attack are removed and leave empty gaps. Scramble shuffles the tiles still on the board.
-    /// Empty gaps are only refilled when no word can be made (see BattleManager) or on a new board.
+    /// Tiles used in an attack are removed; by default new letters drop into the freed slots right after the
+    /// attack (see <see cref="RefillAfterEachWord"/>), so the board is always full. In Classic mode the gaps
+    /// stay until no word can be made. Scramble shuffles the tiles on the board.
     /// </summary>
     public sealed class LetterGrid : MonoBehaviour
     {
@@ -29,6 +30,14 @@ namespace Orasyon.Battle
 
         public int Rows => rows;
         public int Cols => cols;
+
+        public const string ClassicRefillPref = "orasyon.classicRefill";
+
+        /// <summary>
+        /// True (default): used tiles are replaced with new letters right after each word.
+        /// Set the PlayerPrefs int "orasyon.classicRefill" to 1 for the old behavior (gaps until no word can be made).
+        /// </summary>
+        public static bool RefillAfterEachWord => PlayerPrefs.GetInt(ClassicRefillPref, 0) == 0;
 
         public string CurrentWord
         {
@@ -189,18 +198,37 @@ namespace Orasyon.Battle
             Changed();
         }
 
-        /// <summary>Drops new random letters into the empty gaps, aiming for at least <paramref name="minWords"/> words.</summary>
+        /// <summary>
+        /// Drops new letters into the empty gaps. The finished board is kept playable: a healthy vowel mix,
+        /// at most two rare letters, at least one everyday word, and <paramref name="minWords"/> words in total.
+        /// </summary>
         public int RefillEmpty(int minWords)
         {
             EnsureTiles();
             var empties = tiles.Cast<LetterTileData>().Where(t => t.IsEmpty).ToList();
             if (empties.Count == 0) return 0;
 
-            for (int attempt = 0; attempt < 30; attempt++)
+            var kept = tiles.Cast<LetterTileData>().Where(t => !t.IsEmpty).Select(t => t.Letter).ToList();
+            bool found = false;
+
+            // 1) a few fully random fills
+            for (int attempt = 0; attempt < 12 && !found; attempt++)
             {
                 foreach (var t in empties) t.Letter = BoardGenerator.RandomLetter(rng);
-                var all = tiles.Cast<LetterTileData>().Select(t => t.Letter);
-                if (BoardGenerator.CountWords(all, minWords) >= minWords) break;
+                found = IsGoodFill(empties, minWords);
+            }
+
+            // 2) otherwise nudge the new tiles toward a healthy vowel mix and re-check
+            for (int attempt = 0; attempt < 40 && !found; attempt++)
+            {
+                int vowels = kept.Count(BoardGenerator.IsVowel);
+                for (int i = 0; i < empties.Count; i++)
+                {
+                    char c = BoardGenerator.BalancedLetter(rng, vowels, kept.Count + empties.Count);
+                    empties[i].Letter = c;
+                    if (BoardGenerator.IsVowel(c)) vowels++;
+                }
+                found = IsGoodFill(empties, minWords);
             }
 
             int k = 0;
@@ -216,6 +244,14 @@ namespace Orasyon.Battle
             }
             Changed();
             return empties.Count;
+        }
+
+        private bool IsGoodFill(List<LetterTileData> fresh, int minWords)
+        {
+            var all = tiles.Cast<LetterTileData>().Where(t => !t.IsEmpty || fresh.Contains(t)).Select(t => t.Letter).ToList();
+            return BoardGenerator.IsHealthyMix(all)
+                && BoardGenerator.HasCommonWord(all)
+                && BoardGenerator.CountWords(all, minWords) >= minWords;
         }
 
         // ── Hints ────────────────────────────────────────────────────────────

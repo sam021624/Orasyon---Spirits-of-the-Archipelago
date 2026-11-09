@@ -34,6 +34,13 @@ namespace Orasyon.Battle
         [Tooltip("Poison: damage per turn. Weaken / Guard: percent. Leech: percent of damage healed.")]
         public int effectPower = 1;
 
+        [Header("Visual effects (optional)")]
+        [Tooltip("Plays on the player (or on the enemy for self-buffs). If 'Vfx Travels' is on, it flies from the enemy to the player first.")]
+        public VfxDefinition vfx;
+        public bool          vfxTravels;
+        [Tooltip("Extra effect that plays on the player when the move lands.")]
+        public VfxDefinition hitVfx;
+
         public bool IsSelfBuff => maxDamage <= 0;
 
         public int RollDamage(System.Random rng) => rng.Next(minDamage, Mathf.Max(minDamage, maxDamage) + 1);

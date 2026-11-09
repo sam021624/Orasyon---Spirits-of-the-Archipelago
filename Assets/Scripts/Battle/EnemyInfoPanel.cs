@@ -20,7 +20,10 @@ namespace Orasyon.Battle
             if (enemy == null) return;
 
             if (portrait != null)
-                portrait.texture = enemy.idle != null && enemy.idle.Length > 0 ? enemy.idle[0] : null;
+            {
+                portrait.uvRect = new Rect(0f, 0f, 1f, 1f);
+                if (enemy.idle != null) enemy.idle.Apply(portrait, 0); else portrait.texture = null;
+            }
 
             if (nameLabel != null)
                 nameLabel.text = enemy.isBoss ? $"<color=#FF6B6B>BOSS</color>  {enemy.displayName}" : enemy.displayName;

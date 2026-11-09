@@ -3,8 +3,8 @@ using UnityEngine;
 namespace Orasyon.Battle
 {
     /// <summary>
-    /// Data for one combatant (the player or an enemy): stats plus animation frames.
-    /// Frames are full textures (not sliced sprites) so every frame keeps the same size and pivot.
+    /// Data for one combatant (the player or an enemy): stats plus animation clips.
+    /// Each clip is one sprite-sheet strip (see <see cref="FrameClip"/>).
     /// </summary>
     [CreateAssetMenu(menuName = "Orasyon/Character Definition", fileName = "NewCharacter")]
     public sealed class CharacterDefinition : ScriptableObject
@@ -42,17 +42,23 @@ namespace Orasyon.Battle
         [Tooltip("Lift above the ground line, e.g. for flying creatures.")]
         public float hoverHeight;
         public float framesPerSecond = 10f;
+        [Tooltip("True if the artwork looks to the right (the hero). Enemies on the right side of the screen are mirrored automatically when they do.")]
+        public bool  spriteFacesRight;
 
-        [Header("Animation Frames (in order)")]
-        public Texture2D[] idle;
-        [Tooltip("Optional. Faces right; flipped automatically when walking left.")]
-        public Texture2D[] walk;
-        public Texture2D[] attack;
-        [Tooltip("Optional. Used by the player for long words.")]
-        public Texture2D[] cast;
+        [Header("Animation Clips (sprite sheets)")]
+        public FrameClip idle = new FrameClip();
+        [Tooltip("Optional. Played while moving; flipped automatically to face the direction of travel.")]
+        public FrameClip walk = new FrameClip();
+        public FrameClip attack = new FrameClip();
+        [Tooltip("Optional. Used by the player for 5-6 letter words.")]
+        public FrameClip cast = new FrameClip();
         [Tooltip("Optional. If empty, a red flash is used instead.")]
-        public Texture2D[] hurt;
+        public FrameClip hurt = new FrameClip();
         [Tooltip("Optional. If empty, the sprite fades out instead.")]
-        public Texture2D[] death;
+        public FrameClip death = new FrameClip();
+        [Tooltip("Optional (hero). Lightning strike for 7+ letter words.")]
+        public FrameClip kidlat = new FrameClip();
+        [Tooltip("Optional (hero). Flurry of strikes for the Orasyon special.")]
+        public FrameClip flurry = new FrameClip();
     }
 }

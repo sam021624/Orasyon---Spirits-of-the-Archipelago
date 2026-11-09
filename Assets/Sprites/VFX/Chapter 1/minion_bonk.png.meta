@@ -1,0 +1,650 @@
+fileFormatVersion: 2
+guid: fc16278b57e3d1a4ea7af2c24909c0da
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 4014416180659778463
+    second: minion_bonk_0
+  - first:
+      213: -8955032828336863518
+    second: minion_bonk_1
+  - first:
+      213: -654539683806600022
+    second: minion_bonk_2
+  - first:
+      213: -8108845535555991818
+    second: minion_bonk_3
+  - first:
+      213: 8208043396668751502
+    second: minion_bonk_4
+  - first:
+      213: 4928163593326686831
+    second: minion_bonk_5
+  - first:
+      213: -774258163938343366
+    second: minion_bonk_6
+  - first:
+      213: -6206237332082010206
+    second: minion_bonk_7
+  - first:
+      213: -4951469453897632233
+    second: minion_bonk_8
+  - first:
+      213: -5241969763155336405
+    second: minion_bonk_9
+  - first:
+      213: 311269284490103741
+    second: minion_bonk_10
+  - first:
+      213: -3584504635026583833
+    second: minion_bonk_11
+  - first:
+      213: -8669439989810520880
+    second: minion_bonk_12
+  - first:
+      213: 4594702320145636761
+    second: minion_bonk_13
+  - first:
+      213: -1076366483932134064
+    second: minion_bonk_14
+  - first:
+      213: 3979913339860233227
+    second: minion_bonk_15
+  - first:
+      213: -5347372029440968902
+    second: minion_bonk_16
+  - first:
+      213: 6379982455587431878
+    second: minion_bonk_17
+  - first:
+      213: -4696909504560555907
+    second: minion_bonk_18
+  - first:
+      213: -4271598014225351948
+    second: minion_bonk_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: minion_bonk_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 52
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f937ecc3f3216b730800000000000000
+      internalID: 4014416180659778463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_1
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 66
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e60503a61559b380800000000000000
+      internalID: -8955032828336863518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_2
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 52
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa4af4f10ab9ae6f0800000000000000
+      internalID: -654539683806600022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_3
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 43
+        width: 33
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f64caaa2f7977f80800000000000000
+      internalID: -8108845535555991818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_4
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 41
+        width: 33
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8e7e6f2bf3d8e170800000000000000
+      internalID: 8208043396668751502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_5
+      rect:
+        serializedVersion: 2
+        x: 273
+        y: 55
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f62ff377daa546440800000000000000
+      internalID: 4928163593326686831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_6
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 65
+        width: 27
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3642065d484145f0800000000000000
+      internalID: -774258163938343366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_7
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 49
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a7db7d47040fd9a0800000000000000
+      internalID: -6206237332082010206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_8
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 46
+        width: 43
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 716fb3404c8d84bb0800000000000000
+      internalID: -4951469453897632233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_9
+      rect:
+        serializedVersion: 2
+        x: 449
+        y: 39
+        width: 43
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b23a9c70648c047b0800000000000000
+      internalID: -5241969763155336405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_10
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 39
+        width: 43
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dbbc58bd3c9d15400800000000000000
+      internalID: 311269284490103741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_11
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 46
+        width: 43
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7eecf75a608414ec0800000000000000
+      internalID: -3584504635026583833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_12
+      rect:
+        serializedVersion: 2
+        x: 657
+        y: 49
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dc17cd0346ffa780800000000000000
+      internalID: -8669439989810520880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_13
+      rect:
+        serializedVersion: 2
+        x: 683
+        y: 66
+        width: 27
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99d91f89a69a3cf30800000000000000
+      internalID: 4594702320145636761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_14
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 55
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 055c61db26aff01f0800000000000000
+      internalID: -1076366483932134064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_15
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 41
+        width: 32
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0c253b981e7b3730800000000000000
+      internalID: 3979913339860233227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_16
+      rect:
+        serializedVersion: 2
+        x: 840
+        y: 43
+        width: 32
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a37bf4788715ac5b0800000000000000
+      internalID: -5347372029440968902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_17
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 38
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c56382ad304a8850800000000000000
+      internalID: 6379982455587431878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_18
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 38
+        width: 27
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d78138ed0b931deb0800000000000000
+      internalID: -4696909504560555907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minion_bonk_19
+      rect:
+        serializedVersion: 2
+        x: 698
+        y: 38
+        width: 27
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4fa75daec3c38b4c0800000000000000
+      internalID: -4271598014225351948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      minion_bonk_0: 4014416180659778463
+      minion_bonk_1: -8955032828336863518
+      minion_bonk_10: 311269284490103741
+      minion_bonk_11: -3584504635026583833
+      minion_bonk_12: -8669439989810520880
+      minion_bonk_13: 4594702320145636761
+      minion_bonk_14: -1076366483932134064
+      minion_bonk_15: 3979913339860233227
+      minion_bonk_16: -5347372029440968902
+      minion_bonk_17: 6379982455587431878
+      minion_bonk_18: -4696909504560555907
+      minion_bonk_19: -4271598014225351948
+      minion_bonk_2: -654539683806600022
+      minion_bonk_3: -8108845535555991818
+      minion_bonk_4: 8208043396668751502
+      minion_bonk_5: 4928163593326686831
+      minion_bonk_6: -774258163938343366
+      minion_bonk_7: -6206237332082010206
+      minion_bonk_8: -4951469453897632233
+      minion_bonk_9: -5241969763155336405
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

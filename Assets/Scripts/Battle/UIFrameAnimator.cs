@@ -5,7 +5,7 @@ using UnityEngine.UI;
 namespace Orasyon.Battle
 {
     /// <summary>
-    /// Plays frame-by-frame texture animations on a UI RawImage.
+    /// Plays sprite-sheet animations (<see cref="FrameClip"/>) on a UI RawImage.
     /// Loops the idle clip and returns to it after one-shot clips (attack, hurt).
     /// </summary>
     [RequireComponent(typeof(RawImage))]
@@ -15,14 +15,14 @@ namespace Orasyon.Battle
         [Tooltip("Optional: loop this character's idle animation automatically (e.g. on the title screen).")]
         [SerializeField] private CharacterDefinition playIdleOnStart;
 
-        private RawImage    image;
-        private Texture2D[] idleClip;
-        private Texture2D[] currentClip;
-        private int         frame;
-        private float       timer;
-        private bool        looping;
-        private bool        holdLastFrame;
-        private Coroutine   flashRoutine;
+        private RawImage  image;
+        private FrameClip idleClip;
+        private FrameClip currentClip;
+        private int       frame;
+        private float     timer;
+        private bool      looping;
+        private bool      holdLastFrame;
+        private Coroutine flashRoutine;
 
         public float FramesPerSecond
         {
@@ -44,33 +44,35 @@ namespace Orasyon.Battle
             }
         }
 
+        private float RateOf(FrameClip clip) => clip != null && clip.fps > 0f ? clip.fps : framesPerSecond;
+
         /// <summary>Sets the looping idle clip and starts playing it.</summary>
-        public void SetIdle(Texture2D[] frames)
+        public void SetIdle(FrameClip clip)
         {
-            idleClip = frames;
-            Play(frames, loop: true, hold: false);
+            idleClip = clip;
+            Play(clip, loop: true, hold: false);
         }
 
         /// <summary>Plays a clip once, then returns to idle (or holds the last frame).</summary>
-        public void PlayOnce(Texture2D[] frames, bool holdLast = false)
+        public void PlayOnce(FrameClip clip, bool holdLast = false)
         {
-            if (frames == null || frames.Length == 0) return;
-            Play(frames, loop: false, hold: holdLast);
+            if (clip == null || clip.IsEmpty) return;
+            Play(clip, loop: false, hold: holdLast);
         }
 
         /// <summary>Loops a clip (e.g. walking) without changing the idle clip.</summary>
-        public void PlayLoop(Texture2D[] frames)
+        public void PlayLoop(FrameClip clip)
         {
-            if (frames == null || frames.Length == 0) return;
-            Play(frames, loop: true, hold: false);
+            if (clip == null || clip.IsEmpty) return;
+            Play(clip, loop: true, hold: false);
         }
 
         public void ReturnToIdle() => Play(idleClip, loop: true, hold: false);
 
-        /// <summary>How long a clip takes at the current frame rate.</summary>
-        public float Duration(Texture2D[] frames)
+        /// <summary>How long a clip takes at its frame rate.</summary>
+        public float Duration(FrameClip clip)
         {
-            return frames == null || frames.Length == 0 ? 0f : frames.Length / framesPerSecond;
+            return clip == null || clip.IsEmpty ? 0f : clip.Length / RateOf(clip);
         }
 
         public void SetAlpha(float alpha)
@@ -101,10 +103,10 @@ namespace Orasyon.Battle
         }
 
         // ── Internal ─────────────────────────────────────────────────────────
-        private void Play(Texture2D[] frames, bool loop, bool hold)
+        private void Play(FrameClip clip, bool loop, bool hold)
         {
             if (image == null) image = GetComponent<RawImage>();
-            currentClip   = frames;
+            currentClip   = clip;
             looping       = loop;
             holdLastFrame = hold;
             frame = 0;
@@ -114,10 +116,10 @@ namespace Orasyon.Battle
 
         private void Update()
         {
-            if (currentClip == null || currentClip.Length == 0) return;
+            if (currentClip == null || currentClip.IsEmpty) return;
 
             timer += Time.deltaTime;
-            float frameTime = 1f / framesPerSecond;
+            float frameTime = 1f / RateOf(currentClip);
             while (timer >= frameTime)
             {
                 timer -= frameTime;
@@ -148,8 +150,8 @@ namespace Orasyon.Battle
 
         private void ShowFrame()
         {
-            if (currentClip == null || currentClip.Length == 0) return;
-            image.texture = currentClip[Mathf.Clamp(frame, 0, currentClip.Length - 1)];
+            if (currentClip == null || currentClip.IsEmpty) return;
+            currentClip.Apply(image, frame);
         }
 
         private IEnumerator FlashRoutine(Color tint, float duration)

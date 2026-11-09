@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: Ch1_2_EnchantedMushroom
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Enchanted Mushroom
+  isBoss: 0
+  maxHP: 30
+  attackDamage: 2
+  attackName: Spore Burst
+  attacks:
+  - name: Spore Burst
+    minDamage: 1
+    maxDamage: 2
+    critChance: 0
+    weight: 3
+    effect: 1
+    effectChance: 0.6
+    effectTurns: 3
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 5105fd3510ab85d43a00f143c56b159c, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Sleepy Spores
+    minDamage: 1
+    maxDamage: 1
+    critChance: 0
+    weight: 1
+    effect: 2
+    effectChance: 0.5
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 5105fd3510ab85d43a00f143c56b159c, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  description: Glowing mushrooms sprout wherever the little folk dance. Breathe too
+    deeply near one and you wake up hours later, wondering where the path went.
+  themeWords:
+  - SPORE
+  - MOSS
+  - DEW
+  - CAP
+  - GLOW
+  spriteSize: 300
+  hoverHeight: 0
+  framesPerSecond: 12
+  spriteFacesRight: 0
+  idle:
+    sheet: {fileID: 2800000, guid: efb63a5fecc4c2c41965b752901e6b16, type: 3}
+    frames: 8
+    fps: 0
+  walk:
+    sheet: {fileID: 2800000, guid: 2a3b39a8c4b743142abdc5e2c9918a04, type: 3}
+    frames: 8
+    fps: 0
+  attack:
+    sheet: {fileID: 2800000, guid: 73636af0af4e74b4181760892b1d0f1c, type: 3}
+    frames: 9
+    fps: 0
+  cast:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  hurt:
+    sheet: {fileID: 2800000, guid: 36b570115e67d6f42a34065ed5dd01c9, type: 3}
+    frames: 9
+    fps: 0
+  death:
+    sheet: {fileID: 2800000, guid: 2d6a8febf513eaf4b9e20f5d1d0f6db0, type: 3}
+    frames: 9
+    fps: 0
+  kidlat:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  flurry:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0

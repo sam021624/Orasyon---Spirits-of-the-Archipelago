@@ -52,14 +52,23 @@ namespace Orasyon.Battle
         /// </summary>
         public static bool IsCommon(string word)
         {
-            if (common == null)
-            {
-                var list = new List<string>();
-                AddFrom(list, Resources.Load<TextAsset>("Words/common_words"));
-                AddFrom(list, Resources.Load<TextAsset>("Words/custom_words"));   // folklore words count as known
-                common = new HashSet<string>(list);
-            }
+            EnsureCommon();
             return !string.IsNullOrEmpty(word) && common.Contains(word.ToUpperInvariant());
+        }
+
+        /// <summary>The everyday-word list (uppercase), also used to guarantee a playable board.</summary>
+        public static IReadOnlyCollection<string> CommonWords
+        {
+            get { EnsureCommon(); return common; }
+        }
+
+        private static void EnsureCommon()
+        {
+            if (common != null) return;
+            var list = new List<string>();
+            AddFrom(list, Resources.Load<TextAsset>("Words/common_words"));
+            AddFrom(list, Resources.Load<TextAsset>("Words/custom_words"));   // folklore words count as known
+            common = new HashSet<string>(list);
         }
 
         /// <summary>True if <paramref name="word"/> is a valid word of at least MinLength letters.</summary>

@@ -1,0 +1,754 @@
+fileFormatVersion: 2
+guid: 1c84926f790021c44aee274f99d6fa79
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1550767765386942721
+    second: santelmo_idle_0
+  - first:
+      213: -3392898992905540393
+    second: santelmo_idle_1
+  - first:
+      213: 815011331862015627
+    second: santelmo_idle_2
+  - first:
+      213: -2094413204685458639
+    second: santelmo_idle_3
+  - first:
+      213: 1246245903930101390
+    second: santelmo_idle_4
+  - first:
+      213: 2709526080539931122
+    second: santelmo_idle_5
+  - first:
+      213: -6990686973429236601
+    second: santelmo_idle_6
+  - first:
+      213: 5529645853322719025
+    second: santelmo_idle_7
+  - first:
+      213: -4183102748247191096
+    second: santelmo_idle_8
+  - first:
+      213: 4362121419572986857
+    second: santelmo_idle_9
+  - first:
+      213: 4838722182395497490
+    second: santelmo_idle_10
+  - first:
+      213: -908644709600112394
+    second: santelmo_idle_11
+  - first:
+      213: -5796441927128994806
+    second: santelmo_idle_12
+  - first:
+      213: -1713037267963388562
+    second: santelmo_idle_13
+  - first:
+      213: -3385220616192212905
+    second: santelmo_idle_14
+  - first:
+      213: 3406244297844226352
+    second: santelmo_idle_15
+  - first:
+      213: -3489477068331374187
+    second: santelmo_idle_16
+  - first:
+      213: 7874168202224869428
+    second: santelmo_idle_17
+  - first:
+      213: -9146836129073783887
+    second: santelmo_idle_18
+  - first:
+      213: -1473063086349952279
+    second: santelmo_idle_19
+  - first:
+      213: 8039189543168103542
+    second: santelmo_idle_20
+  - first:
+      213: -990964668690282759
+    second: santelmo_idle_21
+  - first:
+      213: 9117261808883010622
+    second: santelmo_idle_22
+  - first:
+      213: 5518153564142698425
+    second: santelmo_idle_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: santelmo_idle_0
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 53
+        width: 152
+        height: 151
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 109d309f01f658510800000000000000
+      internalID: 1550767765386942721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_1
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 184
+        width: 24
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7dca511a7500ae0d0800000000000000
+      internalID: -3392898992905540393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_2
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 56
+        width: 152
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8ead8bfc708f4b00800000000000000
+      internalID: 815011331862015627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_3
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 189
+        width: 24
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 133f5d979462fe2e0800000000000000
+      internalID: -2094413204685458639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_4
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 57
+        width: 152
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8e0a86fb0e8b4110800000000000000
+      internalID: 1246245903930101390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_5
+      rect:
+        serializedVersion: 2
+        x: 689
+        y: 192
+        width: 24
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f13d345d9b2a9520800000000000000
+      internalID: 2709526080539931122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_6
+      rect:
+        serializedVersion: 2
+        x: 813
+        y: 57
+        width: 152
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78cbcc46c371cfe90800000000000000
+      internalID: -6990686973429236601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_7
+      rect:
+        serializedVersion: 2
+        x: 945
+        y: 193
+        width: 24
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13f23053b9f3dbc40800000000000000
+      internalID: 5529645853322719025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_8
+      rect:
+        serializedVersion: 2
+        x: 1069
+        y: 53
+        width: 152
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c114c7a632a2f5c0800000000000000
+      internalID: -4183102748247191096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_9
+      rect:
+        serializedVersion: 2
+        x: 1201
+        y: 190
+        width: 24
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e345c0d15e598c30800000000000000
+      internalID: 4362121419572986857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_10
+      rect:
+        serializedVersion: 2
+        x: 1325
+        y: 48
+        width: 152
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21c8c703038962340800000000000000
+      internalID: 4838722182395497490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_11
+      rect:
+        serializedVersion: 2
+        x: 1457
+        y: 183
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f05f396378d363f0800000000000000
+      internalID: -908644709600112394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_12
+      rect:
+        serializedVersion: 2
+        x: 1581
+        y: 47
+        width: 152
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0cab4437c6ee8fa0800000000000000
+      internalID: -5796441927128994806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_13
+      rect:
+        serializedVersion: 2
+        x: 1713
+        y: 180
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6d590c4ea11a38e0800000000000000
+      internalID: -1713037267963388562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_14
+      rect:
+        serializedVersion: 2
+        x: 1837
+        y: 48
+        width: 152
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 750c88509c74501d0800000000000000
+      internalID: -3385220616192212905
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_15
+      rect:
+        serializedVersion: 2
+        x: 1969
+        y: 179
+        width: 24
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 039743f4429654f20800000000000000
+      internalID: 3406244297844226352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_16
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 135
+        width: 21
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 599ac3a2813e29fc0800000000000000
+      internalID: -3489477068331374187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_17
+      rect:
+        serializedVersion: 2
+        x: 443
+        y: 138
+        width: 21
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4302a43c24aa64d60800000000000000
+      internalID: 7874168202224869428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_18
+      rect:
+        serializedVersion: 2
+        x: 699
+        y: 140
+        width: 21
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bb19dba009ef0180800000000000000
+      internalID: -9146836129073783887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_19
+      rect:
+        serializedVersion: 2
+        x: 955
+        y: 142
+        width: 21
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9eade567de0ae8be0800000000000000
+      internalID: -1473063086349952279
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_20
+      rect:
+        serializedVersion: 2
+        x: 1211
+        y: 140
+        width: 21
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 674d19acb40f09f60800000000000000
+      internalID: 8039189543168103542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_21
+      rect:
+        serializedVersion: 2
+        x: 1467
+        y: 136
+        width: 21
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f6c0c952e26f32f0800000000000000
+      internalID: -990964668690282759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_22
+      rect:
+        serializedVersion: 2
+        x: 1723
+        y: 133
+        width: 21
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3c05b25f45078e70800000000000000
+      internalID: 9117261808883010622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_idle_23
+      rect:
+        serializedVersion: 2
+        x: 1979
+        y: 131
+        width: 21
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bff7ce1e6b649c40800000000000000
+      internalID: 5518153564142698425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      santelmo_idle_0: 1550767765386942721
+      santelmo_idle_1: -3392898992905540393
+      santelmo_idle_10: 4838722182395497490
+      santelmo_idle_11: -908644709600112394
+      santelmo_idle_12: -5796441927128994806
+      santelmo_idle_13: -1713037267963388562
+      santelmo_idle_14: -3385220616192212905
+      santelmo_idle_15: 3406244297844226352
+      santelmo_idle_16: -3489477068331374187
+      santelmo_idle_17: 7874168202224869428
+      santelmo_idle_18: -9146836129073783887
+      santelmo_idle_19: -1473063086349952279
+      santelmo_idle_2: 815011331862015627
+      santelmo_idle_20: 8039189543168103542
+      santelmo_idle_21: -990964668690282759
+      santelmo_idle_22: 9117261808883010622
+      santelmo_idle_23: 5518153564142698425
+      santelmo_idle_3: -2094413204685458639
+      santelmo_idle_4: 1246245903930101390
+      santelmo_idle_5: 2709526080539931122
+      santelmo_idle_6: -6990686973429236601
+      santelmo_idle_7: 5529645853322719025
+      santelmo_idle_8: -4183102748247191096
+      santelmo_idle_9: 4362121419572986857
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -22,71 +22,84 @@ MonoBehaviour:
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 1
+    lolaPose: 0
   - speaker: 2
     text: There you are, apo. Come, sit with me. The sun is setting, and the spirits
       are restless tonight.
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 1
+    lolaPose: 0
   - speaker: 1
     text: Lola, the neighbors keep saying strange things. Lights in the balete tree,
       voices from the mounds in the backyard...
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 1
+    lolaPose: 0
   - speaker: 2
     text: They are not imagining it. Something has upset the balance between our
       world and theirs.
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 1
+    lolaPose: 0
   - speaker: 2
     text: This is the Book of Orasyon. It has passed from albularyo to albularyo
       for generations. Tonight, it passes to you.
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 1
+    lolaPose: 1
   - speaker: 1
     text: To me? But Lola, I barely remember the old prayers.
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 1
+    lolaPose: 0
   - speaker: 2
     text: You know words, apo. That is all the book needs. Speak them with intent,
       and they become power.
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 1
+    lolaPose: 0
   - speaker: 1
     text: The pages... they're glowing! Lola, what's happening?
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 1
+    lolaPose: 0
   - speaker: 2
     text: The book has chosen you. Go where it takes you, and remember your manners.
       Tabi tabi po.
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 1
+    lolaPose: 0
   - speaker: 0
     text: A rush of light and wind. When it fades, the house is gone.
     flash: 1
     changeBackground: {fileID: 2800000, guid: ee93e8cf3145f834c9b770fa902c85e0, type: 3}
     lolaOnStage: 0
+    lolaPose: 0
   - speaker: 1
     text: Where am I? It looks like our backyard... but bigger. Brighter. Older.
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 0
+    lolaPose: 0
   - speaker: 2
     text: You are inside the stories now, apo. I will speak to you through the pages.
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 0
+    lolaPose: 0
   - speaker: 2
     text: Start with the backyard mound. The Duwende King has grown bold, and his
       servants are everywhere. Be brave.
     flash: 0
     changeBackground: {fileID: 0}
     lolaOnStage: 0
+    lolaPose: 0
   nextScene: Level1

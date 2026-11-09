@@ -10,6 +10,15 @@ namespace Orasyon.Story
         Lola
     }
 
+    /// <summary>How Lola animates on a line. Auto = she talks while her line types, otherwise she idles.</summary>
+    public enum LolaPose
+    {
+        Auto,
+        Give,
+        Laugh,
+        Heal
+    }
+
     [Serializable]
     public sealed class StoryLine
     {
@@ -22,6 +31,8 @@ namespace Orasyon.Story
         public Texture2D changeBackground;
         [Tooltip("Lola is standing in the scene. Off = she speaks through the book.")]
         public bool lolaOnStage = true;
+        [Tooltip("Auto = Lola talks while the line types. Give / Laugh / Heal play that animation once instead.")]
+        public LolaPose lolaPose;
     }
 
     /// <summary>

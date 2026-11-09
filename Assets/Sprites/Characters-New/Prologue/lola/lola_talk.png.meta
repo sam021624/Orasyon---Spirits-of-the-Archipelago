@@ -1,0 +1,546 @@
+fileFormatVersion: 2
+guid: abed16a9727b5b848ac9829ae83ffed3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 20608305034248598
+    second: lola_talk_0
+  - first:
+      213: -7430993114933144140
+    second: lola_talk_1
+  - first:
+      213: -3739859549443241664
+    second: lola_talk_2
+  - first:
+      213: 4117976624950133433
+    second: lola_talk_3
+  - first:
+      213: -289644834279165688
+    second: lola_talk_4
+  - first:
+      213: 2585281426218480728
+    second: lola_talk_5
+  - first:
+      213: 6934669643447241685
+    second: lola_talk_6
+  - first:
+      213: -3540304969685536290
+    second: lola_talk_7
+  - first:
+      213: -7475895029376808123
+    second: lola_talk_8
+  - first:
+      213: 6354228567861888834
+    second: lola_talk_9
+  - first:
+      213: 4750625897563599175
+    second: lola_talk_10
+  - first:
+      213: -5476313157371373364
+    second: lola_talk_11
+  - first:
+      213: 2510712381126477583
+    second: lola_talk_12
+  - first:
+      213: -6660961333764596287
+    second: lola_talk_13
+  - first:
+      213: 2584247877455161229
+    second: lola_talk_14
+  - first:
+      213: -3159228517043477714
+    second: lola_talk_15
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: lola_talk_0
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6914dfce427394000800000000000000
+      internalID: 20608305034248598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_1
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b55900122fcfd890800000000000000
+      internalID: -7430993114933144140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_2
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 049459ded89591cc0800000000000000
+      internalID: -3739859549443241664
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_3
+      rect:
+        serializedVersion: 2
+        x: 820
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b2c3832cedf52930800000000000000
+      internalID: 4117976624950133433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_4
+      rect:
+        serializedVersion: 2
+        x: 1076
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80173cdce89fafbf0800000000000000
+      internalID: -289644834279165688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_5
+      rect:
+        serializedVersion: 2
+        x: 1332
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 854fa2e72c3c0e320800000000000000
+      internalID: 2585281426218480728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_6
+      rect:
+        serializedVersion: 2
+        x: 1589
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5db8b5c9c45ec3060800000000000000
+      internalID: 6934669643447241685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_7
+      rect:
+        serializedVersion: 2
+        x: 1845
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed1f75d236f4edec0800000000000000
+      internalID: -3540304969685536290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_8
+      rect:
+        serializedVersion: 2
+        x: 2102
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54b03eb6419404890800000000000000
+      internalID: -7475895029376808123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_9
+      rect:
+        serializedVersion: 2
+        x: 2359
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2470c016731ce2850800000000000000
+      internalID: 6354228567861888834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_10
+      rect:
+        serializedVersion: 2
+        x: 2615
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 741bc0d751d9de140800000000000000
+      internalID: 4750625897563599175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_11
+      rect:
+        serializedVersion: 2
+        x: 2871
+        y: 12
+        width: 145
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc8d418b23a3004b0800000000000000
+      internalID: -5476313157371373364
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_12
+      rect:
+        serializedVersion: 2
+        x: 3128
+        y: 12
+        width: 144
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f07083abb97d7d220800000000000000
+      internalID: 2510712381126477583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_13
+      rect:
+        serializedVersion: 2
+        x: 3383
+        y: 12
+        width: 145
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1cd595e45f28f83a0800000000000000
+      internalID: -6660961333764596287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_14
+      rect:
+        serializedVersion: 2
+        x: 3639
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d87a54ba0c71dd320800000000000000
+      internalID: 2584247877455161229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lola_talk_15
+      rect:
+        serializedVersion: 2
+        x: 3895
+        y: 13
+        width: 144
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e23e65de66a2824d0800000000000000
+      internalID: -3159228517043477714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      lola_talk_0: 20608305034248598
+      lola_talk_1: -7430993114933144140
+      lola_talk_10: 4750625897563599175
+      lola_talk_11: -5476313157371373364
+      lola_talk_12: 2510712381126477583
+      lola_talk_13: -6660961333764596287
+      lola_talk_14: 2584247877455161229
+      lola_talk_15: -3159228517043477714
+      lola_talk_2: -3739859549443241664
+      lola_talk_3: 4117976624950133433
+      lola_talk_4: -289644834279165688
+      lola_talk_5: 2585281426218480728
+      lola_talk_6: 6934669643447241685
+      lola_talk_7: -3540304969685536290
+      lola_talk_8: -7475895029376808123
+      lola_talk_9: 6354228567861888834
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

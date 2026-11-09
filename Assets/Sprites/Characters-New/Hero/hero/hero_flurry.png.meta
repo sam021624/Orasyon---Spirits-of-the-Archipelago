@@ -1,0 +1,1170 @@
+fileFormatVersion: 2
+guid: e9ddb7629cea9b14abc3fa2de24e2feb
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9034283628217549846
+    second: hero_flurry_0
+  - first:
+      213: 6821967063796600949
+    second: hero_flurry_1
+  - first:
+      213: 677719485645035617
+    second: hero_flurry_2
+  - first:
+      213: 8344098071025991274
+    second: hero_flurry_3
+  - first:
+      213: -6897249155585114303
+    second: hero_flurry_4
+  - first:
+      213: -2452320187643645709
+    second: hero_flurry_5
+  - first:
+      213: 1028616964955886798
+    second: hero_flurry_6
+  - first:
+      213: -5197182052612674598
+    second: hero_flurry_7
+  - first:
+      213: 6027041721232798039
+    second: hero_flurry_8
+  - first:
+      213: -7138530668639269969
+    second: hero_flurry_9
+  - first:
+      213: -5813598154680845782
+    second: hero_flurry_10
+  - first:
+      213: -8358783459623697930
+    second: hero_flurry_11
+  - first:
+      213: 5926521757910087119
+    second: hero_flurry_12
+  - first:
+      213: -8974827899358372327
+    second: hero_flurry_13
+  - first:
+      213: -2396623010591834210
+    second: hero_flurry_14
+  - first:
+      213: 1850095315050877559
+    second: hero_flurry_15
+  - first:
+      213: 5816890793661493675
+    second: hero_flurry_16
+  - first:
+      213: 3492860376469107095
+    second: hero_flurry_17
+  - first:
+      213: -2225633953170555021
+    second: hero_flurry_18
+  - first:
+      213: 3704763105246584607
+    second: hero_flurry_19
+  - first:
+      213: 2927709072727219943
+    second: hero_flurry_20
+  - first:
+      213: 3122707329411684714
+    second: hero_flurry_21
+  - first:
+      213: -36548178250990811
+    second: hero_flurry_22
+  - first:
+      213: 3936524666586609425
+    second: hero_flurry_23
+  - first:
+      213: -3191678885418733391
+    second: hero_flurry_24
+  - first:
+      213: 6889021293588842518
+    second: hero_flurry_25
+  - first:
+      213: 7892715085315980628
+    second: hero_flurry_26
+  - first:
+      213: 595736330788621940
+    second: hero_flurry_27
+  - first:
+      213: 7473514901331414558
+    second: hero_flurry_28
+  - first:
+      213: 347937907954930555
+    second: hero_flurry_29
+  - first:
+      213: 2647698592631978602
+    second: hero_flurry_30
+  - first:
+      213: 8146373204873780420
+    second: hero_flurry_31
+  - first:
+      213: -4378723055324481010
+    second: hero_flurry_32
+  - first:
+      213: -3094046294948982421
+    second: hero_flurry_33
+  - first:
+      213: 6790974446709160505
+    second: hero_flurry_34
+  - first:
+      213: 4516120389356134258
+    second: hero_flurry_35
+  - first:
+      213: 8428959801884311512
+    second: hero_flurry_36
+  - first:
+      213: 8606411228851094451
+    second: hero_flurry_37
+  - first:
+      213: -7426764991199739820
+    second: hero_flurry_38
+  - first:
+      213: 7099696807266529275
+    second: hero_flurry_39
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: hero_flurry_0
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 6
+        width: 116
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 614c80c1819306d70800000000000000
+      internalID: 9034283628217549846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_1
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 240
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 570d20376ee7cae50800000000000000
+      internalID: 6821967063796600949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_2
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 242
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1689b3f084eb76900800000000000000
+      internalID: 677719485645035617
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_3
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 240
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6eb6869cf03cc370800000000000000
+      internalID: 8344098071025991274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_4
+      rect:
+        serializedVersion: 2
+        x: 315
+        y: 6
+        width: 118
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14f7cf9af6c0840a0800000000000000
+      internalID: -6897249155585114303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_5
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 8
+        width: 141
+        height: 248
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f03bf348cb97fdd0800000000000000
+      internalID: -2452320187643645709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_6
+      rect:
+        serializedVersion: 2
+        x: 814
+        y: 7
+        width: 194
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec4d2260ea1664e00800000000000000
+      internalID: 1028616964955886798
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_7
+      rect:
+        serializedVersion: 2
+        x: 1604
+        y: 7
+        width: 116
+        height: 246
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adb6cf08576efd7b0800000000000000
+      internalID: -5197182052612674598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_8
+      rect:
+        serializedVersion: 2
+        x: 1661
+        y: 242
+        width: 6
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7513a88438a54a350800000000000000
+      internalID: 6027041721232798039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_9
+      rect:
+        serializedVersion: 2
+        x: 1828
+        y: 5
+        width: 191
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fab468dad28deec90800000000000000
+      internalID: -7138530668639269969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_10
+      rect:
+        serializedVersion: 2
+        x: 2385
+        y: 5
+        width: 128
+        height: 238
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2ab163b743f15fa0800000000000000
+      internalID: -5813598154680845782
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_11
+      rect:
+        serializedVersion: 2
+        x: 2415
+        y: 240
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f108beeab2affb80800000000000000
+      internalID: -8358783459623697930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_12
+      rect:
+        serializedVersion: 2
+        x: 2427
+        y: 242
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc5bad5832c3f3250800000000000000
+      internalID: 5926521757910087119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_13
+      rect:
+        serializedVersion: 2
+        x: 2437
+        y: 240
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 91e9a728391037380800000000000000
+      internalID: -8974827899358372327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_14
+      rect:
+        serializedVersion: 2
+        x: 2671
+        y: 238
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9f7529d11c7dbed0800000000000000
+      internalID: -2396623010591834210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_15
+      rect:
+        serializedVersion: 2
+        x: 2683
+        y: 240
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 772d83603ebdca910800000000000000
+      internalID: 1850095315050877559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_16
+      rect:
+        serializedVersion: 2
+        x: 2693
+        y: 238
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ba1fe6d8b5fb9b050800000000000000
+      internalID: 5816890793661493675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_17
+      rect:
+        serializedVersion: 2
+        x: 3695
+        y: 238
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7917a75a102297030800000000000000
+      internalID: 3492860376469107095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_18
+      rect:
+        serializedVersion: 2
+        x: 3707
+        y: 240
+        width: 10
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37f783526b5fc11e0800000000000000
+      internalID: -2225633953170555021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_19
+      rect:
+        serializedVersion: 2
+        x: 3717
+        y: 238
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1f12316a66f96330800000000000000
+      internalID: 3704763105246584607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_20
+      rect:
+        serializedVersion: 2
+        x: 3894
+        y: 3
+        width: 137
+        height: 253
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ee1895d3ef41a820800000000000000
+      internalID: 2927709072727219943
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_21
+      rect:
+        serializedVersion: 2
+        x: 4121
+        y: 5
+        width: 168
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a69971375c5165b20800000000000000
+      internalID: 3122707329411684714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_22
+      rect:
+        serializedVersion: 2
+        x: 4395
+        y: 3
+        width: 213
+        height: 253
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52b792220a72e7ff0800000000000000
+      internalID: -36548178250990811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_23
+      rect:
+        serializedVersion: 2
+        x: 5209
+        y: 7
+        width: 98
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1173571e35851a630800000000000000
+      internalID: 3936524666586609425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_24
+      rect:
+        serializedVersion: 2
+        x: 5231
+        y: 240
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b07085c6f0e4b3d0800000000000000
+      internalID: -3191678885418733391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_25
+      rect:
+        serializedVersion: 2
+        x: 5243
+        y: 242
+        width: 10
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 618077eed58ba9f50800000000000000
+      internalID: 6889021293588842518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_26
+      rect:
+        serializedVersion: 2
+        x: 5253
+        y: 240
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45d30ad7d8e888d60800000000000000
+      internalID: 7892715085315980628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_27
+      rect:
+        serializedVersion: 2
+        x: 5444
+        y: 7
+        width: 116
+        height: 245
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47e4378590b744800800000000000000
+      internalID: 595736330788621940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_28
+      rect:
+        serializedVersion: 2
+        x: 5501
+        y: 242
+        width: 6
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1e8275d43247b760800000000000000
+      internalID: 7473514901331414558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_29
+      rect:
+        serializedVersion: 2
+        x: 1116
+        y: 8
+        width: 159
+        height: 231
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b73db8f0faf14d400800000000000000
+      internalID: 347937907954930555
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_30
+      rect:
+        serializedVersion: 2
+        x: 1372
+        y: 8
+        width: 138
+        height: 232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6a712687d38eb420800000000000000
+      internalID: 2647698592631978602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_31
+      rect:
+        serializedVersion: 2
+        x: 2115
+        y: 4
+        width: 189
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4cc134cb44bbd0170800000000000000
+      internalID: 8146373204873780420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_32
+      rect:
+        serializedVersion: 2
+        x: 2638
+        y: 3
+        width: 124
+        height: 232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0a3295a496ab33c0800000000000000
+      internalID: -4378723055324481010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_33
+      rect:
+        serializedVersion: 2
+        x: 2901
+        y: 2
+        width: 172
+        height: 238
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b61d3f6a94dbf05d0800000000000000
+      internalID: -3094046294948982421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_34
+      rect:
+        serializedVersion: 2
+        x: 3170
+        y: 2
+        width: 139
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93abad677436e3e50800000000000000
+      internalID: 6790974446709160505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_35
+      rect:
+        serializedVersion: 2
+        x: 3419
+        y: 6
+        width: 131
+        height: 234
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27f9872119b7cae30800000000000000
+      internalID: 4516120389356134258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_36
+      rect:
+        serializedVersion: 2
+        x: 3663
+        y: 0
+        width: 155
+        height: 229
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8df7c51084ea9f470800000000000000
+      internalID: 8428959801884311512
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_37
+      rect:
+        serializedVersion: 2
+        x: 4686
+        y: 0
+        width: 179
+        height: 230
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b34a96f96d107770800000000000000
+      internalID: 8606411228851094451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_38
+      rect:
+        serializedVersion: 2
+        x: 4938
+        y: 8
+        width: 169
+        height: 232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4508b35d694dee890800000000000000
+      internalID: -7426764991199739820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hero_flurry_39
+      rect:
+        serializedVersion: 2
+        x: 5682
+        y: 12
+        width: 138
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bffa81261a0378260800000000000000
+      internalID: 7099696807266529275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      hero_flurry_0: 9034283628217549846
+      hero_flurry_1: 6821967063796600949
+      hero_flurry_10: -5813598154680845782
+      hero_flurry_11: -8358783459623697930
+      hero_flurry_12: 5926521757910087119
+      hero_flurry_13: -8974827899358372327
+      hero_flurry_14: -2396623010591834210
+      hero_flurry_15: 1850095315050877559
+      hero_flurry_16: 5816890793661493675
+      hero_flurry_17: 3492860376469107095
+      hero_flurry_18: -2225633953170555021
+      hero_flurry_19: 3704763105246584607
+      hero_flurry_2: 677719485645035617
+      hero_flurry_20: 2927709072727219943
+      hero_flurry_21: 3122707329411684714
+      hero_flurry_22: -36548178250990811
+      hero_flurry_23: 3936524666586609425
+      hero_flurry_24: -3191678885418733391
+      hero_flurry_25: 6889021293588842518
+      hero_flurry_26: 7892715085315980628
+      hero_flurry_27: 595736330788621940
+      hero_flurry_28: 7473514901331414558
+      hero_flurry_29: 347937907954930555
+      hero_flurry_3: 8344098071025991274
+      hero_flurry_30: 2647698592631978602
+      hero_flurry_31: 8146373204873780420
+      hero_flurry_32: -4378723055324481010
+      hero_flurry_33: -3094046294948982421
+      hero_flurry_34: 6790974446709160505
+      hero_flurry_35: 4516120389356134258
+      hero_flurry_36: 8428959801884311512
+      hero_flurry_37: 8606411228851094451
+      hero_flurry_38: -7426764991199739820
+      hero_flurry_39: 7099696807266529275
+      hero_flurry_4: -6897249155585114303
+      hero_flurry_5: -2452320187643645709
+      hero_flurry_6: 1028616964955886798
+      hero_flurry_7: -5197182052612674598
+      hero_flurry_8: 6027041721232798039
+      hero_flurry_9: -7138530668639269969
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

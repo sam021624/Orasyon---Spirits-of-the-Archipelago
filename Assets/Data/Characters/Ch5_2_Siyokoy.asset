@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: Ch5_2_Siyokoy
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Siyokoy
+  isBoss: 0
+  maxHP: 45
+  attackDamage: 5
+  attackName: Trident Stab
+  attacks:
+  - name: Trident Stab
+    minDamage: 3
+    maxDamage: 5
+    critChance: 0.2
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: cd09373560893094d9d3375e12653ef4, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Tidal Wave
+    minDamage: 3
+    maxDamage: 4
+    critChance: 0
+    weight: 2
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 698f717c138e47c4b9db6bfe00e94879, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Geyser
+    minDamage: 2
+    maxDamage: 3
+    critChance: 0
+    weight: 1
+    effect: 2
+    effectChance: 0.4
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 4248f4f405c6eef4b84964c0d36b3a2b, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Shell Guard
+    minDamage: 0
+    maxDamage: 0
+    critChance: 0
+    weight: 1
+    effect: 4
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 50
+    vfx: {fileID: 11400000, guid: 7f2a18702bb784647a5703ed09a360e8, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  description: A merman with green scales and a hunting spear, said to drag sailors
+    under and keep them as guests. He guards the road to the deep, where the moon
+    is eaten.
+  themeWords:
+  - TRIDENT
+  - SCALE
+  - FISH
+  - TIDE
+  - REEF
+  spriteSize: 390
+  hoverHeight: 0
+  framesPerSecond: 12
+  spriteFacesRight: 0
+  idle:
+    sheet: {fileID: 2800000, guid: 40d79284594e4824d98a8da0c24019c6, type: 3}
+    frames: 8
+    fps: 0
+  walk:
+    sheet: {fileID: 2800000, guid: e82cf1097e62b6a4fbfe7762b7870cdf, type: 3}
+    frames: 8
+    fps: 0
+  attack:
+    sheet: {fileID: 2800000, guid: 99b3a87655ba37f4dabb2c0eafa34e82, type: 3}
+    frames: 9
+    fps: 0
+  cast:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  hurt:
+    sheet: {fileID: 2800000, guid: 730fa0aca53ebd048888bd3cc8ca688e, type: 3}
+    frames: 9
+    fps: 0
+  death:
+    sheet: {fileID: 2800000, guid: 146f6b2293852ab4689156a3bbfd03f5, type: 3}
+    frames: 10
+    fps: 0
+  kidlat:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  flurry:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0

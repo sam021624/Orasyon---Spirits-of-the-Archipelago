@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: Ch2_1_Bat
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Forest Bat
+  isBoss: 0
+  maxHP: 30
+  attackDamage: 2
+  attackName: Wing Gust
+  attacks:
+  - name: Wing Gust
+    minDamage: 1
+    maxDamage: 2
+    critChance: 0.1
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 0cd2760df97f35647be04b3242823880, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Fang Bite
+    minDamage: 1
+    maxDamage: 1
+    critChance: 0
+    weight: 2
+    effect: 1
+    effectChance: 0.6
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 0cd2760df97f35647be04b3242823880, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  description: Little bats flit between the old trees after dusk, keeping watch for
+    the bigger spirits of the forest. Alone they are only a nuisance. When they gather,
+    something larger is never far behind.
+  themeWords:
+  - BAT
+  - WING
+  - NIGHT
+  - CAVE
+  - FANG
+  spriteSize: 300
+  hoverHeight: 70
+  framesPerSecond: 12
+  spriteFacesRight: 0
+  idle:
+    sheet: {fileID: 2800000, guid: 9b00942fd4ab65a4c8383d6f33ca2fa7, type: 3}
+    frames: 8
+    fps: 0
+  walk:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  attack:
+    sheet: {fileID: 2800000, guid: 239e782fb126fc84eaa34b2b9d8a54ca, type: 3}
+    frames: 9
+    fps: 0
+  cast:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  hurt:
+    sheet: {fileID: 2800000, guid: 694dc3bec9b6a1841b22a13feb91c982, type: 3}
+    frames: 9
+    fps: 0
+  death:
+    sheet: {fileID: 2800000, guid: c73e1b4dec9539c4396d6f91f8a2dfbf, type: 3}
+    frames: 9
+    fps: 0
+  kidlat:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  flurry:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0

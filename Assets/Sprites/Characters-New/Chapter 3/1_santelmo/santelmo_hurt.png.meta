@@ -1,0 +1,832 @@
+fileFormatVersion: 2
+guid: c103ef568da4a2e4e8c500a85dacd8f0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 756515432864957562
+    second: santelmo_hurt_0
+  - first:
+      213: -362953034627224488
+    second: santelmo_hurt_1
+  - first:
+      213: 3587506072263208679
+    second: santelmo_hurt_2
+  - first:
+      213: 7050569766920737856
+    second: santelmo_hurt_3
+  - first:
+      213: -8171482704488735712
+    second: santelmo_hurt_4
+  - first:
+      213: 3257883145621020621
+    second: santelmo_hurt_5
+  - first:
+      213: 1809531206760300257
+    second: santelmo_hurt_6
+  - first:
+      213: -2742343265450373707
+    second: santelmo_hurt_7
+  - first:
+      213: -6981867735694289350
+    second: santelmo_hurt_8
+  - first:
+      213: 2054076307193796309
+    second: santelmo_hurt_9
+  - first:
+      213: -5856939128832778874
+    second: santelmo_hurt_10
+  - first:
+      213: -137449893802859192
+    second: santelmo_hurt_11
+  - first:
+      213: 2604625332655224917
+    second: santelmo_hurt_12
+  - first:
+      213: 5294534521082682713
+    second: santelmo_hurt_13
+  - first:
+      213: 1147263230533078851
+    second: santelmo_hurt_14
+  - first:
+      213: -853062344910988653
+    second: santelmo_hurt_15
+  - first:
+      213: 2693876615140629516
+    second: santelmo_hurt_16
+  - first:
+      213: 5643257941261443093
+    second: santelmo_hurt_17
+  - first:
+      213: -4484918824259736420
+    second: santelmo_hurt_18
+  - first:
+      213: 4001126917281659547
+    second: santelmo_hurt_19
+  - first:
+      213: 6326879694190087933
+    second: santelmo_hurt_20
+  - first:
+      213: 7561289473071796619
+    second: santelmo_hurt_21
+  - first:
+      213: 6555748855785681305
+    second: santelmo_hurt_22
+  - first:
+      213: 4936714752488437299
+    second: santelmo_hurt_23
+  - first:
+      213: -7593752820987445187
+    second: santelmo_hurt_24
+  - first:
+      213: -894161976770402439
+    second: santelmo_hurt_25
+  - first:
+      213: 4241328597388184929
+    second: santelmo_hurt_26
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: santelmo_hurt_0
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 53
+        width: 152
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a74440b27ceaf7a00800000000000000
+      internalID: 756515432864957562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_1
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 185
+        width: 24
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85ce4e4532886faf0800000000000000
+      internalID: -362953034627224488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_2
+      rect:
+        serializedVersion: 2
+        x: 1330
+        y: 52
+        width: 146
+        height: 143
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ee2ecae3c169c130800000000000000
+      internalID: 3587506072263208679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_3
+      rect:
+        serializedVersion: 2
+        x: 1457
+        y: 182
+        width: 23
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0445b65f8d7a8d160800000000000000
+      internalID: 7050569766920737856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_4
+      rect:
+        serializedVersion: 2
+        x: 1579
+        y: 53
+        width: 152
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02c53be46cf099e80800000000000000
+      internalID: -8171482704488735712
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_5
+      rect:
+        serializedVersion: 2
+        x: 1711
+        y: 187
+        width: 24
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcf197eb573563d20800000000000000
+      internalID: 3257883145621020621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_6
+      rect:
+        serializedVersion: 2
+        x: 1837
+        y: 53
+        width: 152
+        height: 150
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ee7ee49b0fbc1910800000000000000
+      internalID: 1809531206760300257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_7
+      rect:
+        serializedVersion: 2
+        x: 1969
+        y: 186
+        width: 24
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bd45a2645d31f9d0800000000000000
+      internalID: -2742343265450373707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_8
+      rect:
+        serializedVersion: 2
+        x: 2093
+        y: 53
+        width: 152
+        height: 149
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a365e21394c6b1f90800000000000000
+      internalID: -6981867735694289350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_9
+      rect:
+        serializedVersion: 2
+        x: 2225
+        y: 186
+        width: 24
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d615d7b48b818c10800000000000000
+      internalID: 2054076307193796309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_10
+      rect:
+        serializedVersion: 2
+        x: 1073
+        y: 50
+        width: 134
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68d16dac4e8f7bea0800000000000000
+      internalID: -5856939128832778874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_11
+      rect:
+        serializedVersion: 2
+        x: 1189
+        y: 170
+        width: 22
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8452771cc0ea71ef0800000000000000
+      internalID: -137449893802859192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_12
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 136
+        width: 21
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 558f5eda0fc752420800000000000000
+      internalID: 2604625332655224917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_13
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 45
+        width: 107
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95d1d246817f97940800000000000000
+      internalID: 5294534521082682713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_14
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 138
+        width: 17
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34f8ac764d5ebef00800000000000000
+      internalID: 1147263230533078851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_15
+      rect:
+        serializedVersion: 2
+        x: 837
+        y: 46
+        width: 110
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39a915821505924f0800000000000000
+      internalID: -853062344910988653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_16
+      rect:
+        serializedVersion: 2
+        x: 933
+        y: 143
+        width: 17
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0c503a3282926520800000000000000
+      internalID: 2693876615140629516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_17
+      rect:
+        serializedVersion: 2
+        x: 1198
+        y: 126
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5106ac4c231e05e40800000000000000
+      internalID: 5643257941261443093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_18
+      rect:
+        serializedVersion: 2
+        x: 1467
+        y: 135
+        width: 20
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c9c2989671e52c1c0800000000000000
+      internalID: -4484918824259736420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_19
+      rect:
+        serializedVersion: 2
+        x: 1721
+        y: 139
+        width: 21
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9ab3dd7bbbd68730800000000000000
+      internalID: 4001126917281659547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_20
+      rect:
+        serializedVersion: 2
+        x: 1979
+        y: 138
+        width: 21
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfe05d48f879dc750800000000000000
+      internalID: 6326879694190087933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_21
+      rect:
+        serializedVersion: 2
+        x: 2235
+        y: 137
+        width: 21
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b81585ed6b81fe860800000000000000
+      internalID: 7561289473071796619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_22
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 42
+        width: 95
+        height: 93
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99177c9b9d2bafa50800000000000000
+      internalID: 6555748855785681305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_23
+      rect:
+        serializedVersion: 2
+        x: 675
+        y: 125
+        width: 15
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 336f08b59ebb28440800000000000000
+      internalID: 4936714752488437299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_24
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 106
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d304ce0fa029d9690800000000000000
+      internalID: -7593752820987445187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_25
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 103
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97760fa6b6c4793f0800000000000000
+      internalID: -894161976770402439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_hurt_26
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 93
+        width: 14
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16d470743e93cda30800000000000000
+      internalID: 4241328597388184929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      santelmo_hurt_0: 756515432864957562
+      santelmo_hurt_1: -362953034627224488
+      santelmo_hurt_10: -5856939128832778874
+      santelmo_hurt_11: -137449893802859192
+      santelmo_hurt_12: 2604625332655224917
+      santelmo_hurt_13: 5294534521082682713
+      santelmo_hurt_14: 1147263230533078851
+      santelmo_hurt_15: -853062344910988653
+      santelmo_hurt_16: 2693876615140629516
+      santelmo_hurt_17: 5643257941261443093
+      santelmo_hurt_18: -4484918824259736420
+      santelmo_hurt_19: 4001126917281659547
+      santelmo_hurt_2: 3587506072263208679
+      santelmo_hurt_20: 6326879694190087933
+      santelmo_hurt_21: 7561289473071796619
+      santelmo_hurt_22: 6555748855785681305
+      santelmo_hurt_23: 4936714752488437299
+      santelmo_hurt_24: -7593752820987445187
+      santelmo_hurt_25: -894161976770402439
+      santelmo_hurt_26: 4241328597388184929
+      santelmo_hurt_3: 7050569766920737856
+      santelmo_hurt_4: -8171482704488735712
+      santelmo_hurt_5: 3257883145621020621
+      santelmo_hurt_6: 1809531206760300257
+      santelmo_hurt_7: -2742343265450373707
+      santelmo_hurt_8: -6981867735694289350
+      santelmo_hurt_9: 2054076307193796309
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

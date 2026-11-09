@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: Ch5_1_Berberoka
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Berberoka
+  isBoss: 0
+  maxHP: 45
+  attackDamage: 4
+  attackName: Flood Slam
+  attacks:
+  - name: Flood Slam
+    minDamage: 3
+    maxDamage: 4
+    critChance: 0.1
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 0bd4d7d3d38ba3648b4c318286b492f2, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Mud Glob
+    minDamage: 2
+    maxDamage: 3
+    critChance: 0
+    weight: 2
+    effect: 1
+    effectChance: 0.6
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 7f57b0a7215d05f46a9081777d80be0c, type: 2}
+    vfxTravels: 1
+    hitVfx: {fileID: 11400000, guid: 0bd4d7d3d38ba3648b4c318286b492f2, type: 2}
+  description: A bloated giant who lives in the shallows. It drinks a whole pond,
+    waits for fish to flop in the mud, then floods the land back over everyone who
+    came to eat them.
+  themeWords:
+  - FLOOD
+  - MUD
+  - SWAMP
+  - POND
+  - TOAD
+  spriteSize: 420
+  hoverHeight: 0
+  framesPerSecond: 12
+  spriteFacesRight: 0
+  idle:
+    sheet: {fileID: 2800000, guid: 93004000e41134d49b740294a4ec2275, type: 3}
+    frames: 8
+    fps: 0
+  walk:
+    sheet: {fileID: 2800000, guid: 981b4f2f5d6e23145a9a93d35908affa, type: 3}
+    frames: 8
+    fps: 0
+  attack:
+    sheet: {fileID: 2800000, guid: 86841dac910ae624b8d249128fc9896b, type: 3}
+    frames: 9
+    fps: 0
+  cast:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  hurt:
+    sheet: {fileID: 2800000, guid: 6a010afcd8142ff48b17347be9fd370e, type: 3}
+    frames: 9
+    fps: 0
+  death:
+    sheet: {fileID: 2800000, guid: a8ccb723707b081488e8deb524c732b6, type: 3}
+    frames: 10
+    fps: 0
+  kidlat:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  flurry:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0

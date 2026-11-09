@@ -1,0 +1,1040 @@
+fileFormatVersion: 2
+guid: 6b4ab0a73c2da304a9f9c1c452aab59d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5874015354064685026
+    second: tiyanak_death_0
+  - first:
+      213: -8867847474611903495
+    second: tiyanak_death_1
+  - first:
+      213: 5061459689170030593
+    second: tiyanak_death_2
+  - first:
+      213: 2707083341801967961
+    second: tiyanak_death_3
+  - first:
+      213: -4457554456333831223
+    second: tiyanak_death_4
+  - first:
+      213: 6167415002234824783
+    second: tiyanak_death_5
+  - first:
+      213: -5758784186877025830
+    second: tiyanak_death_6
+  - first:
+      213: -4348109193516437049
+    second: tiyanak_death_7
+  - first:
+      213: 7246562194713331120
+    second: tiyanak_death_8
+  - first:
+      213: 6707043564373897677
+    second: tiyanak_death_9
+  - first:
+      213: 850581896481599887
+    second: tiyanak_death_10
+  - first:
+      213: -6870955731437517240
+    second: tiyanak_death_11
+  - first:
+      213: 3660831215369759262
+    second: tiyanak_death_12
+  - first:
+      213: 2375491614126800504
+    second: tiyanak_death_13
+  - first:
+      213: 670435405042079701
+    second: tiyanak_death_14
+  - first:
+      213: -6159376299849411376
+    second: tiyanak_death_15
+  - first:
+      213: -4515685859519226461
+    second: tiyanak_death_16
+  - first:
+      213: -1390192900401880708
+    second: tiyanak_death_17
+  - first:
+      213: -7458075798101609394
+    second: tiyanak_death_18
+  - first:
+      213: 456485415752730545
+    second: tiyanak_death_19
+  - first:
+      213: -4796731840618896544
+    second: tiyanak_death_20
+  - first:
+      213: -7603275931207024238
+    second: tiyanak_death_21
+  - first:
+      213: 1434379645434722450
+    second: tiyanak_death_22
+  - first:
+      213: -7487494520389022450
+    second: tiyanak_death_23
+  - first:
+      213: -2555516395629376783
+    second: tiyanak_death_24
+  - first:
+      213: -3205424577957707783
+    second: tiyanak_death_25
+  - first:
+      213: 3169360346945280730
+    second: tiyanak_death_26
+  - first:
+      213: -5743825234260428527
+    second: tiyanak_death_27
+  - first:
+      213: -460950931196475661
+    second: tiyanak_death_28
+  - first:
+      213: 3711685366693487734
+    second: tiyanak_death_29
+  - first:
+      213: -7563034893759756082
+    second: tiyanak_death_30
+  - first:
+      213: -3717154992326287166
+    second: tiyanak_death_31
+  - first:
+      213: -1155175523327504291
+    second: tiyanak_death_32
+  - first:
+      213: 5542245491069383794
+    second: tiyanak_death_33
+  - first:
+      213: 3888464470202545283
+    second: tiyanak_death_34
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: tiyanak_death_0
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 19
+        width: 203
+        height: 218
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e74738b7d1b48150800000000000000
+      internalID: 5874015354064685026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_1
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 20
+        width: 203
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f3a969a4b31fe480800000000000000
+      internalID: -8867847474611903495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_2
+      rect:
+        serializedVersion: 2
+        x: 535
+        y: 20
+        width: 203
+        height: 234
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10050f145caed3640800000000000000
+      internalID: 5061459689170030593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_3
+      rect:
+        serializedVersion: 2
+        x: 795
+        y: 19
+        width: 203
+        height: 218
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 951db75e4fd719520800000000000000
+      internalID: 2707083341801967961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_4
+      rect:
+        serializedVersion: 2
+        x: 1053
+        y: 20
+        width: 201
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c3334fc6d59322c0800000000000000
+      internalID: -4457554456333831223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_5
+      rect:
+        serializedVersion: 2
+        x: 1301
+        y: 200
+        width: 23
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f482f96a44f079550800000000000000
+      internalID: 6167415002234824783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_6
+      rect:
+        serializedVersion: 2
+        x: 1307
+        y: 22
+        width: 203
+        height: 234
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ad1ee0b1b40b410b0800000000000000
+      internalID: -5758784186877025830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_7
+      rect:
+        serializedVersion: 2
+        x: 1556
+        y: 24
+        width: 210
+        height: 232
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c1b7dbc9b968a3c0800000000000000
+      internalID: -4348109193516437049
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_8
+      rect:
+        serializedVersion: 2
+        x: 1816
+        y: 33
+        width: 206
+        height: 223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b5c9a21ce5f09460800000000000000
+      internalID: 7246562194713331120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_9
+      rect:
+        serializedVersion: 2
+        x: 2073
+        y: 71
+        width: 197
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc1739b1694341d50800000000000000
+      internalID: 6707043564373897677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_10
+      rect:
+        serializedVersion: 2
+        x: 1051
+        y: 176
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f81f9207abfddcb00800000000000000
+      internalID: 850581896481599887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_11
+      rect:
+        serializedVersion: 2
+        x: 2269
+        y: 170
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8468b388a2675a0a0800000000000000
+      internalID: -6870955731437517240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_12
+      rect:
+        serializedVersion: 2
+        x: 2265
+        y: 140
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1aa6ce2892edc230800000000000000
+      internalID: 3660831215369759262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_13
+      rect:
+        serializedVersion: 2
+        x: 1891
+        y: 39
+        width: 12
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87e72f2890177f020800000000000000
+      internalID: 2375491614126800504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_14
+      rect:
+        serializedVersion: 2
+        x: 1898
+        y: 31
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d7d062e27ddd4900800000000000000
+      internalID: 670435405042079701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_15
+      rect:
+        serializedVersion: 2
+        x: 1900
+        y: 44
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d4148993ef758aa0800000000000000
+      internalID: -6159376299849411376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_16
+      rect:
+        serializedVersion: 2
+        x: 1901
+        y: 47
+        width: 16
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ad1a1ac2af0551c0800000000000000
+      internalID: -4515685859519226461
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_17
+      rect:
+        serializedVersion: 2
+        x: 1911
+        y: 32
+        width: 11
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c71a6423cea05bce0800000000000000
+      internalID: -1390192900401880708
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_18
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 47
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e44373283979f7890800000000000000
+      internalID: -7458075798101609394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_19
+      rect:
+        serializedVersion: 2
+        x: 1929
+        y: 47
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b7861b2113c55600800000000000000
+      internalID: 456485415752730545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_20
+      rect:
+        serializedVersion: 2
+        x: 1941
+        y: 47
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 063ea1d1ec59e6db0800000000000000
+      internalID: -4796731840618896544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_21
+      rect:
+        serializedVersion: 2
+        x: 1945
+        y: 42
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 291c02f03dcbb7690800000000000000
+      internalID: -7603275931207024238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_22
+      rect:
+        serializedVersion: 2
+        x: 1964
+        y: 47
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 298ff2710b0f7e310800000000000000
+      internalID: 1434379645434722450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_23
+      rect:
+        serializedVersion: 2
+        x: 1968
+        y: 41
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0d47867763171890800000000000000
+      internalID: -7487494520389022450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_24
+      rect:
+        serializedVersion: 2
+        x: 1973
+        y: 47
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1fa03dcb06bf88cd0800000000000000
+      internalID: -2555516395629376783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_25
+      rect:
+        serializedVersion: 2
+        x: 1979
+        y: 45
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ff3684545b0483d0800000000000000
+      internalID: -3205424577957707783
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_26
+      rect:
+        serializedVersion: 2
+        x: 1981
+        y: 42
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adad1ec8174dbfb20800000000000000
+      internalID: 3169360346945280730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_27
+      rect:
+        serializedVersion: 2
+        x: 1990
+        y: 42
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1197bfba165d940b0800000000000000
+      internalID: -5743825234260428527
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_28
+      rect:
+        serializedVersion: 2
+        x: 1880
+        y: 30
+        width: 19
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f6062ff19f5a99f0800000000000000
+      internalID: -460950931196475661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_29
+      rect:
+        serializedVersion: 2
+        x: 1888
+        y: 38
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 674e7c7fc2e828330800000000000000
+      internalID: 3711685366693487734
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_30
+      rect:
+        serializedVersion: 2
+        x: 1981
+        y: 35
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec8c095b5d3ba0790800000000000000
+      internalID: -7563034893759756082
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_31
+      rect:
+        serializedVersion: 2
+        x: 1986
+        y: 38
+        width: 9
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c062539a330a6cc0800000000000000
+      internalID: -3717154992326287166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_32
+      rect:
+        serializedVersion: 2
+        x: 1989
+        y: 26
+        width: 15
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5096de5bfdf7ffe0800000000000000
+      internalID: -1155175523327504291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_33
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 34
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2747339f8e20aec40800000000000000
+      internalID: 5542245491069383794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: tiyanak_death_34
+      rect:
+        serializedVersion: 2
+        x: 1975
+        y: 26
+        width: 14
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 384762c65d996f530800000000000000
+      internalID: 3888464470202545283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      tiyanak_death_0: 5874015354064685026
+      tiyanak_death_1: -8867847474611903495
+      tiyanak_death_10: 850581896481599887
+      tiyanak_death_11: -6870955731437517240
+      tiyanak_death_12: 3660831215369759262
+      tiyanak_death_13: 2375491614126800504
+      tiyanak_death_14: 670435405042079701
+      tiyanak_death_15: -6159376299849411376
+      tiyanak_death_16: -4515685859519226461
+      tiyanak_death_17: -1390192900401880708
+      tiyanak_death_18: -7458075798101609394
+      tiyanak_death_19: 456485415752730545
+      tiyanak_death_2: 5061459689170030593
+      tiyanak_death_20: -4796731840618896544
+      tiyanak_death_21: -7603275931207024238
+      tiyanak_death_22: 1434379645434722450
+      tiyanak_death_23: -7487494520389022450
+      tiyanak_death_24: -2555516395629376783
+      tiyanak_death_25: -3205424577957707783
+      tiyanak_death_26: 3169360346945280730
+      tiyanak_death_27: -5743825234260428527
+      tiyanak_death_28: -460950931196475661
+      tiyanak_death_29: 3711685366693487734
+      tiyanak_death_3: 2707083341801967961
+      tiyanak_death_30: -7563034893759756082
+      tiyanak_death_31: -3717154992326287166
+      tiyanak_death_32: -1155175523327504291
+      tiyanak_death_33: 5542245491069383794
+      tiyanak_death_34: 3888464470202545283
+      tiyanak_death_4: -4457554456333831223
+      tiyanak_death_5: 6167415002234824783
+      tiyanak_death_6: -5758784186877025830
+      tiyanak_death_7: -4348109193516437049
+      tiyanak_death_8: 7246562194713331120
+      tiyanak_death_9: 6707043564373897677
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

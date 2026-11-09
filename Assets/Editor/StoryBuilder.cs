@@ -40,6 +40,18 @@ namespace Orasyon.EditorTools
             Debug.Log("[Orasyon] Story scene and dialogue rebuilt.");
         }
 
+        /// <summary>Rebuilds only the Story scene (Lola, dialogue box...). Dialogue assets are left exactly as they are.</summary>
+        [MenuItem("Tools/Orasyon/Rebuild Story Scene Only (keep dialogue)")]
+        public static void BuildSceneOnly()
+        {
+            var prologue = AssetDatabase.LoadAssetAtPath<StoryScript>(StoryFolder + "/Prologue.asset");
+            if (prologue == null) { Build(); return; }
+            BuildScene(prologue);
+            UpdateBuildSettings();
+            AssetDatabase.SaveAssets();
+            Debug.Log("[Orasyon] Story scene rebuilt (dialogue untouched).");
+        }
+
         // ── Dialogue ─────────────────────────────────────────────────────────
         private static StoryScript BuildPrologue()
         {
@@ -54,7 +66,7 @@ namespace Orasyon.EditorTools
                 Line(Speaker.Lola,      "There you are, apo. Come, sit with me. The sun is setting, and the spirits are restless tonight."),
                 Line(Speaker.Albularyo, "Lola, the neighbors keep saying strange things. Lights in the balete tree, voices from the mounds in the backyard..."),
                 Line(Speaker.Lola,      "They are not imagining it. Something has upset the balance between our world and theirs."),
-                Line(Speaker.Lola,      "This is the Book of Orasyon. It has passed from albularyo to albularyo for generations. Tonight, it passes to you."),
+                Line(Speaker.Lola,      "This is the Book of Orasyon. It has passed from albularyo to albularyo for generations. Tonight, it passes to you.", pose: LolaPose.Give),
                 Line(Speaker.Albularyo, "To me? But Lola, I barely remember the old prayers."),
                 Line(Speaker.Lola,      "You know words, apo. That is all the book needs. Speak them with intent, and they become power."),
                 Line(Speaker.Albularyo, "The pages... they're glowing! Lola, what's happening?"),
@@ -92,8 +104,8 @@ namespace Orasyon.EditorTools
             return s;
         }
 
-        private static StoryLine Line(Speaker who, string text, bool flash = false, Texture2D newBg = null, bool lolaOnStage = true)
-            => new StoryLine { speaker = who, text = text, flash = flash, changeBackground = newBg, lolaOnStage = lolaOnStage };
+        private static StoryLine Line(Speaker who, string text, bool flash = false, Texture2D newBg = null, bool lolaOnStage = true, LolaPose pose = LolaPose.Auto)
+            => new StoryLine { speaker = who, text = text, flash = flash, changeBackground = newBg, lolaOnStage = lolaOnStage, lolaPose = pose };
 
         private static StoryScript Asset(string name)
         {
@@ -150,17 +162,20 @@ namespace Orasyon.EditorTools
             var albuRt = Node("Albularyo", canvas);
             Anchor(albuRt, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0), new Vector2(-560, -300), new Vector2(460, 460));
             var albuImg = albuRt.gameObject.AddComponent<RawImage>();
-            albuImg.texture = albuDef.idle[0];
+            albuDef.idle.Apply(albuImg, 0);
             albuImg.raycastTarget = false;
             var albuAnim = albuRt.gameObject.AddComponent<UIFrameAnimator>();
 
-            // Lola (right): placeholder spirit-light until her sprite exists
+            // Lola (right): animated from Characters-New/Prologue/lola. The spirit-light below is only a fallback.
             var lolaRt = Node("Lola", canvas);
             Anchor(lolaRt, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0), new Vector2(560, -300), new Vector2(460, 460));
             var lolaGroup = lolaRt.gameObject.AddComponent<CanvasGroup>();
             var lolaImage = lolaRt.gameObject.AddComponent<RawImage>();
             lolaImage.raycastTarget = false;
-            lolaImage.enabled = false;
+            var lolaIdleTex = AssetDatabase.LoadAssetAtPath<Texture2D>(LolaFolder + "lola_idle.png");
+            if (lolaIdleTex != null) new FrameClip(lolaIdleTex, Mathf.RoundToInt(lolaIdleTex.width / (float)lolaIdleTex.height)).Apply(lolaImage, 0);
+            else lolaImage.enabled = false;
+            var lolaAnim = lolaRt.gameObject.AddComponent<UIFrameAnimator>();
             var placeholder = Node("Placeholder_SpiritLight", lolaRt);
             Anchor(placeholder, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0, 40), new Vector2(420, 420));
             var outer = Img("Glow", placeholder, new Color(1f, 0.78f, 0.40f, 0.65f), softGlow); Stretch(outer.rectTransform);
@@ -240,8 +255,13 @@ namespace Orasyon.EditorTools
             Set("albularyo", albuAnim);
             Set("albularyoDefinition", albuDef);
             Set("lolaGroup", lolaGroup);
-            Set("lolaImage", lolaImage);
+            Set("lolaAnimator", lolaAnim);
             Set("lolaPlaceholder", placeholder.gameObject);
+            SetClip(so, "lolaIdle",  "lola_idle");
+            SetClip(so, "lolaTalk",  "lola_talk");
+            SetClip(so, "lolaLaugh", "lola_laugh");
+            SetClip(so, "lolaGive",  "lola_give");
+            SetClip(so, "lolaHeal",  "lola_heal");
             Set("dialogueGroup", dialogueGroup);
             Set("namePlate", plate.gameObject);
             Set("nameLabel", name);
@@ -257,6 +277,18 @@ namespace Orasyon.EditorTools
             so.ApplyModifiedPropertiesWithoutUndo();
 
             EditorSceneManager.SaveScene(scene, ScenePath);
+        }
+
+        private const string LolaFolder = "Assets/Sprites/Characters-New/Prologue/lola/";
+
+        /// <summary>Fills a FrameClip field of StoryPlayer from one of Lola's strips (square cells).</summary>
+        private static void SetClip(SerializedObject so, string field, string clipName)
+        {
+            var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(LolaFolder + clipName + ".png");
+            var p = so.FindProperty(field);
+            if (p == null || tex == null) { Debug.LogWarning($"[Orasyon] Lola clip '{clipName}' not set."); return; }
+            p.FindPropertyRelative("sheet").objectReferenceValue = tex;
+            p.FindPropertyRelative("frames").intValue = Mathf.RoundToInt(tex.width / (float)tex.height);
         }
 
         private static void UpdateBuildSettings()

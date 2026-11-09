@@ -22,9 +22,13 @@ namespace Orasyon.Story
         [SerializeField] private UIFrameAnimator     albularyo;
         [SerializeField] private CharacterDefinition albularyoDefinition;
         [SerializeField] private CanvasGroup         lolaGroup;
-        [Tooltip("Lola's sprite. Leave empty to use the glowing placeholder.")]
-        [SerializeField] private Texture2D           lolaArt;
-        [SerializeField] private RawImage            lolaImage;
+        [Tooltip("Lola's animator. Leave the clips empty to use the glowing placeholder.")]
+        [SerializeField] private UIFrameAnimator     lolaAnimator;
+        [SerializeField] private FrameClip           lolaIdle  = new FrameClip();
+        [SerializeField] private FrameClip           lolaTalk  = new FrameClip();
+        [SerializeField] private FrameClip           lolaLaugh = new FrameClip();
+        [SerializeField] private FrameClip           lolaGive  = new FrameClip();
+        [SerializeField] private FrameClip           lolaHeal  = new FrameClip();
         [SerializeField] private GameObject          lolaPlaceholder;
 
         [Header("Dialogue")]
@@ -68,8 +72,8 @@ namespace Orasyon.Story
                 albularyo.SetIdle(albularyoDefinition.idle);
             }
 
-            bool hasArt = lolaArt != null;
-            if (lolaImage != null) { lolaImage.texture = lolaArt; lolaImage.enabled = hasArt; }
+            bool hasArt = lolaAnimator != null && lolaIdle != null && !lolaIdle.IsEmpty;
+            if (hasArt) lolaAnimator.SetIdle(lolaIdle);
             if (lolaPlaceholder != null) lolaPlaceholder.SetActive(!hasArt);
 
             if (background != null && script != null) background.texture = script.background;
@@ -127,6 +131,7 @@ namespace Orasyon.Story
 
                 ShowSpeaker(line);
                 yield return TypeLine(line.text);
+                if (line.lolaPose == LolaPose.Auto && lolaAnimator != null) lolaAnimator.ReturnToIdle();   // stop talking once the line is complete
 
                 advanceRequested = false;
                 continueHint.gameObject.SetActive(true);
@@ -164,6 +169,25 @@ namespace Orasyon.Story
                 img.color = line.speaker == Speaker.Lola ? new Color(0.6f, 0.6f, 0.68f, 1f) : Color.white;
             }
             SetLolaVisible(line.lolaOnStage, instant: false, dim: line.speaker != Speaker.Lola);
+            AnimateLola(line);
+        }
+
+        /// <summary>Lola talks while she speaks, or plays the pose the line asks for.</summary>
+        private void AnimateLola(StoryLine line)
+        {
+            if (lolaAnimator == null || lolaIdle == null || lolaIdle.IsEmpty) return;
+
+            if (!line.lolaOnStage) { lolaAnimator.ReturnToIdle(); return; }
+
+            switch (line.lolaPose)
+            {
+                case LolaPose.Give:  lolaAnimator.PlayOnce(lolaGive);  return;
+                case LolaPose.Laugh: lolaAnimator.PlayOnce(lolaLaugh); return;
+                case LolaPose.Heal:  lolaAnimator.PlayOnce(lolaHeal);  return;
+            }
+
+            if (line.speaker == Speaker.Lola && lolaTalk != null && !lolaTalk.IsEmpty) lolaAnimator.PlayLoop(lolaTalk);
+            else lolaAnimator.ReturnToIdle();
         }
 
         private IEnumerator TypeLine(string text)

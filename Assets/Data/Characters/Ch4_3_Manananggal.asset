@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8850cd3ce90fbe84398c0d413d4bcc9a, type: 3}
+  m_Name: Ch4_3_Manananggal
+  m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
+  displayName: Manananggal
+  isBoss: 1
+  maxHP: 60
+  attackDamage: 4
+  attackName: Claw Swipe
+  attacks:
+  - name: Claw Swipe
+    minDamage: 3
+    maxDamage: 4
+    critChance: 0.2
+    weight: 3
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: 7d2cecb529e954e469d18b668d6098f1, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Blood Drain
+    minDamage: 2
+    maxDamage: 2
+    critChance: 0
+    weight: 2
+    effect: 5
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 100
+    vfx: {fileID: 11400000, guid: 78d093769d7cc584091ac4ac8a37e07b, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Night Wail
+    minDamage: 2
+    maxDamage: 2
+    critChance: 0
+    weight: 1
+    effect: 3
+    effectChance: 0.4
+    effectTurns: 2
+    effectPower: 30
+    vfx: {fileID: 11400000, guid: 78d093769d7cc584091ac4ac8a37e07b, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Split Apart
+    minDamage: 0
+    maxDamage: 0
+    critChance: 0
+    weight: 1
+    effect: 4
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 50
+    vfx: {fileID: 11400000, guid: 78d093769d7cc584091ac4ac8a37e07b, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  description: By day she is a quiet neighbor. By night her body splits in two, and
+    her wings carry her over the rooftops in search of a victim. Salt on the lower
+    half keeps her from ever becoming whole again.
+  themeWords:
+  - SALT
+  - GARLIC
+  - DAWN
+  - SUN
+  - ROOF
+  spriteSize: 440
+  hoverHeight: 40
+  framesPerSecond: 12
+  spriteFacesRight: 0
+  idle:
+    sheet: {fileID: 2800000, guid: 709049c3f0f3bc24b91f54248eb0c2a8, type: 3}
+    frames: 8
+    fps: 0
+  walk:
+    sheet: {fileID: 2800000, guid: f542a54755c7b4c4ebec3505d1d0264d, type: 3}
+    frames: 8
+    fps: 0
+  attack:
+    sheet: {fileID: 2800000, guid: d734b93f954dd7a42be564ff8ca90cd2, type: 3}
+    frames: 9
+    fps: 0
+  cast:
+    sheet: {fileID: 2800000, guid: f0e8a9c91dfe89741b4de636d32434ca, type: 3}
+    frames: 9
+    fps: 0
+  hurt:
+    sheet: {fileID: 2800000, guid: 6234e903da376ec489b958401d702109, type: 3}
+    frames: 9
+    fps: 0
+  death:
+    sheet: {fileID: 2800000, guid: 32efe2b04f0a9ab4da4ca61d4017b7ff, type: 3}
+    frames: 9
+    fps: 0
+  kidlat:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0
+  flurry:
+    sheet: {fileID: 0}
+    frames: 1
+    fps: 0

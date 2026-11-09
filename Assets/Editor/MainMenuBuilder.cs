@@ -90,7 +90,7 @@ namespace Orasyon.EditorTools
 
             // Characters: hero on the left, the boss lurking on the right
             Character("Albularyo",   canvas, Load<CharacterDefinition>(DataFolder + "Albularyo.asset"),      new Vector2(-640, -560), 470, Color.white);
-            Character("DuwendeKing", canvas, Load<CharacterDefinition>(DataFolder + "03_DuwendeKing.asset"), new Vector2( 650, -560), 520, new Color(0.78f, 0.74f, 0.92f));
+            Character("DuwendeKing", canvas, Load<CharacterDefinition>(DataFolder + "Ch1_3_DuwendeKing.asset"), new Vector2( 650, -560), 520, new Color(0.78f, 0.74f, 0.92f));
 
             // Darken the edges so the title and buttons stand out
             var vig = Img("Vignette", canvas, new Color(0.01f, 0.01f, 0.04f, 0.92f), vignette);
@@ -268,7 +268,7 @@ namespace Orasyon.EditorTools
             var rt = Node(name, parent);
             Anchor(rt, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0), pos, new Vector2(size, size));
             var raw = rt.gameObject.AddComponent<RawImage>();
-            raw.texture = def.idle.Length > 0 ? def.idle[0] : null;
+            def.idle.Apply(raw, 0);
             raw.color = tint;
             raw.raycastTarget = false;
             var anim = rt.gameObject.AddComponent<UIFrameAnimator>();

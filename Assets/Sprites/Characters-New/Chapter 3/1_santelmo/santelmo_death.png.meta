@@ -1,0 +1,1508 @@
+fileFormatVersion: 2
+guid: bb1bf88b13a98bf44983ae947b91137c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -119369404014818069
+    second: santelmo_death_0
+  - first:
+      213: -3404373941852673451
+    second: santelmo_death_1
+  - first:
+      213: 401366162189661711
+    second: santelmo_death_2
+  - first:
+      213: 5412529499051668471
+    second: santelmo_death_3
+  - first:
+      213: -318522127494265487
+    second: santelmo_death_4
+  - first:
+      213: 8471861217097884093
+    second: santelmo_death_5
+  - first:
+      213: 8082479925685206529
+    second: santelmo_death_6
+  - first:
+      213: -750206454643012902
+    second: santelmo_death_7
+  - first:
+      213: 4166158214171183465
+    second: santelmo_death_8
+  - first:
+      213: 7051655321175620119
+    second: santelmo_death_9
+  - first:
+      213: -4146715536865902629
+    second: santelmo_death_10
+  - first:
+      213: 5919601227872029326
+    second: santelmo_death_11
+  - first:
+      213: -3022896273750186968
+    second: santelmo_death_12
+  - first:
+      213: -310956364574419095
+    second: santelmo_death_13
+  - first:
+      213: 7086390676423317042
+    second: santelmo_death_14
+  - first:
+      213: -2056141689371255020
+    second: santelmo_death_15
+  - first:
+      213: -2484446713887671961
+    second: santelmo_death_16
+  - first:
+      213: -3145243087757547369
+    second: santelmo_death_17
+  - first:
+      213: -8641284352962730909
+    second: santelmo_death_18
+  - first:
+      213: -6561695137305173208
+    second: santelmo_death_19
+  - first:
+      213: 1535716689533881503
+    second: santelmo_death_20
+  - first:
+      213: 6840722064492282637
+    second: santelmo_death_21
+  - first:
+      213: 6726610694683152693
+    second: santelmo_death_22
+  - first:
+      213: 7681340462178960659
+    second: santelmo_death_23
+  - first:
+      213: -8258208728132260444
+    second: santelmo_death_24
+  - first:
+      213: -3104312454755663723
+    second: santelmo_death_25
+  - first:
+      213: 8002928786009694501
+    second: santelmo_death_26
+  - first:
+      213: 7276565548313392222
+    second: santelmo_death_27
+  - first:
+      213: -1680398311445020718
+    second: santelmo_death_28
+  - first:
+      213: -8455785719108969376
+    second: santelmo_death_29
+  - first:
+      213: -3544550680182319200
+    second: santelmo_death_30
+  - first:
+      213: -2033953156873264968
+    second: santelmo_death_31
+  - first:
+      213: -1937777702789022369
+    second: santelmo_death_32
+  - first:
+      213: -9114168335039033399
+    second: santelmo_death_33
+  - first:
+      213: -811537782287584124
+    second: santelmo_death_34
+  - first:
+      213: 1707337672381640428
+    second: santelmo_death_35
+  - first:
+      213: 5354492933685656307
+    second: santelmo_death_36
+  - first:
+      213: 5738788289303955058
+    second: santelmo_death_37
+  - first:
+      213: 780353629438363322
+    second: santelmo_death_38
+  - first:
+      213: 9105226684414774678
+    second: santelmo_death_39
+  - first:
+      213: 8269490760265041135
+    second: santelmo_death_40
+  - first:
+      213: -6510881845843020556
+    second: santelmo_death_41
+  - first:
+      213: -5199961126788924031
+    second: santelmo_death_42
+  - first:
+      213: -7567171084239578956
+    second: santelmo_death_43
+  - first:
+      213: 6832447721828408944
+    second: santelmo_death_44
+  - first:
+      213: 4603123272903923211
+    second: santelmo_death_45
+  - first:
+      213: 1951091668973898218
+    second: santelmo_death_46
+  - first:
+      213: -2855397839371442021
+    second: santelmo_death_47
+  - first:
+      213: -6416278541374475587
+    second: santelmo_death_48
+  - first:
+      213: -8495975857740257754
+    second: santelmo_death_49
+  - first:
+      213: -907510223821398674
+    second: santelmo_death_50
+  - first:
+      213: 4127285880414559471
+    second: santelmo_death_51
+  - first:
+      213: -8881758120576482908
+    second: santelmo_death_52
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: santelmo_death_0
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 52
+        width: 152
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bec85a4d82ae75ef0800000000000000
+      internalID: -119369404014818069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_1
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 179
+        width: 24
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55a6641efeb31c0d0800000000000000
+      internalID: -3404373941852673451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_2
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 50
+        width: 138
+        height: 140
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f063d22e560f19500800000000000000
+      internalID: 401366162189661711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_3
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 176
+        width: 21
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f33c4f07ea2d1b40800000000000000
+      internalID: 5412529499051668471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_4
+      rect:
+        serializedVersion: 2
+        x: 2147
+        y: 169
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1754a9900d1649bf0800000000000000
+      internalID: -318522127494265487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_5
+      rect:
+        serializedVersion: 2
+        x: 2361
+        y: 172
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db1278f14e8129570800000000000000
+      internalID: 8471861217097884093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_6
+      rect:
+        serializedVersion: 2
+        x: 2406
+        y: 185
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10e31ba6bacba2070800000000000000
+      internalID: 8082479925685206529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_7
+      rect:
+        serializedVersion: 2
+        x: 2440
+        y: 178
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ada4cca443bb695f0800000000000000
+      internalID: -750206454643012902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_8
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 130
+        width: 21
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 969cfb192da21d930800000000000000
+      internalID: 4166158214171183465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_9
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 47
+        width: 119
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71a7a2147238cd160800000000000000
+      internalID: 7051655321175620119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_10
+      rect:
+        serializedVersion: 2
+        x: 671
+        y: 153
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdfb3808038e376c0800000000000000
+      internalID: -4146715536865902629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_11
+      rect:
+        serializedVersion: 2
+        x: 1891
+        y: 147
+        width: 35
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8a474f04f5a62250800000000000000
+      internalID: 5919601227872029326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_12
+      rect:
+        serializedVersion: 2
+        x: 2118
+        y: 161
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 824a442ead38c06d0800000000000000
+      internalID: -3022896273750186968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_13
+      rect:
+        serializedVersion: 2
+        x: 2178
+        y: 162
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96715ec75d24fabf0800000000000000
+      internalID: -310956364574419095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_14
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 126
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2361adf56cae75260800000000000000
+      internalID: 7086390676423317042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_15
+      rect:
+        serializedVersion: 2
+        x: 1860
+        y: 130
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41f9725070e1773e0800000000000000
+      internalID: -2056141689371255020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_16
+      rect:
+        serializedVersion: 2
+        x: 1923
+        y: 135
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 769b65b70e8758dd0800000000000000
+      internalID: -2484446713887671961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_17
+      rect:
+        serializedVersion: 2
+        x: 2093
+        y: 133
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79865fd631ad954d0800000000000000
+      internalID: -3145243087757547369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_18
+      rect:
+        serializedVersion: 2
+        x: 2202
+        y: 140
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 364e38a1aadf31880800000000000000
+      internalID: -8641284352962730909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_19
+      rect:
+        serializedVersion: 2
+        x: 2326
+        y: 132
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8236488b90d20f4a0800000000000000
+      internalID: -6561695137305173208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_20
+      rect:
+        serializedVersion: 2
+        x: 2480
+        y: 146
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f9c4e4b4136ff4510800000000000000
+      internalID: 1535716689533881503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_21
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 117
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d034d3559702fee50800000000000000
+      internalID: 6840722064492282637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_22
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 42
+        width: 96
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 531dee6a9c8b95d50800000000000000
+      internalID: 6726610694683152693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_23
+      rect:
+        serializedVersion: 2
+        x: 922
+        y: 125
+        width: 16
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 315030fe37a999a60800000000000000
+      internalID: 7681340462178960659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_24
+      rect:
+        serializedVersion: 2
+        x: 1625
+        y: 103
+        width: 42
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ad65a66ae2f46d80800000000000000
+      internalID: -8258208728132260444
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_25
+      rect:
+        serializedVersion: 2
+        x: 1856
+        y: 108
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 590c77e05444be4d0800000000000000
+      internalID: -3104312454755663723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_26
+      rect:
+        serializedVersion: 2
+        x: 1887
+        y: 109
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5212bdc545d101f60800000000000000
+      internalID: 8002928786009694501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_27
+      rect:
+        serializedVersion: 2
+        x: 1930
+        y: 114
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e54b01430dd8bf460800000000000000
+      internalID: 7276565548313392222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_28
+      rect:
+        serializedVersion: 2
+        x: 2087
+        y: 111
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2df372d83a60ea8e0800000000000000
+      internalID: -1680398311445020718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_29
+      rect:
+        serializedVersion: 2
+        x: 2147
+        y: 114
+        width: 22
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06c50bb60b307aa80800000000000000
+      internalID: -8455785719108969376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_30
+      rect:
+        serializedVersion: 2
+        x: 2212
+        y: 110
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a71d5bafe93fcec0800000000000000
+      internalID: -3544550680182319200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_31
+      rect:
+        serializedVersion: 2
+        x: 928
+        y: 94
+        width: 14
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b0e8c25162f5c3e0800000000000000
+      internalID: -2033953156873264968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_32
+      rect:
+        serializedVersion: 2
+        x: 1102
+        y: 37
+        width: 72
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5d76933271ab15e0800000000000000
+      internalID: -1937777702789022369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_33
+      rect:
+        serializedVersion: 2
+        x: 1164
+        y: 100
+        width: 12
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cf82ee2038f38180800000000000000
+      internalID: -9114168335039033399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_34
+      rect:
+        serializedVersion: 2
+        x: 1862
+        y: 93
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 484b0fccfa6dcb4f0800000000000000
+      internalID: -811537782287584124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_35
+      rect:
+        serializedVersion: 2
+        x: 1926
+        y: 96
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cee23f1319ea1b710800000000000000
+      internalID: 1707337672381640428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_36
+      rect:
+        serializedVersion: 2
+        x: 2319
+        y: 102
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fa3ca034fafe4a40800000000000000
+      internalID: 5354492933685656307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_37
+      rect:
+        serializedVersion: 2
+        x: 2494
+        y: 97
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27642213b8544af40800000000000000
+      internalID: 5738788289303955058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_38
+      rect:
+        serializedVersion: 2
+        x: 1168
+        y: 76
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab64cd1dd7f54da00800000000000000
+      internalID: 780353629438363322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_39
+      rect:
+        serializedVersion: 2
+        x: 1874
+        y: 80
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69d43fb8d634c5e70800000000000000
+      internalID: 9105226684414774678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_40
+      rect:
+        serializedVersion: 2
+        x: 1896
+        y: 75
+        width: 33
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe409f6680223c270800000000000000
+      internalID: 8269490760265041135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_41
+      rect:
+        serializedVersion: 2
+        x: 2098
+        y: 72
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f4bcf31573b4a5a0800000000000000
+      internalID: -6510881845843020556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_42
+      rect:
+        serializedVersion: 2
+        x: 2201
+        y: 71
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 18df7efd7e606d7b0800000000000000
+      internalID: -5199961126788924031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_43
+      rect:
+        serializedVersion: 2
+        x: 1371
+        y: 32
+        width: 45
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b8da41ddf10cf690800000000000000
+      internalID: -7567171084239578956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_44
+      rect:
+        serializedVersion: 2
+        x: 1411
+        y: 56
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07e520ec00bb1de50800000000000000
+      internalID: 6832447721828408944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_45
+      rect:
+        serializedVersion: 2
+        x: 2124
+        y: 50
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b0695c27a3491ef30800000000000000
+      internalID: 4603123272903923211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_46
+      rect:
+        serializedVersion: 2
+        x: 2148
+        y: 44
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae9c96d198ba31b10800000000000000
+      internalID: 1951091668973898218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_47
+      rect:
+        serializedVersion: 2
+        x: 2185
+        y: 55
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b98e8db2bc69f58d0800000000000000
+      internalID: -2855397839371442021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_48
+      rect:
+        serializedVersion: 2
+        x: 2331
+        y: 52
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db2b96959acc4f6a0800000000000000
+      internalID: -6416278541374475587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_49
+      rect:
+        serializedVersion: 2
+        x: 2484
+        y: 55
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 626e81398fa381a80800000000000000
+      internalID: -8495975857740257754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_50
+      rect:
+        serializedVersion: 2
+        x: 2371
+        y: 16
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6d17177240e763f0800000000000000
+      internalID: -907510223821398674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_51
+      rect:
+        serializedVersion: 2
+        x: 2456
+        y: 24
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fec589414a0174930800000000000000
+      internalID: 4127285880414559471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: santelmo_death_52
+      rect:
+        serializedVersion: 2
+        x: 2401
+        y: 9
+        width: 15
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a109120c08adb480800000000000000
+      internalID: -8881758120576482908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      santelmo_death_0: -119369404014818069
+      santelmo_death_1: -3404373941852673451
+      santelmo_death_10: -4146715536865902629
+      santelmo_death_11: 5919601227872029326
+      santelmo_death_12: -3022896273750186968
+      santelmo_death_13: -310956364574419095
+      santelmo_death_14: 7086390676423317042
+      santelmo_death_15: -2056141689371255020
+      santelmo_death_16: -2484446713887671961
+      santelmo_death_17: -3145243087757547369
+      santelmo_death_18: -8641284352962730909
+      santelmo_death_19: -6561695137305173208
+      santelmo_death_2: 401366162189661711
+      santelmo_death_20: 1535716689533881503
+      santelmo_death_21: 6840722064492282637
+      santelmo_death_22: 6726610694683152693
+      santelmo_death_23: 7681340462178960659
+      santelmo_death_24: -8258208728132260444
+      santelmo_death_25: -3104312454755663723
+      santelmo_death_26: 8002928786009694501
+      santelmo_death_27: 7276565548313392222
+      santelmo_death_28: -1680398311445020718
+      santelmo_death_29: -8455785719108969376
+      santelmo_death_3: 5412529499051668471
+      santelmo_death_30: -3544550680182319200
+      santelmo_death_31: -2033953156873264968
+      santelmo_death_32: -1937777702789022369
+      santelmo_death_33: -9114168335039033399
+      santelmo_death_34: -811537782287584124
+      santelmo_death_35: 1707337672381640428
+      santelmo_death_36: 5354492933685656307
+      santelmo_death_37: 5738788289303955058
+      santelmo_death_38: 780353629438363322
+      santelmo_death_39: 9105226684414774678
+      santelmo_death_4: -318522127494265487
+      santelmo_death_40: 8269490760265041135
+      santelmo_death_41: -6510881845843020556
+      santelmo_death_42: -5199961126788924031
+      santelmo_death_43: -7567171084239578956
+      santelmo_death_44: 6832447721828408944
+      santelmo_death_45: 4603123272903923211
+      santelmo_death_46: 1951091668973898218
+      santelmo_death_47: -2855397839371442021
+      santelmo_death_48: -6416278541374475587
+      santelmo_death_49: -8495975857740257754
+      santelmo_death_5: 8471861217097884093
+      santelmo_death_50: -907510223821398674
+      santelmo_death_51: 4127285880414559471
+      santelmo_death_52: -8881758120576482908
+      santelmo_death_6: 8082479925685206529
+      santelmo_death_7: -750206454643012902
+      santelmo_death_8: 4166158214171183465
+      santelmo_death_9: 7051655321175620119
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
