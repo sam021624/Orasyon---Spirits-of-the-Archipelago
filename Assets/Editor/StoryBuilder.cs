@@ -203,15 +203,14 @@ namespace Orasyon.EditorTools
             });
         }
 
-        // Fill in the names; the roles come from the game design document.
+        // The roles come from the game design document; edit the names here or in the Epilogue asset.
         private const string Credits =
             "<size=120%><b>ORASYON</b></size>\n<size=70%>Spirits of the Archipelago</size>\n\n\n" +
-            "<color=#E8B04A>Game Programmer</color>\nYour name here\n\n" +
-            "<color=#E8B04A>Game Designer / Project Manager</color>\nYour name here\n\n" +
-            "<color=#E8B04A>2D Artist</color>\nYour name here\n\n" +
-            "<color=#E8B04A>Audio / QA Support</color>\nYour name here\n\n\n" +
+            "<color=#E8B04A>Game Programmer</color>\nBracamonte, Samuel\n\n" +
+            "<color=#E8B04A>Assets / Designs</color>\nMercurio, Franck\nCrisostomo, Julian Edward\n\n" +
+            "<color=#E8B04A>QA</color>\nJimenez, Justine\nVentenilla, Runa Mae\n\n\n" +
             "<color=#E8B04A>Inspired by</color>\nBookworm Adventures\nThe folklore of the Philippine archipelago\n\n" +
-            "<color=#E8B04A>Word list</color>\nENABLE word list (public domain)\n\n" +
+            "<color=#E8B04A>Word lists</color>\nENABLE word list (public domain)\nOffensive-word filter: LDNOOBW (CC BY 4.0)\n\n" +
             "<color=#E8B04A>Art and sound licenses</color>\nSee the project documentation\n\n\n" +
             "<size=120%><b>Thank you for playing!</b></size>\n\n\n\n\n";
 

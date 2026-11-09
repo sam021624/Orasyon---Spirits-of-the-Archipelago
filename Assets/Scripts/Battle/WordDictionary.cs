@@ -34,10 +34,11 @@ namespace Orasyon.Battle
             AddFrom(list, Resources.Load<TextAsset>("Words/custom_words"));
             list.Sort(StringComparer.Ordinal);
 
-            // Remove duplicates (custom words may also be in the main list)
+            // Remove duplicates (custom words may also be in the main list) and offensive words
+            var blocked = Blocked;
             var unique = new List<string>(list.Count);
             for (int i = 0; i < list.Count; i++)
-                if (i == 0 || list[i] != list[i - 1]) unique.Add(list[i]);
+                if ((i == 0 || list[i] != list[i - 1]) && !blocked.Contains(list[i])) unique.Add(list[i]);
 
             words = unique.ToArray();
             if (words.Length == 0)
@@ -45,6 +46,22 @@ namespace Orasyon.Battle
         }
 
         private static HashSet<string> common;
+        private static HashSet<string> blockedSet;
+
+        /// <summary>Offensive words that are never playable (Resources/Words/blocked_words.txt, see blocked_words_SOURCE.txt).</summary>
+        public static HashSet<string> Blocked
+        {
+            get
+            {
+                if (blockedSet == null)
+                {
+                    var list = new List<string>();
+                    AddFrom(list, Resources.Load<TextAsset>("Words/blocked_words"));
+                    blockedSet = new HashSet<string>(list);
+                }
+                return blockedSet;
+            }
+        }
 
         /// <summary>
         /// True for everyday words (Resources/Words/common_words.txt, ~8,000 of the most used English words).
@@ -69,6 +86,7 @@ namespace Orasyon.Battle
             AddFrom(list, Resources.Load<TextAsset>("Words/common_words"));
             AddFrom(list, Resources.Load<TextAsset>("Words/custom_words"));   // folklore words count as known
             common = new HashSet<string>(list);
+            common.ExceptWith(Blocked);
         }
 
         /// <summary>True if <paramref name="word"/> is a valid word of at least MinLength letters.</summary>

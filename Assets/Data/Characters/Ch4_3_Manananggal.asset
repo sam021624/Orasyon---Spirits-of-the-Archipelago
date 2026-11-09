@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
   displayName: Manananggal
   isBoss: 1
-  maxHP: 60
+  maxHP: 140
   attackDamage: 4
   attackName: Claw Swipe
   attacks:
@@ -23,6 +23,7 @@ MonoBehaviour:
     maxDamage: 4
     critChance: 0.2
     weight: 3
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -35,6 +36,7 @@ MonoBehaviour:
     maxDamage: 2
     critChance: 0
     weight: 2
+    isSignature: 0
     effect: 5
     effectChance: 1
     effectTurns: 2
@@ -47,6 +49,7 @@ MonoBehaviour:
     maxDamage: 2
     critChance: 0
     weight: 1
+    isSignature: 0
     effect: 3
     effectChance: 0.4
     effectTurns: 2
@@ -59,6 +62,7 @@ MonoBehaviour:
     maxDamage: 0
     critChance: 0
     weight: 1
+    isSignature: 0
     effect: 4
     effectChance: 1
     effectTurns: 2
@@ -66,6 +70,20 @@ MonoBehaviour:
     vfx: {fileID: 11400000, guid: 78d093769d7cc584091ac4ac8a37e07b, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
+  - name: Midnight Feast
+    minDamage: 3
+    maxDamage: 4
+    critChance: 0
+    weight: 0
+    isSignature: 1
+    effect: 5
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 100
+    vfx: {fileID: 11400000, guid: 78d093769d7cc584091ac4ac8a37e07b, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  signatureEvery: 3
   description: By day she is a quiet neighbor. By night her body splits in two, and
     her wings carry her over the rooftops in search of a victim. Salt on the lower
     half keeps her from ever becoming whole again.

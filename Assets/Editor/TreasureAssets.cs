@@ -30,8 +30,8 @@ namespace Orasyon.EditorTools
                  IconFolder + "/bow.png", Bow);
 
             Make("KampanaNgGubat", "Kampana ng Gubat", 2, bonusHearts: 0, damagePercent: 0,
-                 "A small brass bell the Tiyanak could never silence. Its chime carries Lola's whispers through the trees: two extra hints in every chapter.",
-                 IconFolder + "/bell.png", Bell, hints: 2);
+                 "A small brass bell the Tiyanak could never silence. Its chime carries Lola's whispers through the trees: one extra hint in every chapter.",
+                 IconFolder + "/bell.png", Bell, hints: 1);
 
             Make("AgimatNgBubong", "Agimat ng Bubong", 3, bonusHearts: 0, damagePercent: 0,
                  "A charm woven from roof thatch and salt. It was meant to keep the Manananggal away from sleeping families. You start every chapter with a Warding Potion.",

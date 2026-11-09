@@ -24,6 +24,13 @@ namespace Orasyon.Battle
         /// <summary>Set by BattleManager so the hint matches real damage (weakness, weaken, guard, potions).</summary>
         public static System.Func<string, int> DamageEstimator;
 
+        /// <summary>Optional: a full breakdown line ("11 damage (base 7 x1.5 weakness)") that replaces the plain number.</summary>
+        public static System.Func<string, string> DamageDescriber;
+
+        [SerializeField] private Color rejectTile = new Color(0.95f, 0.45f, 0.40f);
+        private Coroutine rejectRoutine;
+        private bool      rejecting;
+
         private void Start()
         {
             if (letterTemplate != null) letterTemplate.SetActive(false);
@@ -34,6 +41,31 @@ namespace Orasyon.Battle
         private void OnDestroy()
         {
             if (grid != null) grid.OnSelectionChanged -= Rebuild;
+        }
+
+        /// <summary>The attempted word is not valid: tiles flash red and the row shakes briefly. The selection stays.</summary>
+        public void Reject()
+        {
+            if (rejectRoutine != null) StopCoroutine(rejectRoutine);
+            rejectRoutine = StartCoroutine(RejectRoutine());
+        }
+
+        private System.Collections.IEnumerator RejectRoutine()
+        {
+            rejecting = true;
+            Rebuild();
+            Vector2 home = row.anchoredPosition;
+            const float duration = 0.25f;
+            for (float t = 0f; t < duration; t += Time.unscaledDeltaTime)
+            {
+                float fade = 1f - t / duration;
+                row.anchoredPosition = home + new Vector2(Mathf.Sin(t * 90f) * 14f * fade, 0f);
+                yield return null;
+            }
+            row.anchoredPosition = home;
+            rejecting = false;
+            rejectRoutine = null;
+            Rebuild();
         }
 
         private void Rebuild()
@@ -52,7 +84,7 @@ namespace Orasyon.Battle
                 pool[i].SetActive(on);
                 if (!on) continue;
                 pool[i].GetComponentInChildren<TextMeshProUGUI>().text = word[i].ToString();
-                pool[i].GetComponent<Image>().color = valid ? validTile : normalTile;
+                pool[i].GetComponent<Image>().color = rejecting ? rejectTile : valid ? validTile : normalTile;
             }
 
             if (hintLabel != null)
@@ -62,10 +94,14 @@ namespace Orasyon.Battle
                 else if (!valid)                                   hintLabel.text = "Not a word in your book";
                 else
                 {
-                    int dmg = DamageEstimator != null ? DamageEstimator(word)
-                                                      : Mathf.RoundToInt(LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier);
                     string tier = word.Length >= 7 ? "  <color=#FFD700>Brilliant!</color>" : word.Length >= 5 ? "  <color=#9CFF7A>Spell!</color>" : "";
-                    hintLabel.text = $"{dmg} damage{tier}";
+                    if (DamageDescriber != null) hintLabel.text = DamageDescriber(word) + tier;
+                    else
+                    {
+                        int dmg = DamageEstimator != null ? DamageEstimator(word)
+                                                          : Mathf.RoundToInt(LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier);
+                        hintLabel.text = $"{dmg} damage{tier}";
+                    }
                 }
             }
         }

@@ -23,6 +23,7 @@ MonoBehaviour:
     maxDamage: 4
     critChance: 0.15
     weight: 3
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -35,6 +36,7 @@ MonoBehaviour:
     maxDamage: 2
     critChance: 0
     weight: 2
+    isSignature: 0
     effect: 5
     effectChance: 1
     effectTurns: 2
@@ -42,6 +44,7 @@ MonoBehaviour:
     vfx: {fileID: 11400000, guid: a9ba7f3e515caf74ebb983a2f1c65ff6, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
+  signatureEvery: 0
   description: A restless dead man who climbs out of his grave to bite the living.
     He moves slowly, but he never tires, and he never lets go.
   themeWords:

@@ -259,11 +259,21 @@ namespace Orasyon.Battle
         /// Picks a word to suggest from the tiles on the board: the longest common word if there is one,
         /// otherwise the longest valid word. Returns null if no word can be made.
         /// </summary>
-        public string FindHintWord()
+        public string FindHintWord(int maxLength = 5)
         {
             var words = BoardGenerator.FindWords(RemainingLetters);
             if (words.Count == 0) return null;
-            return words.FirstOrDefault(WordDictionary.IsCommon) ?? words[0];   // list is longest-first
+
+            // Hints are a nudge, not a free big attack: everyday words of at most maxLength letters,
+            // a random one among the longest of those so the same board does not always give the same hint.
+            var common = words.Where(w => w.Length <= maxLength && WordDictionary.IsCommon(w)).ToList();
+            if (common.Count > 0)
+            {
+                int best = common.Max(w => w.Length);
+                var top = common.Where(w => w.Length == best).ToList();
+                return top[rng.Next(top.Count)];
+            }
+            return words.Where(w => w.Length <= maxLength).OrderByDescending(w => w.Length).FirstOrDefault();
         }
 
         /// <summary>Clears the current selection and lights up tiles that spell <paramref name="word"/>.</summary>

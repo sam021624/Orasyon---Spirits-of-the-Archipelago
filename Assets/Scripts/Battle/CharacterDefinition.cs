@@ -22,6 +22,8 @@ namespace Orasyon.Battle
 
         [Header("Attacks (enemies pick one at random each turn, by weight)")]
         public EnemyAttack[] attacks;
+        [Tooltip("Bosses: every Nth enemy turn is the signature move (an attack flagged 'Is Signature'). 0 = never.")]
+        public int signatureEvery = 3;
 
         /// <summary>The attack list, or a single plain attack built from attackName / attackDamage.</summary>
         public EnemyAttack[] GetAttacks()

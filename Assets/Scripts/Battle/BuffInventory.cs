@@ -69,13 +69,19 @@ namespace Orasyon.Battle
             Refresh();
         }
 
-        /// <summary>Awards the best buff this word length qualifies for. Returns null if none.</summary>
-        public BuffSlot AwardForWord(int wordLength)
+        /// <summary>
+        /// Awards the best buff this word length qualifies for. Returns null if none.
+        /// With <paramref name="powerAllowed"/> off, the power potion is skipped and the next best one is given.
+        /// </summary>
+        public BuffSlot AwardForWord(int wordLength, bool powerAllowed = true)
         {
             BuffSlot best = null;
             foreach (var slot in slots)
+            {
+                if (!powerAllowed && slot.type == BuffType.PowerPotion) continue;
                 if (wordLength >= slot.minWordLength && (best == null || slot.minWordLength > best.minWordLength))
                     best = slot;
+            }
             if (best == null) return null;
 
             counts[best.type] = Mathf.Min(maxStack, Count(best.type) + 1);

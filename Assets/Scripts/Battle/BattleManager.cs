@@ -71,10 +71,21 @@ namespace Orasyon.Battle
         [SerializeField] private Button scrambleButton;
         [SerializeField] private Button menuButton;
         [SerializeField] private Button hintButton;
-        [Tooltip("Hints available per chapter. Each one lights up a word on the board.")]
-        [SerializeField] private int    hintsPerChapter = 3;
+        [Tooltip("Hints available per chapter. Each one lights up a short everyday word on the board.")]
+        [SerializeField] private int    hintsPerChapter = 2;
+        [Tooltip("Hints never suggest words longer than this, so they cannot hand out a big attack for free.")]
+        [SerializeField] private int    maxHintLength = 5;
+        [Tooltip("Scrambles allowed against each enemy.")]
+        [SerializeField] private int    scramblesPerEnemy = 3;
+
+        [Header("Turn feedback")]
+        [SerializeField] private TurnIndicator turnIndicator;
+        [SerializeField] private EnemyIntentUI intentUI;
+
 
         [Header("Potions")]
+        [Tooltip("Power potions (double damage) a single enemy fight can award, so bosses cannot be skipped by stacking them.")]
+        [SerializeField] private int maxPowerPotionsPerEnemy = 2;
         [SerializeField] private BuffInventory buffs;
         [SerializeField] private int           healingPotionAmount = 10;   // one heart
 
@@ -126,6 +137,14 @@ namespace Orasyon.Battle
         private bool actionsLocked;
 
         private int  hintsLeft;
+        private int  scramblesLeft;
+        private int  powerPotionsAwarded;
+        private WordPreview wordPreview;
+
+        // Enemy intent (the next move is chosen at the end of the enemy's turn and shown above its head)
+        private EnemyAttack nextAttack;
+        private EnemyAttack previousAttack, olderAttack;
+        private int         enemyTurnIndex;
 
         // Status effects
         private int  poisonTurns, poisonDamage;    // on the player
@@ -183,6 +202,8 @@ namespace Orasyon.Battle
             letterGrid.OnSelectionChanged += RefreshInput;
 
             WordPreview.DamageEstimator = PreviewDamage;
+            WordPreview.DamageDescriber = DescribeDamage;
+            wordPreview = FindAnyObjectByType<WordPreview>();
             if (shakeTarget != null) shakeBase = shakeTarget.anchoredPosition;
 
             resultPanel.SetActive(false);
@@ -208,6 +229,8 @@ namespace Orasyon.Battle
             yield return WalkTo(playerAnimator, player, playerHomeX);
             busy = false;
             RefreshInput();
+            ShowIntent();
+            if (turnIndicator != null) turnIndicator.ShowPlayerTurn();
         }
 
         // ── Player actions ───────────────────────────────────────────────────
@@ -215,23 +238,36 @@ namespace Orasyon.Battle
 
         private void OnAttackPressed()
         {
-            if (!CanAct || !letterGrid.CurrentWordIsValid) return;
+            if (!CanAct) return;
+            if (!letterGrid.CurrentWordIsValid) { RejectWord(); return; }
             string word = letterGrid.ConsumeSelection();
             letterGrid.ClearHighlights();   // any hint glow goes away once you attack
             StartCoroutine(AttackRoutine(word));
         }
 
-        /// <summary>Lights up the tiles of a word the player can make (common words preferred).</summary>
+        /// <summary>
+        /// A word that is not in the book: the preview tiles flash red and shake, the selection stays,
+        /// and the turn is not used.
+        /// </summary>
+        private void RejectWord()
+        {
+            string word = letterGrid.CurrentWord;
+            if (word.Length == 0) return;
+            string msg = word.Length < WordDictionary.MinLength ? "Need 3+ letters" : "Not a word";
+            ShowFeedback($"<color=#FF8A7A>{msg}</color>", false);
+            if (wordPreview != null) wordPreview.Reject();
+        }
+
+        /// <summary>Lights up the tiles of a short everyday word the player can make.</summary>
         private void OnHintPressed()
         {
             if (!CanAct || hintsLeft <= 0) return;
 
-            string word = letterGrid.FindHintWord();
+            string word = letterGrid.FindHintWord(maxHintLength);
             if (word == null)
             {
-                // Nothing can be made from what's left: refill the gaps instead (doesn't use a hint)
-                letterGrid.RefillEmpty(minWordsOnBoard);
-                ShowFeedback("No words left. New letters fill the empty spaces.", true);
+                // Costs nothing: the hint is only spent when a word is shown
+                ShowFeedback("Lola can't find a short word here. Try Scramble.", true);
                 return;
             }
 
@@ -253,8 +289,19 @@ namespace Orasyon.Battle
         private void OnScramblePressed()
         {
             if (!CanAct) return;
+            if (scramblesLeft <= 0) { ShowFeedback("No scrambles left against this foe.", false); return; }
+            scramblesLeft--;
+            RefreshScrambleLabel();
             letterGrid.Scramble();
-            ShowFeedback("You shuffle the remaining letters.", true);
+            ShowFeedback($"You shuffle the letters.  <color=#9FE2BF>({scramblesLeft} scramble{(scramblesLeft == 1 ? "" : "s")} left)</color>", true);
+            RefreshInput();
+        }
+
+        private void RefreshScrambleLabel()
+        {
+            if (scrambleButton == null) return;
+            var label = scrambleButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null) label.text = $"SCRAMBLE ({scramblesLeft})";
         }
 
         private void UseBuff(BuffType type)
@@ -333,7 +380,9 @@ namespace Orasyon.Battle
                 if (empowered) msg += "  <color=#7FB2FF>Power x2!</color>";
                 if (weakened)  msg += "  <color=#C9A2FF>(weakened)</color>";
                 if (guarded)   msg += "  <color=#8CC8FF>(guarded)</color>";
-                var reward = buffs.AwardForWord(word.Length + PlayerProgress.PotionLengthBonus);   // Mata ng Buwan
+                bool powerAllowed = powerPotionsAwarded < maxPowerPotionsPerEnemy;
+                var reward = buffs.AwardForWord(word.Length + PlayerProgress.PotionLengthBonus, powerAllowed);   // Mata ng Buwan
+                if (reward != null && reward.type == BuffType.PowerPotion) powerPotionsAwarded++;
                 if (reward != null) msg += $"\n<color=#9FE2BF>You found a {reward.displayName}!</color>";
                 ShowFeedback(msg, true);
             }
@@ -388,6 +437,8 @@ namespace Orasyon.Battle
                 {
                     battleOver = true;
                     RefreshInput();
+                    HideIntent();
+                    if (turnIndicator != null) turnIndicator.Hide();
                     if (bossReward != null)
                     {
                         newTreasure = PlayerProgress.Grant(bossReward);
@@ -407,6 +458,7 @@ namespace Orasyon.Battle
                 letterGrid.RefillEmpty(Mathf.Min(minWordsOnBoard, 4));
 
             yield return new WaitForSeconds(0.25f);
+            if (turnIndicator != null) turnIndicator.ShowEnemyTurn();
             yield return EnemyPhase(enemy);
             if (CheckPlayerDefeat()) yield break;
             FinishTurn();
@@ -450,7 +502,20 @@ namespace Orasyon.Battle
 
         private IEnumerator EnemyTurnRoutine(CharacterDefinition enemy)
         {
-            var atk = PickAttack(enemy);
+            var atk = nextAttack ?? PickNextAttack(enemy);
+            HideIntent();
+            yield return EnemyActRoutine(enemy, atk);
+
+            // Choose and show the next move at the END of this turn, so the player can plan for it
+            olderAttack = previousAttack;
+            previousAttack = atk;
+            enemyTurnIndex++;
+            nextAttack = PickNextAttack(enemy);
+            if (playerHP > 0 && enemyHP > 0) ShowIntent();
+        }
+
+        private IEnumerator EnemyActRoutine(CharacterDefinition enemy, EnemyAttack atk)
+        {
             float strike = enemyAnimator.Duration(enemy.attack);
 
             // Self-buff (guard, heal): performed in place
@@ -525,20 +590,55 @@ namespace Orasyon.Battle
             yield return WalkTo(enemyAnimator, enemy, home);
         }
 
-        private EnemyAttack PickAttack(CharacterDefinition enemy)
+        /// <summary>
+        /// Chooses the enemy's next move. Bosses use their signature move on a fixed cycle; every other turn is
+        /// weighted random, never the same move three times in a row and never a stun right after a stun.
+        /// </summary>
+        private EnemyAttack PickNextAttack(CharacterDefinition enemy)
         {
             var list = enemy.GetAttacks();
+            if (enemy.signatureEvery > 0 && (enemyTurnIndex + 1) % enemy.signatureEvery == 0)
+                foreach (var a in list)
+                    if (a.isSignature) return a;
+
+            for (int tries = 0; tries < 12; tries++)
+            {
+                var a = PickAttack(list);
+                if (a == previousAttack && a == olderAttack) continue;
+                if (a.effect == AttackEffect.Stun && previousAttack != null && previousAttack.effect == AttackEffect.Stun) continue;
+                return a;
+            }
+            return PickAttack(list);
+        }
+
+        /// <summary>Weighted random pick; signature moves are only used on the boss cycle.</summary>
+        private EnemyAttack PickAttack(EnemyAttack[] list)
+        {
             float total = 0f;
-            foreach (var a in list) total += Mathf.Max(0f, a.weight);
+            foreach (var a in list) if (!a.isSignature) total += Mathf.Max(0f, a.weight);
             if (total <= 0f) return list[0];
 
             double roll = rng.NextDouble() * total;
             foreach (var a in list)
             {
+                if (a.isSignature) continue;
                 roll -= Mathf.Max(0f, a.weight);
                 if (roll < 0) return a;
             }
             return list[list.Length - 1];
+        }
+
+        private void ShowIntent()
+        {
+            var enemy = CurrentEnemy;
+            if (enemy == null || nextAttack == null) return;
+            if (intentUI != null) intentUI.Show(nextAttack);
+            if (enemyInfo != null) enemyInfo.Show(enemy, nextAttack);
+        }
+
+        private void HideIntent()
+        {
+            if (intentUI != null) intentUI.Hide();
         }
 
         /// <summary>Applies an attack's status effect and returns the extra feedback line.</summary>
@@ -601,9 +701,24 @@ namespace Orasyon.Battle
 
         private int PreviewDamage(string word) => ComputeDamage(word, out _);
 
+        /// <summary>"11 damage (base 7 x1.5 weakness x1.2 treasures)": teaches the system and helps balancing.</summary>
+        private string DescribeDamage(string word)
+        {
+            int total = ComputeDamage(word, out bool weakness);
+            var parts = new System.Collections.Generic.List<string> { $"base {LetterScoring.Damage(word)}" };
+            float treasures = PlayerProgress.DamageMultiplier;
+            if (treasures > 1f)     parts.Add($"x{treasures:0.##} treasures");
+            if (weakness)           parts.Add("x1.5 weakness");
+            if (damageMultiplier > 1) parts.Add($"x{damageMultiplier} power");
+            if (weakenTurns > 0)    parts.Add($"x{1f - weakenPercent / 100f:0.##} weakened");
+            if (guardTurns > 0)     parts.Add($"x{1f - guardPercent / 100f:0.##} guarded");
+            return $"{total} damage  <size=70%><color=#D8CCA6>({string.Join("  ", parts)})</color></size>";
+        }
+
         private void OnDestroy()
         {
             if (WordPreview.DamageEstimator == (Func<string, int>)PreviewDamage) WordPreview.DamageEstimator = null;
+            if (WordPreview.DamageDescriber == (Func<string, string>)DescribeDamage) WordPreview.DamageDescriber = null;
         }
 
         // ── Visual effects (spells, sparks, shake) ───────────────────────────
@@ -697,6 +812,7 @@ namespace Orasyon.Battle
         private IEnumerator TravelRoutine()
         {
             ClearStatuses();   // ailments and guards fade between fights
+            if (turnIndicator != null) turnIndicator.Hide();
             LoadEnemy(enemyIndex);
             var next = CurrentEnemy;
             SetX(EnemyRect, next, enemyHomeX + travelDistance);
@@ -719,6 +835,7 @@ namespace Orasyon.Battle
                 ? $"<color=#FF6B6B>BOSS!</color>  The {next.displayName} blocks your path!"
                 : $"A {next.displayName} appears!", next.isBoss ? false : true);
             NewBoard();
+            ShowIntent();
             yield return new WaitForSeconds(0.5f);
         }
 
@@ -727,6 +844,8 @@ namespace Orasyon.Battle
             if (playerHP > 0) return false;
             battleOver = true;
             RefreshInput();
+            HideIntent();
+            if (turnIndicator != null) turnIndicator.Hide();
             StartCoroutine(PlayerDefeatRoutine());
             return true;
         }
@@ -795,6 +914,7 @@ namespace Orasyon.Battle
             EnsurePlayableBoard();
             busy = false;
             RefreshInput();
+            if (turnIndicator != null) turnIndicator.ShowPlayerTurn();
             OnTurnFinished?.Invoke();
         }
 
@@ -868,6 +988,13 @@ namespace Orasyon.Battle
             if (enemy == null) return;
 
             enemyHP = enemy.maxHP;
+            scramblesLeft = scramblesPerEnemy;
+            powerPotionsAwarded = 0;
+            enemyTurnIndex = 0;
+            previousAttack = olderAttack = null;
+            nextAttack = PickNextAttack(enemy);
+            RefreshScrambleLabel();
+            HideIntent();
             if (enemyNameLabel != null)
                 enemyNameLabel.text = enemy.isBoss ? $"<color=#FF6B6B>BOSS</color>  {enemy.displayName}" : enemy.displayName;
             if (encounterLabel != null)
@@ -933,8 +1060,8 @@ namespace Orasyon.Battle
                 gridGroup.interactable = grid;
                 gridGroup.blocksRaycasts = grid;
             }
-            if (attackButton != null)   attackButton.interactable   = canAct && !actionsLocked && letterGrid.CurrentWordIsValid;
-            if (scrambleButton != null) scrambleButton.interactable = canAct && !actionsLocked;
+            if (attackButton != null)   attackButton.interactable   = canAct && !actionsLocked && letterGrid.CurrentWord.Length > 0;
+            if (scrambleButton != null) scrambleButton.interactable = canAct && !actionsLocked && scramblesLeft > 0;
             if (clearButton != null)    clearButton.interactable    = canAct && !gridLocked;
             if (hintButton != null)     hintButton.interactable     = canAct && !actionsLocked && hintsLeft > 0;
             if (buffs != null)          buffs.Interactable          = canAct && !actionsLocked;
@@ -945,6 +1072,12 @@ namespace Orasyon.Battle
             if (playerHearts != null) playerHearts.Set(playerHP, playerMaxHP);
             var enemy = CurrentEnemy;
             if (enemyHearts != null && enemy != null) enemyHearts.Set(enemyHP, enemy.maxHP);
+            // Numeric HP sits on the name line, e.g. "Albularyo  40/40"
+            if (playerNameLabel != null && player != null)
+                playerNameLabel.text = $"{player.displayName}  <size=70%><color=#E8E0C0>{playerHP}/{playerMaxHP}</color></size>";
+            if (enemyNameLabel != null && enemy != null)
+                enemyNameLabel.text = (enemy.isBoss ? "<color=#FF6B6B>BOSS</color>  " : "") + enemy.displayName +
+                                      $"  <size=70%><color=#E8E0C0>{enemyHP}/{enemy.maxHP}</color></size>";
         }
 
         private void RefreshStatus()

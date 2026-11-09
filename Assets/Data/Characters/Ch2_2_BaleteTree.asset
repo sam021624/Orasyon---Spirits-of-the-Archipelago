@@ -23,6 +23,7 @@ MonoBehaviour:
     maxDamage: 3
     critChance: 0.1
     weight: 3
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -35,6 +36,7 @@ MonoBehaviour:
     maxDamage: 1
     critChance: 0
     weight: 1
+    isSignature: 0
     effect: 2
     effectChance: 0.5
     effectTurns: 2
@@ -42,6 +44,7 @@ MonoBehaviour:
     vfx: {fileID: 11400000, guid: bf67eb5ef2d150d49b202d79a135b74e, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
+  signatureEvery: 0
   description: Elders warn children never to point at a balete tree. Its tangled
     roots remember every insult, and sometimes they pull themselves out of the ground
     to settle the score.

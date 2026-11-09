@@ -37,14 +37,14 @@ Order of work: art, VFX and the refill fix first, then all five stages playable 
   - [x] 2.6 Checkpoint: a full run from the main menu to the Bakunawa and the credits.
     - _Requirements: 3.1, 3.2_
 
-- [ ] 3. Phase A: core feel (IMPLEMENTATION.md section 11)
-  - [ ] 3.1 Scramble limit 3 per enemy with a counter on the button.
-  - [ ] 3.2 Invalid-word feedback (red shake, no turn consumed).
-  - [ ] 3.3 `EnsureViableBoard` extras and blocklist loading.
-  - [ ] 3.4 `EnemyAttack` new fields, `PickNextAttack`, `EnemyIntentUI`, signature cycle for bosses.
+- [x] 3. Phase A: core feel (IMPLEMENTATION.md section 11)
+  - [x] 3.1 Scramble limit 3 per enemy with a counter on the button. Hints nerfed (your request): 2 per chapter, never longer than 5 letters, a random everyday word among the longest allowed; Kampana ng Gubat now gives +1 hint; power potions capped at 2 per fight.
+  - [x] 3.2 Invalid-word feedback (red shake, no turn consumed).
+  - [x] 3.3 Board quality was done in 1.8; the offensive-word blocklist is in (`blocked_words.txt`, 145 words from LDNOOBW, CC BY 4.0, credited in the credits).
+  - [x] 3.4 Enemy intent above the enemy's head and marked in the info panel, boss signature moves on every 3rd enemy turn (never the same move 3x in a row, no stun right after a stun). The multi-hit and grid-effect fields wait for task 5.
     - _Requirements: 4.3_
-  - [ ] 3.5 Turn indicator and input lock during the enemy turn; updated damage formula with hover breakdown.
-  - [ ] 3.6 Checkpoint: all five stages playable with telegraphs.
+  - [x] 3.5 Turn indicator, invalid-word reject feedback (no turn used), numeric HP on the name lines, and a damage breakdown in the word hint line (shown whenever a valid word is selected rather than only on hover).
+  - [x] 3.6 Checkpoint: all five stages playable with telegraphs. Boss HP raised: King 80, Kapre 100, Tiyanak 120, Manananggal 140, Bakunawa 220 (enemy hearts are capped at 12 on screen).
 
 - [ ] 4. Phase B: tiles
   - [ ] 4.1 `TileKind`, extended `LetterTileData`, overlay child on `TilePrefab`.

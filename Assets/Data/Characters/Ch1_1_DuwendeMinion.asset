@@ -23,6 +23,7 @@ MonoBehaviour:
     maxDamage: 2
     critChance: 0.1
     weight: 3
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -35,6 +36,7 @@ MonoBehaviour:
     maxDamage: 1
     critChance: 0
     weight: 1
+    isSignature: 0
     effect: 3
     effectChance: 0.6
     effectTurns: 2
@@ -42,6 +44,7 @@ MonoBehaviour:
     vfx: {fileID: 11400000, guid: 43c42ddb2833ca84eb99970174a7eed8, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
+  signatureEvery: 0
   description: A loyal little servant of the Duwende King, never far from the mound.
     He is mostly bark and very little bite, and he keeps dropping his club.
   themeWords:

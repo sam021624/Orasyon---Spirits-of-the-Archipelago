@@ -199,6 +199,36 @@ namespace Orasyon.EditorTools
             popup.outlineColor = new Color32(40, 20, 10, 255);
             popup.gameObject.SetActive(false);   // template: copies are made for each popup
 
+            // Enemy intent: the next move floats above the enemy's head
+            var intentBg = Panel("EnemyIntent", characters, new Color(0.08f, 0.05f, 0.04f, 0.88f), roundedSprite);
+            intentBg.raycastTarget = false;
+            Anchor(intentBg.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(560, 300), new Vector2(430, 46));
+            AddOutline(intentBg.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.7f), 1);
+            var intentLabel = Text("Label", intentBg.transform, "", 22, Cream, TextAlignmentOptions.Center, FontStyles.Normal);
+            Stretch(intentLabel.rectTransform);
+            intentBg.gameObject.AddComponent<CanvasGroup>();
+            var intentUi = intentBg.gameObject.AddComponent<EnemyIntentUI>();
+            var intentSo = new SerializedObject(intentUi);
+            intentSo.FindProperty("target").objectReferenceValue = enemyAnim.transform;
+            intentSo.FindProperty("background").objectReferenceValue = intentBg;
+            intentSo.FindProperty("label").objectReferenceValue = intentLabel;
+            intentSo.ApplyModifiedPropertiesWithoutUndo();
+
+            // Turn banner (bottom centre of the stage)
+            var turnBg = Panel("TurnBanner", stage, new Color(0.20f, 0.46f, 0.22f, 0.92f), roundedSprite);
+            turnBg.raycastTarget = false;
+            Anchor(turnBg.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 14), new Vector2(300, 46));
+            AddOutline(turnBg.gameObject, new Color(0.10f, 0.06f, 0.03f, 0.9f), 2);
+            var turnLabel = Text("Label", turnBg.transform, "YOUR TURN", 26, Cream, TextAlignmentOptions.Center, FontStyles.Bold);
+            Stretch(turnLabel.rectTransform);
+            turnLabel.characterSpacing = 6;
+            turnBg.gameObject.AddComponent<CanvasGroup>();
+            var turnUi = turnBg.gameObject.AddComponent<TurnIndicator>();
+            var turnSo = new SerializedObject(turnUi);
+            turnSo.FindProperty("background").objectReferenceValue = turnBg;
+            turnSo.FindProperty("label").objectReferenceValue = turnLabel;
+            turnSo.ApplyModifiedPropertiesWithoutUndo();
+
             // Word preview (current word as tiles), hint, feedback
             var previewRow = Node("WordPreview", stage);
             Anchor(previewRow, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -100), new Vector2(1000, 80));
@@ -239,6 +269,7 @@ namespace Orasyon.EditorTools
             Anchor(playerName.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -6), new Vector2(560, 40));
             var playerHearts = Hearts("PlayerHearts", topBar.transform, mirrored: false);
             Anchor((RectTransform)playerHearts.transform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -48), new Vector2(440, 32));
+
 
             var enemyName = Text("EnemyName", topBar.transform, bat.displayName, 28, Gold, TextAlignmentOptions.Right, FontStyles.Bold);
             Anchor(enemyName.rectTransform, new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-20, -6), new Vector2(560, 40));
@@ -325,7 +356,7 @@ namespace Orasyon.EditorTools
             Anchor((RectTransform)attack.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-5, 20), new Vector2(290, 64));
             var clear = MakeButton("ClearButton", bottom.transform, "CLEAR", new Color(0.40f, 0.24f, 0.32f), Cream, 22);
             Anchor((RectTransform)clear.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(222, 20), new Vector2(130, 64));
-            var hintBtn = MakeButton("HintButton", bottom.transform, "HINT (3)", new Color(0.20f, 0.42f, 0.55f), Cream, 22);
+            var hintBtn = MakeButton("HintButton", bottom.transform, "HINT (2)", new Color(0.20f, 0.42f, 0.55f), Cream, 22);
             Anchor((RectTransform)hintBtn.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(-232, 20), new Vector2(150, 64));
 
             // Right: enemy info
@@ -453,6 +484,15 @@ namespace Orasyon.EditorTools
             Set(m, "heroBoltVfx",   VfxAssets.Load("hero_bolt"));
             Set(m, "heroKidlatVfx", VfxAssets.Load("hero_kidlat_bolt"));
             Set(m, "healVfx",       VfxAssets.Load("lola_heal"));
+
+            // Turn feedback and balance
+            Set(m, "turnIndicator", turnUi);
+            Set(m, "intentUI", intentUi);
+
+            m.FindProperty("hintsPerChapter").intValue = 2;
+            m.FindProperty("maxHintLength").intValue = 5;
+            m.FindProperty("scramblesPerEnemy").intValue = 3;
+            m.FindProperty("maxPowerPotionsPerEnemy").intValue = 2;
             Set(m, "fxSprite", AssetDatabase.LoadAllAssetsAtPath("Assets/Sprites/UI/soft_glow.png").OfType<Sprite>().FirstOrDefault() ?? circleSprite);
             var enemies = m.FindProperty("enemies");
             enemies.arraySize = foes.Length;
@@ -629,6 +669,7 @@ namespace Orasyon.EditorTools
             var so = new SerializedObject(bar);
             so.FindProperty("heartSprite").objectReferenceValue = AssetDatabase.LoadAllAssetsAtPath(HeartSprite).OfType<Sprite>().FirstOrDefault();
             so.FindProperty("mirrored").boolValue = mirrored;
+            so.FindProperty("maxHeartsShown").intValue = mirrored ? 12 : 0;   // bosses have big HP pools: fewer, bigger hearts
             so.ApplyModifiedPropertiesWithoutUndo();
             return bar;
         }

@@ -23,6 +23,7 @@ MonoBehaviour:
     maxDamage: 2
     critChance: 0
     weight: 3
+    isSignature: 0
     effect: 1
     effectChance: 0.6
     effectTurns: 3
@@ -35,6 +36,7 @@ MonoBehaviour:
     maxDamage: 1
     critChance: 0
     weight: 1
+    isSignature: 0
     effect: 2
     effectChance: 0.5
     effectTurns: 2
@@ -42,6 +44,7 @@ MonoBehaviour:
     vfx: {fileID: 11400000, guid: 5105fd3510ab85d43a00f143c56b159c, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
+  signatureEvery: 0
   description: Glowing mushrooms sprout wherever the little folk dance. Breathe too
     deeply near one and you wake up hours later, wondering where the path went.
   themeWords:

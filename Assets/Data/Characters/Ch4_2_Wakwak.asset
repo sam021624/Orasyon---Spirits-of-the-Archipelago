@@ -23,6 +23,7 @@ MonoBehaviour:
     maxDamage: 4
     critChance: 0.2
     weight: 3
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -35,6 +36,7 @@ MonoBehaviour:
     maxDamage: 3
     critChance: 0
     weight: 2
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -47,6 +49,7 @@ MonoBehaviour:
     maxDamage: 1
     critChance: 0
     weight: 1
+    isSignature: 0
     effect: 2
     effectChance: 0.4
     effectTurns: 2
@@ -59,6 +62,7 @@ MonoBehaviour:
     maxDamage: 3
     critChance: 0
     weight: 1
+    isSignature: 0
     effect: 3
     effectChance: 0.6
     effectTurns: 2
@@ -66,6 +70,7 @@ MonoBehaviour:
     vfx: {fileID: 11400000, guid: ac303ccfa234037478833e1d51ef9322, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 11400000, guid: 254ac52bb9c7d264588122b87feba003, type: 2}
+  signatureEvery: 0
   description: A great black bird whose cry, "wak-wak", echoes over the rooftops
     after midnight. Locals say the louder it calls, the nearer something worse is
     flying.

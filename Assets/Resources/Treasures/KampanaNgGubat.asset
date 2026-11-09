@@ -15,11 +15,11 @@ MonoBehaviour:
   id: KampanaNgGubat
   displayName: Kampana ng Gubat
   description: 'A small brass bell the Tiyanak could never silence. Its chime carries
-    Lola''s whispers through the trees: two extra hints in every chapter.'
+    Lola''s whispers through the trees: one extra hint in every chapter.'
   icon: {fileID: 21300000, guid: 0596f5ef4aefd894eb95900b9c87139f, type: 3}
   slotIndex: 2
   bonusHearts: 0
   damageBonusPercent: 0
-  bonusHints: 2
+  bonusHints: 1
   startingWardingPotions: 0
   potionLengthBonus: 0

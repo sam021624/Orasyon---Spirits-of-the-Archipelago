@@ -23,6 +23,7 @@ MonoBehaviour:
     maxDamage: 4
     critChance: 0.1
     weight: 3
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -35,6 +36,7 @@ MonoBehaviour:
     maxDamage: 3
     critChance: 0
     weight: 2
+    isSignature: 0
     effect: 1
     effectChance: 0.6
     effectTurns: 2
@@ -42,6 +44,7 @@ MonoBehaviour:
     vfx: {fileID: 11400000, guid: 7f57b0a7215d05f46a9081777d80be0c, type: 2}
     vfxTravels: 1
     hitVfx: {fileID: 11400000, guid: 0bd4d7d3d38ba3648b4c318286b492f2, type: 2}
+  signatureEvery: 0
   description: A bloated giant who lives in the shallows. It drinks a whole pond,
     waits for fish to flop in the mud, then floods the land back over everyone who
     came to eat them.

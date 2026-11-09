@@ -107,6 +107,7 @@ namespace Orasyon.EditorTools
                 def.themeWords = data.weak;
                 def.description = data.description;
                 def.attacks = data.attacks;
+                def.signatureEvery = boss ? 3 : 0;   // bosses: every 3rd enemy turn is the signature move
                 def.attackName = data.attacks[0].name;
                 def.attackDamage = data.attacks[0].maxDamage;
 
@@ -162,9 +163,10 @@ namespace Orasyon.EditorTools
         // ── Moves ────────────────────────────────────────────────────────────
         private static EnemyAttack Atk(string name, int min, int max, float weight = 1f, float crit = 0f,
                                        AttackEffect effect = AttackEffect.None, float chance = 1f, int turns = 2, int power = 1,
-                                       string vfx = null, bool travels = false, string hit = null)
+                                       string vfx = null, bool travels = false, string hit = null, bool signature = false)
             => new EnemyAttack
             {
+                isSignature = signature,
                 name = name, minDamage = min, maxDamage = max, weight = weight, critChance = crit,
                 effect = effect, effectChance = chance, effectTurns = turns, effectPower = power,
                 vfx = vfx != null ? VfxAssets.Load(vfx) : null,
@@ -201,7 +203,7 @@ namespace Orasyon.EditorTools
                     Atk("Sleepy Spores", 1, 1, weight: 1, effect: AttackEffect.Stun, chance: 0.5f, vfx: "mushroom_spores"),
                 } } },
             { "duwende_king", new Creature {
-                displayName = "Duwende King", hp = 50, size = 400f,
+                displayName = "Duwende King", hp = 80, size = 400f,
                 weak = new[] { "MOUND", "GOLD", "KING", "DIRT", "GNOME" },
                 description = "Ruler of the backyard mounds. Walk past his home without a respectful \"tabi tabi po\" " +
                               "and his mischief will follow you for days. Today, he is not in a forgiving mood.",
@@ -210,6 +212,7 @@ namespace Orasyon.EditorTools
                     Atk("Staff Smash",   3, 4, weight: 3, crit: 0.20f, vfx: "minion_bonk"),
                     Atk("Mischief Hex",  1, 2, weight: 2, effect: AttackEffect.Weaken, turns: 2, power: 40, vfx: "king_curse", travels: true),
                     Atk("Mound Shelter", 0, 0, weight: 1, effect: AttackEffect.Guard,  turns: 2, power: 50, vfx: "king_curse"),
+                    Atk("Mound Collapse", 4, 5, weight: 0, effect: AttackEffect.Weaken, turns: 2, power: 50, vfx: "king_curse", signature: true),
                 } } },
 
             // Chapter 2: The Old Balete
@@ -234,7 +237,7 @@ namespace Orasyon.EditorTools
                     Atk("Entangle",  1, 1, weight: 1, effect: AttackEffect.Stun, chance: 0.5f, vfx: "balete_roots"),
                 } } },
             { "kapre", new Creature {
-                displayName = "Kapre", hp = 50, size = 440f,
+                displayName = "Kapre", hp = 100, size = 440f,
                 weak = new[] { "SMOKE", "CIGAR", "GIANT", "BALETE", "ASH" },
                 description = "A towering spirit who sits in the oldest balete, smoking a cigar that never burns out. " +
                               "He is not cruel, only proud, and he has no patience for visitors who forget their manners.",
@@ -244,6 +247,7 @@ namespace Orasyon.EditorTools
                     Atk("Choking Smoke", 2, 2, weight: 2, effect: AttackEffect.Poison, chance: 0.8f, turns: 2, power: 2, vfx: "kapre_smoke"),
                     Atk("Ground Stomp",  2, 3, weight: 1, effect: AttackEffect.Stun, chance: 0.5f),
                     Atk("Long Drag",     0, 0, weight: 1, effect: AttackEffect.Leech, power: 6, vfx: "kapre_smoke"),
+                    Atk("Great Cloud",   3, 4, weight: 0, effect: AttackEffect.Poison, turns: 3, power: 2, vfx: "kapre_smoke", signature: true),
                 } } },
 
             // Chapter 3: The Deep Forest
@@ -268,7 +272,7 @@ namespace Orasyon.EditorTools
                     Atk("Shadow Veil", 1, 1, weight: 2, effect: AttackEffect.Weaken, chance: 0.8f, turns: 2, power: 40, vfx: "sigbin_shadow"),
                 } } },
             { "tiyanak", new Creature {
-                displayName = "Tiyanak", hp = 55, size = 340f,
+                displayName = "Tiyanak", hp = 120, size = 340f,
                 weak = new[] { "LULLABY", "CRADLE", "BABY", "FOREST", "CRY" },
                 description = "It cries like a lost baby to lure travelers off the path. " +
                               "Take it in your arms and the sweet face twists into something sharp-toothed and furious.",
@@ -278,6 +282,7 @@ namespace Orasyon.EditorTools
                     Atk("Fake Smile",  1, 2, weight: 2, effect: AttackEffect.Weaken, turns: 2, power: 40, vfx: "tiyanak_slash"),
                     Atk("Wail",        1, 1, weight: 2, effect: AttackEffect.Stun, chance: 0.5f, vfx: "tiyanak_wail"),
                     Atk("Mimic Cry",   0, 0, weight: 1, effect: AttackEffect.Guard, turns: 2, power: 40, vfx: "tiyanak_wail"),
+                    Atk("Inconsolable Wail", 2, 3, weight: 0, effect: AttackEffect.Stun, chance: 0.8f, vfx: "tiyanak_wail", signature: true),
                 } } },
 
             // Chapter 4: The Village Rooftops
@@ -304,7 +309,7 @@ namespace Orasyon.EditorTools
                     Atk("Feather Storm", 2, 3, weight: 1, effect: AttackEffect.Weaken, chance: 0.6f, turns: 2, power: 30, vfx: "wakwak_feathers", hit: "wakwak_featherhit"),
                 } } },
             { "manananggal", new Creature {
-                displayName = "Manananggal", hp = 60, size = 440f, hover = 40f,
+                displayName = "Manananggal", hp = 140, size = 440f, hover = 40f,
                 weak = new[] { "SALT", "GARLIC", "DAWN", "SUN", "ROOF" },
                 description = "By day she is a quiet neighbor. By night her body splits in two, and her wings carry her over the " +
                               "rooftops in search of a victim. Salt on the lower half keeps her from ever becoming whole again.",
@@ -314,6 +319,7 @@ namespace Orasyon.EditorTools
                     Atk("Blood Drain", 2, 2, weight: 2, effect: AttackEffect.Leech, power: 100, vfx: "manananggal_mist"),
                     Atk("Night Wail",  2, 2, weight: 1, effect: AttackEffect.Weaken, chance: 0.4f, turns: 2, power: 30, vfx: "manananggal_mist"),
                     Atk("Split Apart", 0, 0, weight: 1, effect: AttackEffect.Guard, turns: 2, power: 50, vfx: "manananggal_mist"),
+                    Atk("Midnight Feast", 3, 4, weight: 0, effect: AttackEffect.Leech, power: 100, vfx: "manananggal_mist", signature: true),
                 } } },
 
             // Chapter 5: The Cosmic Ocean
@@ -340,7 +346,7 @@ namespace Orasyon.EditorTools
                     Atk("Shell Guard",  0, 0, weight: 1, effect: AttackEffect.Guard, turns: 2, power: 50, vfx: "siyokoy_shell"),
                 } } },
             { "bakunawa", new Creature {
-                displayName = "Bakunawa", hp = 100, size = 470f,
+                displayName = "Bakunawa", hp = 220, size = 470f,
                 weak = new[] { "MOON", "ECLIPSE", "GONG", "SERPENT", "DRAGON" },
                 description = "The great sea serpent who swallows the moon. Long ago the people banged pots and gongs " +
                               "until it spat the moon back out. Tonight there are no pots, only you and the Book of Orasyon.",
@@ -350,6 +356,7 @@ namespace Orasyon.EditorTools
                     Atk("Moon Beam",    4, 5, weight: 2, vfx: "bakunawa_beam"),
                     Atk("Eclipse",      1, 1, weight: 1, effect: AttackEffect.Stun, chance: 0.5f, vfx: "bakunawa_moon"),
                     Atk("Moon Devour",  0, 0, weight: 1, effect: AttackEffect.Leech, power: 8, vfx: "bakunawa_moon"),
+                    Atk("Total Eclipse", 6, 6, weight: 0, effect: AttackEffect.Stun, chance: 0.4f, vfx: "bakunawa_beam", signature: true),
                 } } },
         };
     }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Orasyon.Battle.CharacterDefinition
   displayName: Bakunawa
   isBoss: 1
-  maxHP: 100
+  maxHP: 220
   attackDamage: 6
   attackName: Dragon Bite
   attacks:
@@ -23,6 +23,7 @@ MonoBehaviour:
     maxDamage: 6
     critChance: 0.2
     weight: 3
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -35,6 +36,7 @@ MonoBehaviour:
     maxDamage: 5
     critChance: 0
     weight: 2
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -47,6 +49,7 @@ MonoBehaviour:
     maxDamage: 1
     critChance: 0
     weight: 1
+    isSignature: 0
     effect: 2
     effectChance: 0.5
     effectTurns: 2
@@ -59,6 +62,7 @@ MonoBehaviour:
     maxDamage: 0
     critChance: 0
     weight: 1
+    isSignature: 0
     effect: 5
     effectChance: 1
     effectTurns: 2
@@ -66,6 +70,20 @@ MonoBehaviour:
     vfx: {fileID: 11400000, guid: ccc78683bc17b4947b1962da35525e47, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
+  - name: Total Eclipse
+    minDamage: 6
+    maxDamage: 6
+    critChance: 0
+    weight: 0
+    isSignature: 1
+    effect: 2
+    effectChance: 0.4
+    effectTurns: 2
+    effectPower: 1
+    vfx: {fileID: 11400000, guid: d733cbd76a513654383b036c156143b6, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  signatureEvery: 3
   description: The great sea serpent who swallows the moon. Long ago the people banged
     pots and gongs until it spat the moon back out. Tonight there are no pots, only
     you and the Book of Orasyon.

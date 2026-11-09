@@ -13,6 +13,8 @@ namespace Orasyon.Battle
         [SerializeField] private Sprite heartSprite;
         [SerializeField] private float  hpPerHeart = 10f;
         [SerializeField] private float  heartSize  = 30f;
+        [Tooltip("0 = one heart per HP step. Otherwise big HP pools (bosses) are shown with at most this many hearts, each worth more.")]
+        [SerializeField] private int    maxHeartsShown;
         [Tooltip("Enemy side: hearts drain from the outer edge inward.")]
         [SerializeField] private bool   mirrored;
         [SerializeField] private Color  fullColor  = Color.white;
@@ -22,13 +24,17 @@ namespace Orasyon.Battle
 
         public void Set(int hp, int maxHp)
         {
-            int count = Mathf.Max(1, Mathf.CeilToInt(maxHp / hpPerHeart));
+            float perHeart = hpPerHeart;
+            if (maxHeartsShown > 0 && Mathf.CeilToInt(maxHp / perHeart) > maxHeartsShown)
+                perHeart = maxHp / (float)maxHeartsShown;   // bosses: fewer, bigger hearts
+
+            int count = Mathf.Max(1, Mathf.CeilToInt(maxHp / perHeart - 0.001f));
             while (fills.Count < count) CreateHeart();
 
             for (int i = 0; i < fills.Count; i++)
             {
                 fills[i].transform.parent.gameObject.SetActive(i < count);
-                fills[i].fillAmount = Mathf.Clamp01((hp - i * hpPerHeart) / hpPerHeart);
+                fills[i].fillAmount = Mathf.Clamp01((hp - i * perHeart) / perHeart);
             }
         }
 

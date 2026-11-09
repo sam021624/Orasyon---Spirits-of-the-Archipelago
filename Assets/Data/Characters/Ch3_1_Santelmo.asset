@@ -23,6 +23,7 @@ MonoBehaviour:
     maxDamage: 3
     critChance: 0.1
     weight: 3
+    isSignature: 0
     effect: 0
     effectChance: 1
     effectTurns: 2
@@ -35,6 +36,7 @@ MonoBehaviour:
     maxDamage: 2
     critChance: 0
     weight: 2
+    isSignature: 0
     effect: 1
     effectChance: 0.6
     effectTurns: 3
@@ -42,6 +44,7 @@ MonoBehaviour:
     vfx: {fileID: 11400000, guid: 68ccfca747fccfc4e9a3664fd0d32e06, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
+  signatureEvery: 0
   description: A drifting ball of cold blue fire that haunts the forest paths. Travelers
     who follow it in the dark are never quite sure where they end up.
   themeWords:

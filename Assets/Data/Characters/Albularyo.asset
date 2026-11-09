@@ -18,6 +18,7 @@ MonoBehaviour:
   attackDamage: 0
   attackName: Strike
   attacks: []
+  signatureEvery: 3
   description: 
   themeWords: []
   spriteSize: 320

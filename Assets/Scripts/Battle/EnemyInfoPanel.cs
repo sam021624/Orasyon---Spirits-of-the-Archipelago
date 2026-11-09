@@ -15,7 +15,7 @@ namespace Orasyon.Battle
         [SerializeField] private TextMeshProUGUI weaknessLabel;
         [SerializeField] private TextMeshProUGUI descriptionLabel;
 
-        public void Show(CharacterDefinition enemy)
+        public void Show(CharacterDefinition enemy, EnemyAttack next = null)
         {
             if (enemy == null) return;
 
@@ -29,7 +29,8 @@ namespace Orasyon.Battle
                 nameLabel.text = enemy.isBoss ? $"<color=#FF6B6B>BOSS</color>  {enemy.displayName}" : enemy.displayName;
 
             if (attackLabel != null)
-                attackLabel.text = string.Join("\n", enemy.GetAttacks().Select(a => "<color=#E8B04A>\u2022</color> " + a.Describe()));
+                attackLabel.text = string.Join("\n", enemy.GetAttacks().Select(a =>
+                    (a == next ? "<color=#FF6B6B><b>></b></color> " : "<color=#E8B04A>\u2022</color> ") + a.Describe()));
 
             if (weaknessLabel != null)
                 weaknessLabel.text = enemy.themeWords != null && enemy.themeWords.Length > 0

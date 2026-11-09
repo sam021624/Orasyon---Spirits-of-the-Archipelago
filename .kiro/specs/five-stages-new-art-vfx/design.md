@@ -134,7 +134,7 @@ Every slot now has its own art, so no enemy is reused. Background packs are `Ter
 
 Stages 3 and 4 are swapped relative to IMPLEMENTATION.md 6.1 / 6.2 (Manananggal rooftops and Tiyanak forest). The rewards, difficulty rows (10.2) and mechanic introductions follow the creature, not the number.
 
-Stats and balance use the 10.2 table by stage number (HP 30/50 in stages 1 and 2, 35/60, 40/60, 45/100 for stages 3 to 5). The Tiyanak, now stage 3, has the 40 to 60 HP of the old stage 4 boss row, bumped down to 55 if playtests show a spike. Manananggal in stage 4 uses 60.
+Boss HP was raised after playtesting: Duwende King 80, Kapre 100, Tiyanak 120, Manananggal 140, Bakunawa 220. Regular enemies keep the 10.2 numbers. Stats and balance otherwise use the 10.2 table by stage number (HP 30/50 in stages 1 and 2, 35/60, 40/60, 45/100 for stages 3 to 5). The Tiyanak, now stage 3, has the 40 to 60 HP of the old stage 4 boss row, bumped down to 55 if playtests show a spike. Manananggal in stage 4 uses 60.
 
 ## 5. Creature mechanics by stage
 

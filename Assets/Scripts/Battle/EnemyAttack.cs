@@ -26,6 +26,8 @@ namespace Orasyon.Battle
 
         [Header("How often it's chosen")]
         [Min(0f)] public float weight = 1f;
+        [Tooltip("Boss signature move: not picked at random, but used on a fixed cycle (every Nth enemy turn, see Character Definition).")]
+        public bool isSignature;
 
         [Header("Status effect")]
         public AttackEffect effect;
@@ -42,6 +44,9 @@ namespace Orasyon.Battle
         public VfxDefinition hitVfx;
 
         public bool IsSelfBuff => maxDamage <= 0;
+
+        /// <summary>"3-4" or "3", or an empty string for self-buffs.</summary>
+        public string DamageRange => IsSelfBuff ? "" : (minDamage == maxDamage ? minDamage.ToString() : $"{minDamage}-{maxDamage}");
 
         public int RollDamage(System.Random rng) => rng.Next(minDamage, Mathf.Max(minDamage, maxDamage) + 1);
 
@@ -61,7 +66,7 @@ namespace Orasyon.Battle
         /// <summary>Short description for the enemy info panel, e.g. "Bite  1-2 dmg  50% poison (1/turn, 2 turns)".</summary>
         public string Describe()
         {
-            string s = $"<b>{name}</b>";
+            string s = (isSignature ? "<color=#FFD700><b>(!)</b></color> " : "") + $"<b>{name}</b>";
             if (!IsSelfBuff)
                 s += $"  <color=#E8B04A>{(minDamage == maxDamage ? minDamage.ToString() : $"{minDamage}-{maxDamage}")} dmg</color>";
             if (critChance > 0f)
