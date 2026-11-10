@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 0.6
     effectTurns: 3
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 5105fd3510ab85d43a00f143c56b159c, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -41,10 +45,15 @@ MonoBehaviour:
     effectChance: 0.5
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 5105fd3510ab85d43a00f143c56b159c, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
   signatureEvery: 0
+  mechanic: 0
   description: Glowing mushrooms sprout wherever the little folk dance. Breathe too
     deeply near one and you wake up hours later, wondering where the path went.
   themeWords:

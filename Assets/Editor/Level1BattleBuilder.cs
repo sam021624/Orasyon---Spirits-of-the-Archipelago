@@ -184,6 +184,11 @@ namespace Orasyon.EditorTools
 
             var parallax = BuildBackground(stage, spec.backgroundPack);
 
+            // Darkens the background as the Bakunawa's eclipse grows (invisible in every other fight)
+            var veil = Panel("EclipseVeil", stage, new Color(0.02f, 0.01f, 0.06f, 0f));
+            Stretch(veil.rectTransform);
+            veil.raycastTarget = false;
+
             var characters = Node("Characters", stage);
             Stretch(characters);
 
@@ -264,7 +269,7 @@ namespace Orasyon.EditorTools
             var status = Text("PlayerStatus", stage, "", 20, Cream, TextAlignmentOptions.Left, FontStyles.Bold);
             Anchor(status.rectTransform, new Vector2(0, 1), new Vector2(0, 1), new Vector2(0, 1), new Vector2(20, -94), new Vector2(700, 30));
             var enemyStatus = Text("EnemyStatus", stage, "", 20, Cream, TextAlignmentOptions.Right, FontStyles.Bold);
-            Anchor(enemyStatus.rectTransform, new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-20, -94), new Vector2(600, 30));
+            Anchor(enemyStatus.rectTransform, new Vector2(1, 0), new Vector2(1, 0), new Vector2(1, 0), new Vector2(-20, 12), new Vector2(820, 30));   // bottom right: clear of the move banner above tall enemies
             enemyStatus.outlineWidth = 0.25f;
             enemyStatus.outlineColor = new Color32(20, 10, 5, 255);
             status.outlineWidth = 0.25f;
@@ -530,6 +535,7 @@ namespace Orasyon.EditorTools
             Set(m, "heroBoltVfx",   VfxAssets.Load("hero_bolt"));
             Set(m, "heroKidlatVfx", VfxAssets.Load("hero_kidlat_bolt"));
             Set(m, "healVfx",       VfxAssets.Load("lola_heal"));
+            Set(m, "eclipseVeil",   veil);
 
             Set(m, "orasyonMeter", oraMeter);
             Set(m, "flurryHitVfx", VfxAssets.Load("hero_flurry_hit"));

@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 49a42bd8a6a62f240999e22c5005ad0d, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -35,16 +39,38 @@ MonoBehaviour:
     minDamage: 1
     maxDamage: 1
     critChance: 0
-    weight: 2
+    weight: 1
     isSignature: 0
     effect: 3
     effectChance: 0.8
     effectTurns: 2
     effectPower: 40
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
+    vfx: {fileID: 11400000, guid: 6f72db1a0ae010c4cac860f459231b6d, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Gapos
+    minDamage: 1
+    maxDamage: 1
+    critChance: 0
+    weight: 2
+    isSignature: 0
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    gridEffect: 3
+    gridEffectCount: 3
+    gridEffectTurns: 2
+    hits: 1
     vfx: {fileID: 11400000, guid: 6f72db1a0ae010c4cac860f459231b6d, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
   signatureEvery: 0
+  mechanic: 0
   description: A hound-like creature that walks backwards with its head between its
     legs, drinking the shadows of the unwary. It is said to be at its strongest at
     midnight.

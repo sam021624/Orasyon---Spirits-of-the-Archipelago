@@ -15,12 +15,12 @@ MonoBehaviour:
   displayName: Tiyanak
   isBoss: 1
   maxHP: 120
-  attackDamage: 3
+  attackDamage: 2
   attackName: Scratch
   attacks:
   - name: Scratch
-    minDamage: 2
-    maxDamage: 3
+    minDamage: 1
+    maxDamage: 2
     critChance: 0.2
     weight: 3
     isSignature: 0
@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 2
     vfx: {fileID: 11400000, guid: e8a52b68da8d76e4bb73d62ad24aaa3c, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -37,10 +41,14 @@ MonoBehaviour:
     critChance: 0
     weight: 2
     isSignature: 0
-    effect: 3
+    effect: 0
     effectChance: 1
     effectTurns: 2
-    effectPower: 40
+    effectPower: 1
+    gridEffect: 5
+    gridEffectCount: 2
+    gridEffectTurns: 3
+    hits: 1
     vfx: {fileID: 11400000, guid: e8a52b68da8d76e4bb73d62ad24aaa3c, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -54,6 +62,10 @@ MonoBehaviour:
     effectChance: 0.5
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 8fce143d83bd5cf43ac68d86ae00332a, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -67,6 +79,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 40
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 8fce143d83bd5cf43ac68d86ae00332a, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -80,10 +96,15 @@ MonoBehaviour:
     effectChance: 0.8
     effectTurns: 2
     effectPower: 1
+    gridEffect: 6
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 8fce143d83bd5cf43ac68d86ae00332a, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
   signatureEvery: 3
+  mechanic: 0
   description: It cries like a lost baby to lure travelers off the path. Take it
     in your arms and the sweet face twists into something sharp-toothed and furious.
   themeWords:

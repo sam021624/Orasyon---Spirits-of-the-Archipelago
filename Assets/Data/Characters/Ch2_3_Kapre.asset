@@ -28,6 +28,27 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
+    vfx: {fileID: 11400000, guid: 15d319303c9e34444965683b5e3c7b2b, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Smoke Veil
+    minDamage: 1
+    maxDamage: 1
+    critChance: 0
+    weight: 2
+    isSignature: 0
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    gridEffect: 2
+    gridEffectCount: 4
+    gridEffectTurns: 3
+    hits: 1
     vfx: {fileID: 11400000, guid: 15d319303c9e34444965683b5e3c7b2b, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -35,12 +56,16 @@ MonoBehaviour:
     minDamage: 2
     maxDamage: 2
     critChance: 0
-    weight: 2
+    weight: 1
     isSignature: 0
     effect: 1
     effectChance: 0.8
     effectTurns: 2
     effectPower: 2
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 15d319303c9e34444965683b5e3c7b2b, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -54,6 +79,10 @@ MonoBehaviour:
     effectChance: 0.5
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 0}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -67,6 +96,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 6
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 15d319303c9e34444965683b5e3c7b2b, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -80,10 +113,15 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 3
     effectPower: 2
+    gridEffect: 2
+    gridEffectCount: 6
+    gridEffectTurns: 3
+    hits: 1
     vfx: {fileID: 11400000, guid: 15d319303c9e34444965683b5e3c7b2b, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
   signatureEvery: 3
+  mechanic: 0
   description: A towering spirit who sits in the oldest balete, smoking a cigar that
     never burns out. He is not cruel, only proud, and he has no patience for visitors
     who forget their manners.

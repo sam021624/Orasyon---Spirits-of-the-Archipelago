@@ -37,6 +37,21 @@ namespace Orasyon.Battle
             }
         }
 
+        public static Sprite ForGrid(GridEffectType g)
+        {
+            switch (g)
+            {
+                case GridEffectType.StealTiles:  return Get("steal");
+                case GridEffectType.SmokeTiles:  return Get("smoke");
+                case GridEffectType.LockTiles:   return Get("lock");
+                case GridEffectType.BurnTiles:   return Get("burn");
+                case GridEffectType.HexTiles:    return Get("hex");
+                case GridEffectType.ScrambleAll: return Get("scramble");
+                case GridEffectType.VoidTiles:   return Get("void");
+                default:                         return null;
+            }
+        }
+
         /// <summary>The short number next to an effect icon, e.g. "60% 1x2" for 60% poison, 1 damage for 2 turns.</summary>
         public static string EffectText(EnemyAttack a)
         {
@@ -128,11 +143,14 @@ namespace Orasyon.Battle
         public static void AddChips(Transform parent, EnemyAttack a, TMP_FontAsset font, float iconSize, float fontSize, List<GameObject> created = null)
         {
             if (!a.IsSelfBuff)
-                Add(Chip(parent, Get("damage"), a.DamageRange, new Color(1f, 0.82f, 0.40f), font, iconSize, fontSize));
+                Add(Chip(parent, Get("damage"), a.DamageText, new Color(1f, 0.82f, 0.40f), font, iconSize, fontSize));
             if (a.critChance > 0f)
                 Add(Chip(parent, Get("crit"), $"{Mathf.RoundToInt(a.critChance * 100)}%", new Color(1f, 0.55f, 0.40f), font, iconSize, fontSize));
             if (a.effect != AttackEffect.None)
                 Add(Chip(parent, ForEffect(a.effect), EffectText(a), HexColor(EnemyAttack.EffectColor(a.effect)), font, iconSize, fontSize));
+            if (a.gridEffect != GridEffectType.None)
+                Add(Chip(parent, ForGrid(a.gridEffect), a.gridEffect == GridEffectType.ScrambleAll ? "" : "x" + Mathf.Max(1, a.gridEffectCount),
+                         new Color(0.80f, 0.72f, 1f), font, iconSize, fontSize));
 
             void Add(GameObject g) { if (created != null) created.Add(g); }
         }

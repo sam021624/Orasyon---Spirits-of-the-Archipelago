@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: a9ba7f3e515caf74ebb983a2f1c65ff6, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -35,16 +39,38 @@ MonoBehaviour:
     minDamage: 2
     maxDamage: 2
     critChance: 0
-    weight: 2
+    weight: 1
     isSignature: 0
     effect: 5
     effectChance: 1
     effectTurns: 2
     effectPower: 100
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
+    vfx: {fileID: 11400000, guid: a9ba7f3e515caf74ebb983a2f1c65ff6, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Grave Curse
+    minDamage: 1
+    maxDamage: 2
+    critChance: 0
+    weight: 2
+    isSignature: 0
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    gridEffect: 5
+    gridEffectCount: 2
+    gridEffectTurns: 3
+    hits: 1
     vfx: {fileID: 11400000, guid: a9ba7f3e515caf74ebb983a2f1c65ff6, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
   signatureEvery: 0
+  mechanic: 0
   description: A restless dead man who climbs out of his grave to bite the living.
     He moves slowly, but he never tires, and he never lets go.
   themeWords:

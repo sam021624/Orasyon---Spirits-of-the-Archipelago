@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 0bd4d7d3d38ba3648b4c318286b492f2, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -41,10 +45,32 @@ MonoBehaviour:
     effectChance: 0.6
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 7f57b0a7215d05f46a9081777d80be0c, type: 2}
     vfxTravels: 1
     hitVfx: {fileID: 11400000, guid: 0bd4d7d3d38ba3648b4c318286b492f2, type: 2}
+  - name: Swallow
+    minDamage: 1
+    maxDamage: 2
+    critChance: 0
+    weight: 2
+    isSignature: 0
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    gridEffect: 7
+    gridEffectCount: 1
+    gridEffectTurns: 0
+    hits: 1
+    vfx: {fileID: 11400000, guid: 0bd4d7d3d38ba3648b4c318286b492f2, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
   signatureEvery: 0
+  mechanic: 0
   description: A bloated giant who lives in the shallows. It drinks a whole pond,
     waits for fish to flop in the mud, then floods the land back over everyone who
     came to eat them.

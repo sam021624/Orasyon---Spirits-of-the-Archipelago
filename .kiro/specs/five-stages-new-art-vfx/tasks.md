@@ -56,14 +56,14 @@ Order of work: art, VFX and the refill fix first, then all five stages playable 
 
 - [x] 4b. UI polish (your feedback): enemy moves shown as icons in the info panel and above the enemy's head (the move's own VFX picture, plus damage / crit / status icons; hover a move for its description), clearer enemy description and weakness line, tutorial panel no longer overlaps its button, no text on gold tiles, tapping a word-row tile returns it to the board.
 
-- [ ] 5. Board mechanics, stage by stage (design section 5)
-  - [ ] 5.1 Stage 1: `GridEffect` base, `StealTilesEffect`; Duwende Minion and King Pilfer (off during the tutorial); mini-tutorial panels.
+- [x] 5. Board mechanics, stage by stage (design section 5)
+  - [x] 5.1 (Board effects are data on each move: `GridEffectType` + count + turns on `EnemyAttack`, handled in `BattleManager.ApplyGridEffect`, instead of one ScriptableObject per effect.) Stage 1: `StealTiles`; Duwende Minion and King Pilfer (off during the tutorial); mini-tutorial panels.
     - _Requirements: 4.1, 4.2_
-  - [ ] 5.2 Stage 2: `SmokeTilesEffect`; Kapre Smoke Veil and Great Cloud with `kapre_smoke`.
-  - [ ] 5.3 Stage 3: `BurnTilesEffect` (Santelmo), `LockTilesEffect` (Sigbin), `HexTilesEffect` and `ScrambleAllEffect` plus multi-hit attacks (`hits`) for the Tiyanak boss, with `tiyanak_wail` and screen shake.
-  - [ ] 5.4 Stage 4: Amalanhig hex, Wak-Wak smoke, `EnemyStateController` and the Manananggal Airborne/Grounded state with badge and popups.
-  - [ ] 5.5 Stage 5: Berberoka and Siyokoy tile effects, `ConsumeTilesEffect`, Void tile, Eclipse meter UI, Bakunawa phases at 66% and 33%, Total Eclipse with `bakunawa_beam`, the 6+ and 8+ letter gong rule, vignette tween.
-  - [ ] 5.6 Checkpoint: each stage uses its mechanic and can be won with the Orasyon counter.
+  - [x] 5.2 Stage 2: `SmokeTilesEffect`; Kapre Smoke Veil and Great Cloud with `kapre_smoke`.
+  - [x] 5.3 Stage 3: `BurnTilesEffect` (Santelmo), `LockTilesEffect` (Sigbin), `HexTilesEffect` and `ScrambleAllEffect` plus multi-hit attacks (`hits`) for the Tiyanak boss, with `tiyanak_wail` and screen shake.
+  - [x] 5.4 Stage 4: Amalanhig hex, Wak-Wak smoke, `EnemyStateController` and the Manananggal Airborne/Grounded state with badge and popups.
+  - [x] 5.5 Stage 5: Berberoka Swallow (void) and Siyokoy Sea Mist (smoke), Void tiles, Bakunawa eclipse meter (status line, rises each turn), phases at 66% and 33% HP, Total Eclipse at 7 (ignores the ward, releases every swallowed tile), the 6+/8+ letter gong rule, and the background veil that darkens with the meter.
+  - [x] 5.6 Checkpoint: each stage uses its mechanic and can be won with the Orasyon counter.
 
 - [ ] 6. Optional: Phase D and F polish
   - [ ] 6.1 Chapter Select, stars, defeat/victory stats.

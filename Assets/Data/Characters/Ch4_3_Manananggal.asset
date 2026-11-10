@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 7d2cecb529e954e469d18b668d6098f1, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -41,6 +45,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 100
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 78d093769d7cc584091ac4ac8a37e07b, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -54,19 +62,10 @@ MonoBehaviour:
     effectChance: 0.4
     effectTurns: 2
     effectPower: 30
-    vfx: {fileID: 11400000, guid: 78d093769d7cc584091ac4ac8a37e07b, type: 2}
-    vfxTravels: 0
-    hitVfx: {fileID: 0}
-  - name: Split Apart
-    minDamage: 0
-    maxDamage: 0
-    critChance: 0
-    weight: 1
-    isSignature: 0
-    effect: 4
-    effectChance: 1
-    effectTurns: 2
-    effectPower: 50
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 78d093769d7cc584091ac4ac8a37e07b, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -80,13 +79,19 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 100
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 78d093769d7cc584091ac4ac8a37e07b, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
   signatureEvery: 3
-  description: By day she is a quiet neighbor. By night her body splits in two, and
-    her wings carry her over the rooftops in search of a victim. Salt on the lower
-    half keeps her from ever becoming whole again.
+  mechanic: 1
+  description: 'By day she is a quiet neighbor. By night her body splits in two,
+    and her wings carry her over the rooftops in search of a victim. Salt on the
+    lower half keeps her from ever becoming whole again. While she flies, short words
+    barely hurt her: spell long ones, or wait until she splits apart.'
   themeWords:
   - SALT
   - GARLIC

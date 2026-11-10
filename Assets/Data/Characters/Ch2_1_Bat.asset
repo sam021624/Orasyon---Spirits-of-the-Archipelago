@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 0cd2760df97f35647be04b3242823880, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -41,10 +45,15 @@ MonoBehaviour:
     effectChance: 0.6
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 0cd2760df97f35647be04b3242823880, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
   signatureEvery: 0
+  mechanic: 0
   description: Little bats flit between the old trees after dusk, keeping watch for
     the bigger spirits of the forest. Alone they are only a nuisance. When they gather,
     something larger is never far behind.

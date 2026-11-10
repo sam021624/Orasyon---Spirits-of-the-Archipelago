@@ -45,6 +45,8 @@ namespace Orasyon.Battle
         [SerializeField] private VfxDefinition heroBoltVfx;
         [SerializeField] private VfxDefinition heroKidlatVfx;
         [SerializeField] private VfxDefinition healVfx;
+        [Tooltip("Black overlay above the background; it darkens as the Bakunawa's eclipse grows.")]
+        [SerializeField] private Image         eclipseVeil;
         [Tooltip("Shaken on big hits (usually the battle stage).")]
         [SerializeField] private RectTransform shakeTarget;
 
@@ -155,6 +157,13 @@ namespace Orasyon.Battle
         private EnemyAttack previousAttack, olderAttack;
         private int         enemyTurnIndex;
 
+        // Creature rules and board effects
+        private readonly EnemyMechanics mech = new EnemyMechanics();
+        private float veilTarget;
+        private bool  tutorialPresent;
+        private const int MaxVoids = 6;            // holes on the board at once, so it stays playable
+        private const int ShakeLooseDamage = 10;   // a word this strong shakes pocketed tiles loose from a Duwende
+
         // Status effects
         private int  poisonTurns, poisonDamage;    // on the player
         private int  weakenTurns, weakenPercent;   // on the player
@@ -218,6 +227,7 @@ namespace Orasyon.Battle
             WordPreview.DamageEstimator = PreviewDamage;
             WordPreview.DamageDescriber = DescribeDamage;
             wordPreview = FindAnyObjectByType<WordPreview>();
+            tutorialPresent = FindAnyObjectByType<TutorialManager>() != null;
             if (shakeTarget != null) shakeBase = shakeTarget.anchoredPosition;
 
             resultPanel.SetActive(false);
@@ -393,11 +403,20 @@ namespace Orasyon.Battle
                     PopupAt((PlayerRect.anchoredPosition + EnemyRect.anchoredPosition) * 0.5f + new Vector2(0f, 330f), "BRILLIANT!", MagicGold, 1.7f);
                 }
 
+                string loose = "";
+                if (damage >= ShakeLooseDamage && letterGrid.HasStolen)
+                {
+                    letterGrid.ReturnAllStolen();
+                    Popup(EnemyRect, "Loot shaken loose!", new Color(1f, 0.85f, 0.45f));
+                    loose = "  <color=#FFD27F>Your tiles are shaken loose!</color>";
+                    RefreshStatus();
+                }
                 string msg = $"<b>{word}</b> deals {damage} damage!";
                 if (weakness)  msg += "  <color=#9CFF7A>Weakness!</color>";
                 if (empowered) msg += "  <color=#7FB2FF>Power x2!</color>";
                 if (weakened)  msg += "  <color=#C9A2FF>(weakened)</color>";
                 if (guarded)   msg += "  <color=#8CC8FF>(guarded)</color>";
+                msg += loose;
                 bool powerAllowed = powerPotionsAwarded < maxPowerPotionsPerEnemy;
                 var reward = buffs.AwardForWord(word.Length + PlayerProgress.PotionLengthBonus, powerAllowed);   // Mata ng Buwan
                 if (reward != null && reward.type == BuffType.PowerPotion) powerPotionsAwarded++;
@@ -445,6 +464,16 @@ namespace Orasyon.Battle
                 Hit();
                 yield return new WaitForSeconds(Mathf.Max(0.35f, castTime * 0.5f));
             }
+
+            // Creature rules react to the word (Manananggal's salt, the Bakunawa's gong)
+            string mechMsg = mech.OnPlayerWord(word.Length);
+            if (mechMsg.Length > 0)
+            {
+                Popup(EnemyRect, mechMsg.StartsWith("GONG") ? "GONG!" : "Salt!", new Color(1f, 0.9f, 0.5f), 1.3f);
+                if (feedbackLabel != null) feedbackLabel.text += "\n<color=#9FD3FF>" + mechMsg + "</color>";
+            }
+            if (mech.UpdatePhase(enemyHP, enemy.maxHP)) AnnouncePhase();
+            OnMechanicsChanged();
 
             // The tiles used in the word do their thing, and the book gains charge
             if (orasyonMeter != null) orasyonMeter.Add(word.Length);
@@ -574,6 +603,7 @@ namespace Orasyon.Battle
             bool cured = poisonTurns > 0 || weakenTurns > 0;
             poisonTurns = 0; weakenTurns = 0;
             int cleared = letterGrid.ClearBadTiles(smokeAndLockOnly: false);
+            if (letterGrid.ReturnAllStolen() > 0) cleared++;   // pocketed tiles come back too
             RefreshStatus();
             ShowFeedback("<color=#FFD700><b>ORASYON!</b></color>  The book answers your prayer." +
                          (cured ? "  <color=#9FE2BF>Your ailments fade.</color>" : "") +
@@ -655,9 +685,25 @@ namespace Orasyon.Battle
         private IEnumerator EnemyTurnRoutine(CharacterDefinition enemy)
         {
             var atk = nextAttack ?? PickNextAttack(enemy);
+            if (atk.isSignature && !mech.SignatureAllowed && enemy.mechanic != EnemyMechanic.Bakunawa)
+                atk = PickAttack(enemy.GetAttacks());   // an exposed Manananggal cannot use her signature
             HideIntent();
             yield return EnemyActRoutine(enemy, atk);
+
+            // The Bakunawa's Total Eclipse spends the meter and releases every swallowed tile
+            bool totalEclipse = enemy.mechanic == EnemyMechanic.Bakunawa && atk.isSignature;
+            if (totalEclipse)
+            {
+                mech.ResetEclipse();
+                if (letterGrid.RestoreVoids() > 0) letterGrid.RefillEmpty(1);
+                Popup(EnemyRect, "The moon is released!", new Color(0.8f, 0.9f, 1f), 1.3f);
+                if (feedbackLabel != null) feedbackLabel.text += "\n<color=#BFD9FF>The moon is released! Every swallowed tile returns.</color>";
+                OnMechanicsChanged();
+                yield return new WaitForSeconds(0.5f);
+            }
+
             yield return TileTickRoutine();
+            yield return MechanicsEndOfTurn(enemy, skipSwallow: totalEclipse);
 
             // Choose and show the next move at the END of this turn, so the player can plan for it
             olderAttack = previousAttack;
@@ -670,7 +716,7 @@ namespace Orasyon.Battle
         /// <summary>End of an enemy turn: every Alab (burning) tile hurts you, and timed bad tiles wear off.</summary>
         private IEnumerator TileTickRoutine()
         {
-            int burning = letterGrid.CountKind(TileKind.Burning);
+            int burning = letterGrid.CountReadyBurning();
             if (burning > 0 && playerHP > 0)
             {
                 int dmg = burning * TileKindInfo.BurnDamage;
@@ -682,6 +728,124 @@ namespace Orasyon.Battle
                 yield return new WaitForSeconds(0.6f);
             }
             letterGrid.TickTileTimers();
+            if (letterGrid.TickStolen() > 0)
+            {
+                if (feedbackLabel != null) feedbackLabel.text += "\n<color=#FFD27F>Your pocketed tiles drop back onto the board.</color>";
+                RefreshStatus();
+            }
+        }
+
+        /// <summary>Manananggal's flight and the Bakunawa's eclipse advance at the end of every enemy turn.</summary>
+        private IEnumerator MechanicsEndOfTurn(CharacterDefinition enemy, bool skipSwallow)
+        {
+            if (mech.Kind == EnemyMechanic.None || playerHP <= 0) yield break;
+
+            string msg = mech.EndEnemyTurn();
+            if (msg.Length > 0)
+            {
+                Popup(EnemyRect, mech.Grounded ? "Exposed!" : "Airborne!", new Color(0.85f, 0.75f, 1f), 1.2f);
+                if (feedbackLabel != null) feedbackLabel.text += "\n<color=#C9A2FF>" + msg + "</color>";
+            }
+
+            if (mech.Kind == EnemyMechanic.Bakunawa && !skipSwallow)
+            {
+                int swallowed = PlaceBad(TileKind.Void, mech.VoidsPerTurn, 0);
+                if (mech.Phase >= 2) PlaceBad(TileKind.Burning, 1, 0);       // phase 2: flames
+                if (mech.Phase >= 3) PlaceBad(TileKind.Smoked, 2, 3);        // phase 3: the sky is dark
+                if (swallowed > 0 && feedbackLabel != null)
+                    feedbackLabel.text += $"\n<color=#B9A6FF>The eclipse swallows {swallowed} tile{(swallowed > 1 ? "s" : "")}.</color>";
+            }
+
+            OnMechanicsChanged();
+            yield return new WaitForSeconds(0.4f);
+        }
+
+        private void AnnouncePhase()
+        {
+            Popup(EnemyRect, "The sky darkens!", new Color(0.75f, 0.7f, 1f), 1.4f);
+            StartCoroutine(Shake(0.5f, 12f));
+            if (feedbackLabel != null) feedbackLabel.text += $"\n<color=#B9A6FF>Phase {mech.Phase}: the Bakunawa grows hungrier.</color>";
+        }
+
+        /// <summary>Refreshes everything that shows creature rules: status line, veil, and the telegraphed move.</summary>
+        private void OnMechanicsChanged()
+        {
+            veilTarget = mech.EclipseDarkness * 0.62f;
+            RefreshStatus();
+            // The gong can push the meter back below 7: the telegraphed Total Eclipse no longer applies
+            if (mech.Kind == EnemyMechanic.Bakunawa && nextAttack != null && nextAttack.isSignature && !mech.EclipseFull
+                && CurrentEnemy != null && enemyHP > 0)
+            {
+                nextAttack = PickNextAttack(CurrentEnemy);
+                ShowIntent();
+            }
+        }
+
+        // ── Board effects of enemy moves ─────────────────────────────────────
+        /// <summary>Changes up to <paramref name="count"/> plain tiles into a bad kind (respecting the caps). Returns how many.</summary>
+        private int PlaceBad(TileKind kind, int count, int turns)
+        {
+            if (count <= 0) return 0;
+            int room = kind == TileKind.Void ? MaxVoids - letterGrid.CountKind(TileKind.Void)
+                                             : TileKindInfo.MaxBadTiles - letterGrid.CountBadTiles;
+            count = Mathf.Min(count, Mathf.Max(0, room));
+            if (count <= 0) return 0;
+
+            Func<LetterTileData, bool> filter = kind == TileKind.Void
+                ? (Func<LetterTileData, bool>)(t => !t.IsEmpty && !t.IsSelected && t.Kind != TileKind.Void)
+                : t => !t.IsEmpty && !t.IsSelected && t.Kind == TileKind.Normal;
+
+            var picks = letterGrid.PickTiles(count, filter);
+            foreach (int i in picks) letterGrid.SetKind(i, kind, turns);
+            return picks.Count;
+        }
+
+        private IEnumerator ApplyGridEffect(CharacterDefinition enemy, EnemyAttack atk)
+        {
+            if (atk.gridEffect == GridEffectType.None || playerHP <= 0) yield break;
+
+            int n = Mathf.Max(1, atk.gridEffectCount);
+            string line = null;
+            switch (atk.gridEffect)
+            {
+                case GridEffectType.StealTiles:
+                    int got = letterGrid.StealTiles(n, atk.gridEffectTurns > 0 ? atk.gridEffectTurns : 2);
+                    if (got > 0)
+                    {
+                        Popup(EnemyRect, "Pilfer!", new Color(1f, 0.85f, 0.45f), 1.2f);
+                        line = $"<color=#FFD27F>The {enemy.displayName} pockets {got} of your tiles ({letterGrid.StolenLetters})! A big word shakes them loose.</color>";
+                    }
+                    break;
+                case GridEffectType.SmokeTiles:
+                    int smoked = PlaceBad(TileKind.Smoked, n, atk.gridEffectTurns > 0 ? atk.gridEffectTurns : 3);
+                    if (smoked > 0) line = $"<color=#C8C8D2>Smoke hides {smoked} letter{(smoked > 1 ? "s" : "")}!</color>";
+                    break;
+                case GridEffectType.LockTiles:
+                    int locked = PlaceBad(TileKind.Locked, n, atk.gridEffectTurns > 0 ? atk.gridEffectTurns : 2);
+                    if (locked > 0) line = $"<color=#C9A98A>{locked} tile{(locked > 1 ? "s are" : " is")} locked (Gapos)!</color>";
+                    break;
+                case GridEffectType.BurnTiles:
+                    int burning = PlaceBad(TileKind.Burning, n, 0);
+                    if (burning > 0) line = $"<color=#FFA866>{burning} tile{(burning > 1 ? "s catch" : " catches")} fire (Alab)! Use them or cleanse them.</color>";
+                    break;
+                case GridEffectType.HexTiles:
+                    int hexed = PlaceBad(TileKind.Hex, n, atk.gridEffectTurns > 0 ? atk.gridEffectTurns : 3);
+                    if (hexed > 0) line = $"<color=#C9A2FF>{hexed} tile{(hexed > 1 ? "s are" : " is")} hexed (Sumpa): using {(hexed > 1 ? "one" : "it")} costs 5 HP.</color>";
+                    break;
+                case GridEffectType.ScrambleAll:
+                    letterGrid.Scramble();
+                    StartCoroutine(Shake(0.5f, 16f));
+                    Popup(EnemyRect, "The baby cries!", new Color(1f, 0.8f, 0.8f), 1.3f);
+                    line = "<color=#FFB0B0>The baby cries! Your tiles are scrambled.</color>";
+                    break;
+                case GridEffectType.VoidTiles:
+                    int gone = PlaceBad(TileKind.Void, n, 0);
+                    if (gone > 0) line = $"<color=#B9A6FF>The {enemy.displayName} swallows {gone} tile{(gone > 1 ? "s" : "")} for the rest of the fight!</color>";
+                    break;
+            }
+            RefreshStatus();
+            if (line != null && feedbackLabel != null) feedbackLabel.text += "\n" + line;
+            yield return new WaitForSeconds(0.45f);
         }
 
         private IEnumerator EnemyActRoutine(CharacterDefinition enemy, EnemyAttack atk)
@@ -701,65 +865,89 @@ namespace Orasyon.Battle
                 ShowFeedback($"The {enemy.displayName} uses <b>{atk.name}</b>!" + ApplyEffect(enemy, atk, 0), false);
                 RefreshHearts();
                 RefreshStatus();
+                yield return ApplyGridEffect(enemy, atk);
                 yield return new WaitForSeconds(Mathf.Max(0.4f, strike * 0.5f));
                 yield break;
             }
 
-            // Close the distance to the player, strike, then go back
+            // Close the distance to the player, strike (once or several times), then go back
             float home = EnemyRect.anchoredPosition.x;
             float reach = (player.spriteSize + enemy.spriteSize) * 0.5f * 0.75f;
             ShowFeedback($"The {enemy.displayName} uses <b>{atk.name}</b>!", false);
             yield return WalkTo(enemyAnimator, enemy, playerHomeX + reach);
 
-            enemyAnimator.PlayOnce(enemy.attack);
-            yield return new WaitForSeconds(strike * 0.6f);
-
+            int hits = Mathf.Max(1, atk.hits);
+            bool ignoreShield = enemy.mechanic == EnemyMechanic.Bakunawa && atk.isSignature;   // Total Eclipse
             bool spriteFx = vfxPlayer != null && (atk.vfx != null || atk.hitVfx != null);
-            if (vfxPlayer != null && atk.vfx != null)
-            {
-                if (atk.vfxTravels) yield return vfxPlayer.TravelRoutine(atk.vfx, EnemyCenter, PlayerCenter, 0.3f, 1f);
-                else                vfxPlayer.Play(atk.vfx, PlayerCenter, 1.1f);
-            }
-            if (vfxPlayer != null && atk.hitVfx != null) vfxPlayer.Play(atk.hitVfx, PlayerCenter, 1.1f);
+            int totalDamage = 0, landed = 0, blocked = 0;
+            bool anyCrit = false;
 
-            if (shieldCharges > 0)
+            for (int h = 0; h < hits && playerHP > 0; h++)
             {
-                shieldCharges--;
-                Popup(PlayerRect, "Blocked!", new Color(0.55f, 0.8f, 1f));
-                StartCoroutine(Burst(PlayerCenter, 300f, new Color(0.45f, 1f, 0.5f, 0.8f)));
-                ShowFeedback($"Your ward blocks {atk.name}!", true);
-            }
-            else
-            {
-                int dmg = atk.RollDamage(rng);
-                bool crit = rng.NextDouble() < atk.critChance;
-                if (crit) dmg *= 2;
-                playerHP = Mathf.Max(0, playerHP - dmg);
-                PlayHurt(playerAnimator, player);
-                if (!spriteFx) StartCoroutine(Burst(PlayerCenter, crit ? 300f : 180f, new Color(1f, 0.45f, 0.35f, 0.85f)));
-                if (crit)
+                enemyAnimator.PlayOnce(enemy.attack);
+                yield return new WaitForSeconds(strike * (h == 0 ? 0.6f : 0.45f));
+
+                if (vfxPlayer != null && atk.vfx != null)
                 {
-                    Popup(PlayerRect, "CRIT -" + dmg, new Color(1f, 0.3f, 0.25f), 1.45f);
-                    StartCoroutine(Shake(0.3f, 14f));
+                    if (atk.vfxTravels) yield return vfxPlayer.TravelRoutine(atk.vfx, EnemyCenter, PlayerCenter, 0.3f, 1f);
+                    else                vfxPlayer.Play(atk.vfx, PlayerCenter, 1.1f);
+                }
+                if (vfxPlayer != null && atk.hitVfx != null) vfxPlayer.Play(atk.hitVfx, PlayerCenter, 1.1f);
+
+                if (shieldCharges > 0 && !ignoreShield)
+                {
+                    shieldCharges--;
+                    blocked++;
+                    Popup(PlayerRect, "Blocked!", new Color(0.55f, 0.8f, 1f));
+                    StartCoroutine(Burst(PlayerCenter, 300f, new Color(0.45f, 1f, 0.5f, 0.8f)));
                 }
                 else
                 {
-                    Popup(PlayerRect, "-" + dmg, new Color(1f, 0.4f, 0.35f));
+                    int dmg = atk.RollDamage(rng) + mech.BonusEnemyDamage;   // an airborne Manananggal hits harder
+                    bool crit = rng.NextDouble() < atk.critChance;
+                    if (crit) dmg *= 2;
+                    anyCrit |= crit;
+                    totalDamage += dmg;
+                    landed++;
+                    playerHP = Mathf.Max(0, playerHP - dmg);
+                    PlayHurt(playerAnimator, player);
+                    if (!spriteFx) StartCoroutine(Burst(PlayerCenter, crit ? 300f : 180f, new Color(1f, 0.45f, 0.35f, 0.85f)));
+                    if (crit)
+                    {
+                        Popup(PlayerRect, "CRIT -" + dmg, new Color(1f, 0.3f, 0.25f), 1.45f);
+                        StartCoroutine(Shake(0.3f, 14f));
+                    }
+                    else
+                    {
+                        Popup(PlayerRect, "-" + dmg, new Color(1f, 0.4f, 0.35f));
+                    }
                 }
-
-                string msg = (crit ? "<color=#FF6B6B>Critical hit!</color>  " : "") +
-                             $"The {enemy.displayName} uses <b>{atk.name}</b>! -{dmg} HP";
-                if (atk.effect != AttackEffect.None && rng.NextDouble() < atk.effectChance)
-                    msg += ApplyEffect(enemy, atk, dmg);
-                ShowFeedback(msg, false);
+                RefreshHearts();
+                if (h < hits - 1) yield return new WaitForSeconds(0.12f);
             }
+
+            string msg;
+            if (landed > 0)
+            {
+                msg = (anyCrit ? "<color=#FF6B6B>Critical hit!</color>  " : "") +
+                      $"The {enemy.displayName} uses <b>{atk.name}</b>! -{totalDamage} HP" + (hits > 1 ? $" ({landed} hit{(landed > 1 ? "s" : "")})" : "");
+                if (ignoreShield && shieldCharges > 0) msg += "  <color=#FF9E9E>It ignores your ward!</color>";
+                if (atk.effect != AttackEffect.None && rng.NextDouble() < atk.effectChance)
+                    msg += ApplyEffect(enemy, atk, totalDamage);
+            }
+            else
+            {
+                msg = $"Your ward blocks {atk.name}!";
+            }
+            ShowFeedback(msg, landed == 0);
             RefreshHearts();
             RefreshStatus();
+
+            yield return ApplyGridEffect(enemy, atk);
 
             yield return new WaitForSeconds(strike * 0.4f);
             yield return WalkTo(enemyAnimator, enemy, home);
         }
-
         /// <summary>
         /// Chooses the enemy's next move. Bosses use their signature move on a fixed cycle; every other turn is
         /// weighted random, never the same move three times in a row and never a stun right after a stun.
@@ -767,7 +955,15 @@ namespace Orasyon.Battle
         private EnemyAttack PickNextAttack(CharacterDefinition enemy)
         {
             var list = enemy.GetAttacks();
-            if (enemy.signatureEvery > 0 && (enemyTurnIndex + 1) % enemy.signatureEvery == 0)
+            bool cycle = enemy.signatureEvery > 0 && (enemyTurnIndex + 1) % enemy.signatureEvery == 0 && mech.SignatureAllowed;
+            if (enemy.mechanic == EnemyMechanic.Bakunawa)
+            {
+                cycle = false;   // the Total Eclipse comes when the eclipse meter is full, not on a timer
+                if (mech.EclipseFull)
+                    foreach (var a in list)
+                        if (a.isSignature) return a;
+            }
+            if (cycle)
                 foreach (var a in list)
                     if (a.isSignature) return a;
 
@@ -784,19 +980,24 @@ namespace Orasyon.Battle
         /// <summary>Weighted random pick; signature moves are only used on the boss cycle.</summary>
         private EnemyAttack PickAttack(EnemyAttack[] list)
         {
+            // The very first fight teaches the basics, so it uses no board-changing moves
+            bool plain = tutorialPresent && enemyIndex == 0;
+
             float total = 0f;
-            foreach (var a in list) if (!a.isSignature) total += Mathf.Max(0f, a.weight);
+            foreach (var a in list) if (Pickable(a, plain)) total += Mathf.Max(0f, a.weight);
             if (total <= 0f) return list[0];
 
             double roll = rng.NextDouble() * total;
             foreach (var a in list)
             {
-                if (a.isSignature) continue;
+                if (!Pickable(a, plain)) continue;
                 roll -= Mathf.Max(0f, a.weight);
                 if (roll < 0) return a;
             }
-            return list[list.Length - 1];
+            return list[0];
         }
+
+        private static bool Pickable(EnemyAttack a, bool plainOnly) => !a.isSignature && !(plainOnly && a.gridEffect != GridEffectType.None);
 
         private void ShowIntent()
         {
@@ -865,6 +1066,7 @@ namespace Orasyon.Battle
             float d = LetterScoring.Damage(word, fx.silver) * (PlayerProgress.DamageMultiplier + TileKindInfo.GoldBonus * fx.gold);
             if (weakness) d *= 1.5f;
             d *= damageMultiplier;
+            d *= mech.WordModifier(word.Length);   // Manananggal: airborne / exposed
             if (weakenTurns > 0) d *= 1f - weakenPercent / 100f;
             if (guardTurns > 0)  d *= 1f - guardPercent / 100f;
             return Mathf.Max(1, Mathf.RoundToInt(d));
@@ -885,7 +1087,17 @@ namespace Orasyon.Battle
             if (damageMultiplier > 1) parts.Add($"x{damageMultiplier} power");
             if (weakenTurns > 0)    parts.Add($"x{1f - weakenPercent / 100f:0.##} weakened");
             if (guardTurns > 0)     parts.Add($"x{1f - guardPercent / 100f:0.##} guarded");
+            float stateMod = mech.WordModifier(word.Length);
+            if (!Mathf.Approximately(stateMod, 1f)) parts.Add($"x{stateMod:0.##} " + (mech.Grounded ? "exposed" : "airborne"));
             return $"{total} damage  <size=70%><color=#D8CCA6>({string.Join("  ", parts)})</color></size>";
+        }
+
+        private void Update()
+        {
+            if (eclipseVeil == null) return;
+            var c = eclipseVeil.color;
+            c.a = Mathf.MoveTowards(c.a, veilTarget, Time.unscaledDeltaTime * 0.6f);
+            eclipseVeil.color = c;
         }
 
         private void OnDestroy()
@@ -1098,6 +1310,10 @@ namespace Orasyon.Battle
             int added = letterGrid.RefillEmpty(minWordsOnBoard);
             if (added > 0 && feedbackLabel != null)
                 feedbackLabel.text += "\n<color=#9FE2BF>No words left. New letters fill the empty spaces.</color>";
+
+            // Locks, holes and pocketed tiles can leave nothing to spell: the book lends a hand
+            if (!letterGrid.HasAnyWord() && letterGrid.EmergencyRelief() && feedbackLabel != null)
+                feedbackLabel.text += "\n<color=#9FE2BF>The book clears the board so you can keep spelling.</color>";
         }
 
         // ── Movement ─────────────────────────────────────────────────────────
@@ -1166,6 +1382,8 @@ namespace Orasyon.Battle
             if (orasyonMeter != null) orasyonMeter.ResetCharge();
             enemyTurnIndex = 0;
             previousAttack = olderAttack = null;
+            mech.Reset(enemy);
+            veilTarget = 0f;
             nextAttack = PickNextAttack(enemy);
             RefreshScrambleLabel();
             HideIntent();
@@ -1269,7 +1487,13 @@ namespace Orasyon.Battle
                 playerStatusLabel.text = s;
             }
             if (enemyStatusLabel != null)
-                enemyStatusLabel.text = guardTurns > 0 ? $"<color=#8CC8FF>Guarded -{guardPercent}% ({guardTurns})</color>" : "";
+            {
+                string s = "";
+                if (guardTurns > 0)       s += $"<color=#8CC8FF>Guarded -{guardPercent}% ({guardTurns})</color>   ";
+                if (letterGrid != null && letterGrid.HasStolen) s += $"<color=#FFD27F>Pocket: {letterGrid.StolenLetters}</color>   ";
+                s += mech.StatusText();
+                enemyStatusLabel.text = s;
+            }
         }
 
         private void ShowFeedback(string msg, bool good)
@@ -1281,7 +1505,9 @@ namespace Orasyon.Battle
 
         private void Popup(RectTransform target, string text, Color color, float scale = 1f)
         {
-            PopupAt(target.anchoredPosition + new Vector2(0f, target.sizeDelta.y * 0.85f), text, color, scale);
+            // Tall creatures: keep the popup inside the visible stage, below the top bar
+            float y = Mathf.Min(target.anchoredPosition.y + target.sizeDelta.y * 0.85f, 380f);
+            PopupAt(new Vector2(target.anchoredPosition.x, y), text, color, scale);
         }
 
         private void PopupAt(Vector2 position, string text, Color color, float scale = 1f)

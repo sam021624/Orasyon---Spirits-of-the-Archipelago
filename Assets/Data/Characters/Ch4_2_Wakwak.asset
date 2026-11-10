@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 8965a900e390b6c45bac7c1b399c6220, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -41,6 +45,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 7bb1865d3edaf544f935ca6c804ec54c, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -54,6 +62,10 @@ MonoBehaviour:
     effectChance: 0.4
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: efa47bdbd0826a34ca3090a6d74dd6c5, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -61,16 +73,21 @@ MonoBehaviour:
     minDamage: 2
     maxDamage: 3
     critChance: 0
-    weight: 1
+    weight: 2
     isSignature: 0
-    effect: 3
-    effectChance: 0.6
+    effect: 0
+    effectChance: 1
     effectTurns: 2
-    effectPower: 30
+    effectPower: 1
+    gridEffect: 2
+    gridEffectCount: 3
+    gridEffectTurns: 3
+    hits: 1
     vfx: {fileID: 11400000, guid: ac303ccfa234037478833e1d51ef9322, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 11400000, guid: 254ac52bb9c7d264588122b87feba003, type: 2}
   signatureEvery: 0
+  mechanic: 0
   description: A great black bird whose cry, "wak-wak", echoes over the rooftops
     after midnight. Locals say the louder it calls, the nearer something worse is
     flying.

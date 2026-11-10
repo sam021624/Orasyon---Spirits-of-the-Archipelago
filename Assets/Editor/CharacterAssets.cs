@@ -30,6 +30,8 @@ namespace Orasyon.EditorTools
             public string[] weak;
             public string description;
             public EnemyAttack[] attacks;
+            public EnemyMechanic mechanic;
+            public bool noSignatureCycle;   // the signature move is triggered by a rule instead of a timer
         }
 
         // ── Public API ───────────────────────────────────────────────────────
@@ -107,7 +109,8 @@ namespace Orasyon.EditorTools
                 def.themeWords = data.weak;
                 def.description = data.description;
                 def.attacks = data.attacks;
-                def.signatureEvery = boss ? 3 : 0;   // bosses: every 3rd enemy turn is the signature move
+                def.signatureEvery = boss && !data.noSignatureCycle ? 3 : 0;   // bosses: every 3rd enemy turn is the signature move
+                def.mechanic = data.mechanic;
                 def.attackName = data.attacks[0].name;
                 def.attackDamage = data.attacks[0].maxDamage;
 
@@ -163,10 +166,12 @@ namespace Orasyon.EditorTools
         // ── Moves ────────────────────────────────────────────────────────────
         private static EnemyAttack Atk(string name, int min, int max, float weight = 1f, float crit = 0f,
                                        AttackEffect effect = AttackEffect.None, float chance = 1f, int turns = 2, int power = 1,
-                                       string vfx = null, bool travels = false, string hit = null, bool signature = false)
+                                       string vfx = null, bool travels = false, string hit = null, bool signature = false,
+                                       GridEffectType grid = GridEffectType.None, int gridCount = 0, int gridTurns = 0, int hits = 1)
             => new EnemyAttack
             {
                 isSignature = signature,
+                gridEffect = grid, gridEffectCount = gridCount, gridEffectTurns = gridTurns, hits = hits,
                 name = name, minDamage = min, maxDamage = max, weight = weight, critChance = crit,
                 effect = effect, effectChance = chance, effectTurns = turns, effectPower = power,
                 vfx = vfx != null ? VfxAssets.Load(vfx) : null,
@@ -191,6 +196,7 @@ namespace Orasyon.EditorTools
                 {
                     Atk("Club Bonk", 1, 2, weight: 3, crit: 0.10f, vfx: "minion_bonk"),
                     Atk("Dirt Toss", 1, 1, weight: 1, effect: AttackEffect.Weaken, chance: 0.6f, turns: 2, power: 30, vfx: "minion_bonk"),
+                    Atk("Pilfer",    1, 1, weight: 2, vfx: "minion_bonk", grid: GridEffectType.StealTiles, gridCount: 1, gridTurns: 2),
                 } } },
             { "enchanted_mushroom", new Creature {
                 displayName = "Enchanted Mushroom", hp = 30, size = 300f,
@@ -212,6 +218,7 @@ namespace Orasyon.EditorTools
                     Atk("Staff Smash",   3, 4, weight: 3, crit: 0.20f, vfx: "minion_bonk"),
                     Atk("Mischief Hex",  1, 2, weight: 2, effect: AttackEffect.Weaken, turns: 2, power: 40, vfx: "king_curse", travels: true),
                     Atk("Mound Shelter", 0, 0, weight: 1, effect: AttackEffect.Guard,  turns: 2, power: 50, vfx: "king_curse"),
+                    Atk("Pilfer",        1, 2, weight: 2, vfx: "king_curse", grid: GridEffectType.StealTiles, gridCount: 2, gridTurns: 2),
                     Atk("Mound Collapse", 4, 5, weight: 0, effect: AttackEffect.Weaken, turns: 2, power: 50, vfx: "king_curse", signature: true),
                 } } },
 
@@ -244,10 +251,12 @@ namespace Orasyon.EditorTools
                 attacks = new[]
                 {
                     Atk("Smoke Slam",    3, 5, weight: 3, crit: 0.15f, vfx: "kapre_smoke"),
-                    Atk("Choking Smoke", 2, 2, weight: 2, effect: AttackEffect.Poison, chance: 0.8f, turns: 2, power: 2, vfx: "kapre_smoke"),
+                    Atk("Smoke Veil",    1, 1, weight: 2, vfx: "kapre_smoke", grid: GridEffectType.SmokeTiles, gridCount: 4, gridTurns: 3),
+                    Atk("Choking Smoke", 2, 2, weight: 1, effect: AttackEffect.Poison, chance: 0.8f, turns: 2, power: 2, vfx: "kapre_smoke"),
                     Atk("Ground Stomp",  2, 3, weight: 1, effect: AttackEffect.Stun, chance: 0.5f),
                     Atk("Long Drag",     0, 0, weight: 1, effect: AttackEffect.Leech, power: 6, vfx: "kapre_smoke"),
-                    Atk("Great Cloud",   3, 4, weight: 0, effect: AttackEffect.Poison, turns: 3, power: 2, vfx: "kapre_smoke", signature: true),
+                    Atk("Great Cloud",   3, 4, weight: 0, effect: AttackEffect.Poison, turns: 3, power: 2, vfx: "kapre_smoke", signature: true,
+                        grid: GridEffectType.SmokeTiles, gridCount: 6, gridTurns: 3),
                 } } },
 
             // Chapter 3: The Deep Forest
@@ -260,6 +269,7 @@ namespace Orasyon.EditorTools
                 {
                     Atk("Fire Orb",   2, 3, weight: 3, crit: 0.10f, vfx: "santelmo_orb", travels: true, hit: "santelmo_burst"),
                     Atk("Cold Flame", 1, 2, weight: 2, effect: AttackEffect.Poison, chance: 0.6f, turns: 3, power: 1, vfx: "santelmo_flames"),
+                    Atk("Will-o-wisp", 1, 2, weight: 2, vfx: "santelmo_flames", grid: GridEffectType.BurnTiles, gridCount: 2),
                 } } },
             { "sigbin", new Creature {
                 displayName = "Sigbin", hp = 35, size = 360f,
@@ -269,7 +279,8 @@ namespace Orasyon.EditorTools
                 attacks = new[]
                 {
                     Atk("Shadow Bite", 2, 3, weight: 3, crit: 0.15f, vfx: "sigbin_bite"),
-                    Atk("Shadow Veil", 1, 1, weight: 2, effect: AttackEffect.Weaken, chance: 0.8f, turns: 2, power: 40, vfx: "sigbin_shadow"),
+                    Atk("Shadow Veil", 1, 1, weight: 1, effect: AttackEffect.Weaken, chance: 0.8f, turns: 2, power: 40, vfx: "sigbin_shadow"),
+                    Atk("Gapos",       1, 1, weight: 2, vfx: "sigbin_shadow", grid: GridEffectType.LockTiles, gridCount: 3, gridTurns: 2),
                 } } },
             { "tiyanak", new Creature {
                 displayName = "Tiyanak", hp = 120, size = 340f,
@@ -278,11 +289,12 @@ namespace Orasyon.EditorTools
                               "Take it in your arms and the sweet face twists into something sharp-toothed and furious.",
                 attacks = new[]
                 {
-                    Atk("Scratch",     2, 3, weight: 3, crit: 0.20f, vfx: "tiyanak_slash"),
-                    Atk("Fake Smile",  1, 2, weight: 2, effect: AttackEffect.Weaken, turns: 2, power: 40, vfx: "tiyanak_slash"),
+                    Atk("Scratch",     1, 2, weight: 3, crit: 0.20f, vfx: "tiyanak_slash", hits: 2),
+                    Atk("Fake Smile",  1, 2, weight: 2, vfx: "tiyanak_slash", grid: GridEffectType.HexTiles, gridCount: 2, gridTurns: 3),
                     Atk("Wail",        1, 1, weight: 2, effect: AttackEffect.Stun, chance: 0.5f, vfx: "tiyanak_wail"),
                     Atk("Mimic Cry",   0, 0, weight: 1, effect: AttackEffect.Guard, turns: 2, power: 40, vfx: "tiyanak_wail"),
-                    Atk("Inconsolable Wail", 2, 3, weight: 0, effect: AttackEffect.Stun, chance: 0.8f, vfx: "tiyanak_wail", signature: true),
+                    Atk("Inconsolable Wail", 2, 3, weight: 0, effect: AttackEffect.Stun, chance: 0.8f, vfx: "tiyanak_wail", signature: true,
+                        grid: GridEffectType.ScrambleAll),
                 } } },
 
             // Chapter 4: The Village Rooftops
@@ -294,7 +306,8 @@ namespace Orasyon.EditorTools
                 attacks = new[]
                 {
                     Atk("Grave Grip", 2, 4, weight: 3, crit: 0.15f, vfx: "amalanhig_grip"),
-                    Atk("Cold Touch", 2, 2, weight: 2, effect: AttackEffect.Leech, power: 100, vfx: "amalanhig_grip"),
+                    Atk("Cold Touch", 2, 2, weight: 1, effect: AttackEffect.Leech, power: 100, vfx: "amalanhig_grip"),
+                    Atk("Grave Curse", 1, 2, weight: 2, vfx: "amalanhig_grip", grid: GridEffectType.HexTiles, gridCount: 2, gridTurns: 3),
                 } } },
             { "wakwak", new Creature {
                 displayName = "Wak-Wak", hp = 40, size = 390f, hover = 40f,
@@ -306,19 +319,19 @@ namespace Orasyon.EditorTools
                     Atk("Talons",       2, 4, weight: 3, crit: 0.20f, vfx: "wakwak_talons"),
                     Atk("Rake",         2, 3, weight: 2, vfx: "wakwak_rake"),
                     Atk("Screech",      1, 1, weight: 1, effect: AttackEffect.Stun, chance: 0.4f, vfx: "wakwak_screech"),
-                    Atk("Feather Storm", 2, 3, weight: 1, effect: AttackEffect.Weaken, chance: 0.6f, turns: 2, power: 30, vfx: "wakwak_feathers", hit: "wakwak_featherhit"),
+                    Atk("Feather Storm", 2, 3, weight: 2, vfx: "wakwak_feathers", hit: "wakwak_featherhit", grid: GridEffectType.SmokeTiles, gridCount: 3, gridTurns: 3),
                 } } },
             { "manananggal", new Creature {
-                displayName = "Manananggal", hp = 140, size = 440f, hover = 40f,
+                displayName = "Manananggal", hp = 140, size = 440f, hover = 40f, mechanic = EnemyMechanic.Manananggal,
                 weak = new[] { "SALT", "GARLIC", "DAWN", "SUN", "ROOF" },
                 description = "By day she is a quiet neighbor. By night her body splits in two, and her wings carry her over the " +
-                              "rooftops in search of a victim. Salt on the lower half keeps her from ever becoming whole again.",
+                              "rooftops in search of a victim. Salt on the lower half keeps her from ever becoming whole again. While she flies, short words barely hurt her: spell long ones, or wait until she splits apart.",
                 attacks = new[]
                 {
                     Atk("Claw Swipe",  3, 4, weight: 3, crit: 0.20f, vfx: "manananggal_slash"),
                     Atk("Blood Drain", 2, 2, weight: 2, effect: AttackEffect.Leech, power: 100, vfx: "manananggal_mist"),
                     Atk("Night Wail",  2, 2, weight: 1, effect: AttackEffect.Weaken, chance: 0.4f, turns: 2, power: 30, vfx: "manananggal_mist"),
-                    Atk("Split Apart", 0, 0, weight: 1, effect: AttackEffect.Guard, turns: 2, power: 50, vfx: "manananggal_mist"),
+
                     Atk("Midnight Feast", 3, 4, weight: 0, effect: AttackEffect.Leech, power: 100, vfx: "manananggal_mist", signature: true),
                 } } },
 
@@ -332,6 +345,7 @@ namespace Orasyon.EditorTools
                 {
                     Atk("Flood Slam", 3, 4, weight: 3, crit: 0.10f, vfx: "berberoka_splash"),
                     Atk("Mud Glob",   2, 3, weight: 2, effect: AttackEffect.Poison, chance: 0.6f, turns: 2, power: 1, vfx: "berberoka_glob", travels: true, hit: "berberoka_splash"),
+                    Atk("Swallow",    1, 2, weight: 2, vfx: "berberoka_splash", grid: GridEffectType.VoidTiles, gridCount: 1),
                 } } },
             { "siyokoy", new Creature {
                 displayName = "Siyokoy", hp = 45, size = 390f,
@@ -344,12 +358,13 @@ namespace Orasyon.EditorTools
                     Atk("Tidal Wave",   3, 4, weight: 2, vfx: "siyokoy_wave"),
                     Atk("Geyser",       2, 3, weight: 1, effect: AttackEffect.Stun, chance: 0.4f, vfx: "siyokoy_geyser"),
                     Atk("Shell Guard",  0, 0, weight: 1, effect: AttackEffect.Guard, turns: 2, power: 50, vfx: "siyokoy_shell"),
+                    Atk("Sea Mist",     1, 1, weight: 2, vfx: "siyokoy_splash", grid: GridEffectType.SmokeTiles, gridCount: 3, gridTurns: 3),
                 } } },
             { "bakunawa", new Creature {
-                displayName = "Bakunawa", hp = 220, size = 470f,
+                displayName = "Bakunawa", hp = 220, size = 470f, mechanic = EnemyMechanic.Bakunawa, noSignatureCycle = true,
                 weak = new[] { "MOON", "ECLIPSE", "GONG", "SERPENT", "DRAGON" },
                 description = "The great sea serpent who swallows the moon. Long ago the people banged pots and gongs " +
-                              "until it spat the moon back out. Tonight there are no pots, only you and the Book of Orasyon.",
+                              "until it spat the moon back out. Tonight there are no pots, only you and the Book of Orasyon. Long words ring like gongs and push the eclipse back.",
                 attacks = new[]
                 {
                     Atk("Dragon Bite",  4, 6, weight: 3, crit: 0.20f, vfx: "bakunawa_wave"),

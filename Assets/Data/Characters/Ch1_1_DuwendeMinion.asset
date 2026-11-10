@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 43c42ddb2833ca84eb99970174a7eed8, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
@@ -41,10 +45,32 @@ MonoBehaviour:
     effectChance: 0.6
     effectTurns: 2
     effectPower: 30
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
+    vfx: {fileID: 11400000, guid: 43c42ddb2833ca84eb99970174a7eed8, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Pilfer
+    minDamage: 1
+    maxDamage: 1
+    critChance: 0
+    weight: 2
+    isSignature: 0
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    gridEffect: 1
+    gridEffectCount: 1
+    gridEffectTurns: 2
+    hits: 1
     vfx: {fileID: 11400000, guid: 43c42ddb2833ca84eb99970174a7eed8, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
   signatureEvery: 0
+  mechanic: 0
   description: A loyal little servant of the Duwende King, never far from the mound.
     He is mostly bark and very little bite, and he keeps dropping his club.
   themeWords:

@@ -28,6 +28,10 @@ MonoBehaviour:
     effectChance: 1
     effectTurns: 2
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 1d45b747a6185bd4fb0ebab283bd74f2, type: 2}
     vfxTravels: 1
     hitVfx: {fileID: 11400000, guid: a61c564e96260c147890e728e6cd4e6a, type: 2}
@@ -41,10 +45,32 @@ MonoBehaviour:
     effectChance: 0.6
     effectTurns: 3
     effectPower: 1
+    gridEffect: 0
+    gridEffectCount: 0
+    gridEffectTurns: 0
+    hits: 1
+    vfx: {fileID: 11400000, guid: 68ccfca747fccfc4e9a3664fd0d32e06, type: 2}
+    vfxTravels: 0
+    hitVfx: {fileID: 0}
+  - name: Will-o-wisp
+    minDamage: 1
+    maxDamage: 2
+    critChance: 0
+    weight: 2
+    isSignature: 0
+    effect: 0
+    effectChance: 1
+    effectTurns: 2
+    effectPower: 1
+    gridEffect: 4
+    gridEffectCount: 2
+    gridEffectTurns: 0
+    hits: 1
     vfx: {fileID: 11400000, guid: 68ccfca747fccfc4e9a3664fd0d32e06, type: 2}
     vfxTravels: 0
     hitVfx: {fileID: 0}
   signatureEvery: 0
+  mechanic: 0
   description: A drifting ball of cold blue fire that haunts the forest paths. Travelers
     who follow it in the dark are never quite sure where they end up.
   themeWords:

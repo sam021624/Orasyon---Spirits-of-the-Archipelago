@@ -79,6 +79,7 @@ namespace Orasyon.Battle
         {
             EnsureTiles();
             path.Clear();
+            stolen.Clear();
 
             for (int r = 0; r < rows; r++)
                 for (int c = 0; c < cols; c++)
@@ -88,6 +89,8 @@ namespace Orasyon.Battle
                     d.IsSelected = false;
                     d.IsHighlighted = false;
                     d.IsEmpty = false;
+                    d.IsStolen = false;
+                    d.Fresh = false;
                     d.Kind = TileKind.Normal;
                     d.TurnsLeft = 0;
                     d.View.Refresh();
@@ -232,7 +235,7 @@ namespace Orasyon.Battle
         public int RefillEmpty(int minWords)
         {
             EnsureTiles();
-            var empties = tiles.Cast<LetterTileData>().Where(t => t.IsEmpty && t.Kind != TileKind.Void).ToList();
+            var empties = tiles.Cast<LetterTileData>().Where(t => t.IsEmpty && t.Kind != TileKind.Void && !t.IsStolen).ToList();
             LastRefilled.Clear();
             if (empties.Count == 0) return 0;
 
@@ -323,6 +326,7 @@ namespace Orasyon.Battle
 
             if (kind == TileKind.Void)
             {
+                if (t.IsStolen) return;
                 t.IsSelected = false;
                 t.IsHighlighted = false;
                 t.IsEmpty = true;
@@ -334,6 +338,7 @@ namespace Orasyon.Battle
                 if (t.IsEmpty) return;
                 t.Kind = kind;
                 t.TurnsLeft = turns;
+                t.Fresh = TileKindInfo.IsBad(kind);   // placed this enemy turn: starts ticking / burning from the next one
             }
             t.View.Refresh();
             t.View.Pop();
@@ -358,7 +363,9 @@ namespace Orasyon.Battle
             int expired = 0;
             foreach (var t in AllTiles)
             {
-                if (t.IsEmpty || t.TurnsLeft <= 0) continue;
+                if (t.IsEmpty) continue;
+                if (t.Fresh) { t.Fresh = false; continue; }
+                if (t.TurnsLeft <= 0) continue;
                 if (t.Kind != TileKind.Smoked && t.Kind != TileKind.Locked && t.Kind != TileKind.Hex) continue;
                 t.TurnsLeft--;
                 if (t.TurnsLeft <= 0) { t.Kind = TileKind.Normal; expired++; }
@@ -366,6 +373,110 @@ namespace Orasyon.Battle
             }
             if (expired > 0) Changed();
             return expired;
+        }
+
+        /// <summary>Burning tiles that were not placed during this enemy turn (the ones that scorch the player now).</summary>
+        public int CountReadyBurning() => AllTiles.Count(t => !t.IsEmpty && t.Kind == TileKind.Burning && !t.Fresh);
+
+        // ── Stolen tiles (Duwende) ───────────────────────────────────────────
+        private sealed class StolenTile { public int row, col, turns; public char letter; public TileKind kind; public bool fresh; }
+        private readonly List<StolenTile> stolen = new List<StolenTile>();
+
+        public bool HasStolen => stolen.Count > 0;
+        public string StolenLetters => string.Join(", ", stolen.Select(s => s.letter));
+
+        /// <summary>
+        /// Pockets the <paramref name="count"/> most valuable tiles (special tiles first, then rare letters).
+        /// They leave empty slots that are not refilled, and come back after <paramref name="turns"/> enemy turns.
+        /// </summary>
+        public int StealTiles(int count, int turns)
+        {
+            var take = AllTiles
+                .Where(t => !t.IsEmpty && !t.IsSelected && t.Kind != TileKind.Void)
+                .OrderByDescending(t => LetterScoring.Value(t.Letter) + (TileKindInfo.IsGood(t.Kind) ? 3f : 0f))
+                .ThenBy(_ => rng.Next())
+                .Take(count)
+                .ToList();
+
+            foreach (var t in take)
+            {
+                stolen.Add(new StolenTile { row = t.Row, col = t.Col, turns = Mathf.Max(1, turns), letter = t.Letter, kind = t.Kind, fresh = true });
+                t.IsSelected = false;
+                t.IsHighlighted = false;
+                t.IsEmpty = true;
+                t.IsStolen = true;
+                t.Kind = TileKind.Normal;
+                t.TurnsLeft = 0;
+                t.View.Refresh();
+            }
+            if (take.Count > 0) Changed();
+            return take.Count;
+        }
+
+        /// <summary>Counts down the pocketed tiles; those that are due drop back in. Returns how many came back.</summary>
+        public int TickStolen()
+        {
+            int back = 0;
+            for (int i = stolen.Count - 1; i >= 0; i--)
+            {
+                if (stolen[i].fresh) { stolen[i].fresh = false; continue; }   // the turn it was taken does not count
+                stolen[i].turns--;
+                if (stolen[i].turns > 0) continue;
+                ReturnOne(stolen[i]);
+                stolen.RemoveAt(i);
+                back++;
+            }
+            return back;
+        }
+
+        public int ReturnAllStolen()
+        {
+            int n = stolen.Count;
+            foreach (var s in stolen) ReturnOne(s);
+            stolen.Clear();
+            return n;
+        }
+
+        private void ReturnOne(StolenTile s)
+        {
+            var t = tiles[s.row, s.col];
+            t.IsStolen = false;
+            t.IsEmpty = false;
+            t.Letter = s.letter;
+            t.Kind = s.kind;
+            t.TurnsLeft = 0;
+            t.View.Refresh();
+            Vector2 pos = CellPosition(s.row, s.col);
+            t.View.Place(pos + Vector2.up * DropHeight);
+            t.View.MoveTo(pos);
+            Changed();
+        }
+
+        // ── Voids (Berberoka, Bakunawa) ──────────────────────────────────────
+        /// <summary>Turns every hole back into an empty slot so the next refill fills it. Returns how many.</summary>
+        public int RestoreVoids()
+        {
+            int n = 0;
+            foreach (var t in AllTiles)
+            {
+                if (t.Kind != TileKind.Void) continue;
+                t.Kind = TileKind.Normal;   // still IsEmpty: RefillEmpty drops a new letter in
+                t.View.Refresh();
+                n++;
+            }
+            return n;
+        }
+
+        /// <summary>
+        /// A last resort when enemy effects have left no word on the board: lifts locks, returns stolen tiles
+        /// and fills the holes. Returns true if anything changed.
+        /// </summary>
+        public bool EmergencyRelief()
+        {
+            bool changed = ClearBadTiles(smokeAndLockOnly: true) > 0;
+            if (ReturnAllStolen() > 0) changed = true;
+            if (RestoreVoids() > 0) { RefillEmpty(1); changed = true; }
+            return changed;
         }
 
         /// <summary>

@@ -2,6 +2,14 @@ using UnityEngine;
 
 namespace Orasyon.Battle
 {
+    /// <summary>A rule that belongs to one creature and is more than a single move.</summary>
+    public enum EnemyMechanic
+    {
+        None,
+        Manananggal,   // Airborne / Grounded: takes less from short words, then is exposed for a turn
+        Bakunawa       // Eclipse meter, tiles swallowed every turn, three phases, Total Eclipse
+    }
+
     /// <summary>
     /// Data for one combatant (the player or an enemy): stats plus animation clips.
     /// Each clip is one sprite-sheet strip (see <see cref="FrameClip"/>).
@@ -24,6 +32,8 @@ namespace Orasyon.Battle
         public EnemyAttack[] attacks;
         [Tooltip("Bosses: every Nth enemy turn is the signature move (an attack flagged 'Is Signature'). 0 = never.")]
         public int signatureEvery = 3;
+        [Tooltip("Creature-specific rule (Manananggal's flight, the Bakunawa's eclipse).")]
+        public EnemyMechanic mechanic;
 
         /// <summary>The attack list, or a single plain attack built from attackName / attackDamage.</summary>
         public EnemyAttack[] GetAttacks()
