@@ -24,6 +24,10 @@ namespace Orasyon.UI
         [SerializeField] private GameObject firstSelected;
         [Tooltip("Shown only when the player has unlocked more than Chapter 1.")]
         [SerializeField] private GameObject continueButton;
+        [Header("Extra panels")]
+        [SerializeField] private GameObject chapterRoot;
+        [SerializeField] private ChapterSelectController chapterSelect;
+        [SerializeField] private SettingsPanel settings;
 
         [Header("Motion")]
         [SerializeField] private float titleBobHeight = 8f;
@@ -59,6 +63,8 @@ namespace Orasyon.UI
 
         private void Start()
         {
+            if (chapterRoot != null) chapterRoot.SetActive(false);
+            if (chapterSelect != null) chapterSelect.OnChapterChosen += LoadChapter;
             StartCoroutine(IntroRoutine());
             RefreshContinue();
             Select(continueButton != null && continueButton.activeSelf ? continueButton : firstSelected);
@@ -83,10 +89,11 @@ namespace Orasyon.UI
             }
 
             if (UnityEngine.InputSystem.Keyboard.current != null
-                && UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame
-                && howToVisible)
+                && UnityEngine.InputSystem.Keyboard.current.escapeKey.wasPressedThisFrame)
             {
-                HideHowTo();
+                if (settings != null && settings.IsOpen) settings.Close();
+                else if (chapterRoot != null && chapterRoot.activeSelf) HideChapters();
+                else if (howToVisible) HideHowTo();
             }
         }
 
@@ -111,6 +118,36 @@ namespace Orasyon.UI
             busy = true;
             firstSceneName = "Level" + Orasyon.Battle.PlayerProgress.HighestStage;
             StartCoroutine(LoadSceneRoutine());
+        }
+
+        /// <summary>Starts the chosen chapter directly (replaying keeps the treasures you already have).</summary>
+        public void LoadChapter(int chapter)
+        {
+            if (busy) return;
+            busy = true;
+            firstSceneName = "Level" + Mathf.Clamp(chapter, 1, Orasyon.Battle.PlayerProgress.FinalStage);
+            StartCoroutine(LoadSceneRoutine());
+        }
+
+        public void ShowChapters()
+        {
+            if (busy || chapterRoot == null) return;
+            chapterRoot.SetActive(true);
+            chapterRoot.transform.SetAsLastSibling();
+            if (fadeGroup != null) fadeGroup.transform.SetAsLastSibling();
+            if (chapterSelect != null) chapterSelect.Refresh();
+        }
+
+        public void HideChapters()
+        {
+            if (chapterRoot != null) chapterRoot.SetActive(false);
+        }
+
+        public void ShowSettings()
+        {
+            if (busy || settings == null) return;
+            settings.Open();
+            if (fadeGroup != null) fadeGroup.transform.SetAsLastSibling();
         }
 
         public void ShowHowTo()

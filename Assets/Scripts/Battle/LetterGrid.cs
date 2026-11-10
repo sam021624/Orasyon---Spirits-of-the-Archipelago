@@ -136,6 +136,7 @@ namespace Orasyon.Battle
                     path[i].View.Refresh();
                     path.RemoveAt(i);
                 }
+                AudioManager.Play(Sfx.Deselect);
                 Changed();
                 return;
             }
@@ -144,7 +145,43 @@ namespace Orasyon.Battle
             tile.IsSelected = true;
             path.Add(tile);
             tile.View.Refresh();
+            AudioManager.Play(Sfx.Select);
             Changed();
+        }
+
+        /// <summary>True while the player may touch the board (not during the enemy turn, tutorial locks or a pause).</summary>
+        public bool InputAllowed
+        {
+            get
+            {
+                var group = GetComponentInParent<CanvasGroup>();
+                return group == null || group.interactable;
+            }
+        }
+
+        /// <summary>Keyboard play: selects the first free tile showing the letter. Returns false if there is none.</summary>
+        public bool TrySelectLetter(char letter)
+        {
+            if (!InputAllowed) return false;
+            EnsureTiles();
+            letter = char.ToUpperInvariant(letter);
+            for (int r = 0; r < rows; r++)
+                for (int c = 0; c < cols; c++)
+                {
+                    var t = tiles[r, c];
+                    if (t.IsSelectable && !t.IsSelected && char.ToUpperInvariant(t.Letter) == letter)
+                    {
+                        OnTileClicked(t);
+                        return true;
+                    }
+                }
+            return false;
+        }
+
+        /// <summary>Keyboard play: Backspace removes the last picked letter.</summary>
+        public void RemoveLastSelected()
+        {
+            if (path.Count > 0 && InputAllowed) RemoveFromSelection(path.Count - 1);
         }
 
         /// <summary>The tiles of the current word, in the order they were picked.</summary>

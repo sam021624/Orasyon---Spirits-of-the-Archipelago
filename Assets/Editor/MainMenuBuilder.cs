@@ -37,6 +37,7 @@ namespace Orasyon.EditorTools
         [MenuItem("Tools/Orasyon/Rebuild Main Menu")]
         public static void Build()
         {
+            MoveIconAssets.Ensure();   // the star and lock icons used by the chapter cards
             rounded  = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
             panel    = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
             softGlow = MakeRadialSprite("soft_glow", 128, (d) => Mathf.Pow(Mathf.Clamp01(1f - d), 2.2f));
@@ -150,10 +151,12 @@ namespace Orasyon.EditorTools
             var menu = Node("MenuGroup", canvas);
             Anchor(menu, Center, new Vector2(0, -150), new Vector2(460, 320));
             var menuGroup = menu.gameObject.AddComponent<CanvasGroup>();
-            var cont  = MenuButton(menu, "ContinueBtn", "CONTINUE", new Vector2(0, 200), true);   // hidden until a chapter is unlocked
-            var start = MenuButton(menu, "StartGameBtn", "START GAME", new Vector2(0, 100), false);
-            var howTo = MenuButton(menu, "HowtoPlayBtn", "HOW TO PLAY", new Vector2(0, 0), false);
-            var quit  = MenuButton(menu, "QuitBtn", "QUIT", new Vector2(0, -100), false);
+            var cont     = MenuButton(menu, "ContinueBtn", "CONTINUE", new Vector2(0, 220), true);   // hidden until a chapter is unlocked
+            var start    = MenuButton(menu, "StartGameBtn", "START GAME", new Vector2(0, 136), false);
+            var chapters = MenuButton(menu, "ChaptersBtn", "CHAPTERS", new Vector2(0, 52), false);
+            var howTo    = MenuButton(menu, "HowtoPlayBtn", "HOW TO PLAY", new Vector2(0, -32), false);
+            var settingsBtn = MenuButton(menu, "SettingsBtn", "SETTINGS", new Vector2(0, -116), false);
+            var quit     = MenuButton(menu, "QuitBtn", "QUIT", new Vector2(0, -200), false);
 
             var footer = Text("Footer", canvas, "A word battle through Philippine folklore", 20, new Color(0.80f, 0.82f, 0.95f, 0.7f), FontStyles.Italic);
             Anchor(footer.rectTransform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 26), new Vector2(900, 30));
@@ -174,7 +177,7 @@ namespace Orasyon.EditorTools
             {
                 "Click <b>any letters</b>, in any order, to spell a word of 3+ letters.",
                 "Only real words light up <b>Attack</b>. Longer words and rare letters hit harder.",
-                "Used tiles are removed. <b>Scramble</b> shuffles the tiles you have left.",
+                "Used tiles are replaced with new letters. <b>Scramble</b> shuffles the board (3 per foe).",
                 "Words of 5+ letters earn <b>potions</b>: red heals, green wards, blue doubles damage.",
                 "Defeat each creature, then face the <b>boss</b> at the end of the chapter.",
             };
@@ -192,6 +195,104 @@ namespace Orasyon.EditorTools
             var closeRt = (RectTransform)close.transform;
             Anchor(closeRt, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 28), new Vector2(300, 70));
 
+            // ── Chapter select ───────────────────────────────────────────────
+            var chRoot = Node("ChaptersRoot", canvas);
+            Stretch(chRoot);
+            var chDim = Img("Dimmer", chRoot, new Color(0, 0, 0, 0.82f));
+            Stretch(chDim.rectTransform);
+            chDim.raycastTarget = true;
+            var chBox = Img("Panel", chRoot, Wood, panel);
+            Anchor(chBox.rectTransform, Center, Vector2.zero, new Vector2(1820, 780));
+            AddOutline(chBox.gameObject, Gold, 3);
+            var chTitle = Text("Title", chBox.transform, "CHAPTERS", 46, Gold, FontStyles.Bold);
+            Anchor(chTitle.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -24), new Vector2(800, 60));
+            chTitle.characterSpacing = 10;
+            var chTotal = Text("TotalStars", chBox.transform, "Stars: 0 / 15", 26, Cream, FontStyles.Bold);
+            Anchor(chTotal.rectTransform, new Vector2(1, 1), new Vector2(1, 1), new Vector2(1, 1), new Vector2(-40, -38), new Vector2(320, 40));
+            chTotal.alignment = TextAlignmentOptions.MidlineRight;
+
+            string[] chNames  = { "The Backyard Mound", "The Old Balete", "The Deep Forest", "The Village Rooftops", "The Cosmic Ocean" };
+            string[] chBosses = { "Duwende King", "Kapre", "Tiyanak", "Manananggal", "Bakunawa" };
+            int[]    chPacks  = { 1, 6, 5, 2, 7 };
+            var starSprite = AssetDatabase.LoadAllAssetsAtPath("Assets/Resources/MoveIcons/star.png").OfType<Sprite>().FirstOrDefault();
+            var lockSprite = AssetDatabase.LoadAllAssetsAtPath("Assets/Resources/MoveIcons/lock.png").OfType<Sprite>().FirstOrDefault();
+            var cardsArray = new (Button button, GameObject lockObj, Image[] stars, TextMeshProUGUI best)[5];
+            for (int i = 0; i < 5; i++)
+            {
+                var card = Img("Card_" + (i + 1), chBox.transform, new Color(0.25f, 0.15f, 0.09f, 1f), panel);
+                card.raycastTarget = true;
+                Anchor(card.rectTransform, Center, new Vector2((i - 2) * 350, -10), new Vector2(330, 560));
+                AddOutline(card.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.6f), 2);
+                var cardBtn = card.gameObject.AddComponent<Button>();
+                cardBtn.targetGraphic = card;
+                var cc = cardBtn.colors;
+                cc.normalColor = Color.white; cc.highlightedColor = new Color(1.12f, 1.08f, 0.95f, 1f); cc.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+                cc.disabledColor = new Color(0.55f, 0.55f, 0.55f, 1f); cc.fadeDuration = 0.08f;
+                cardBtn.colors = cc;
+
+                var thumb = Node("Thumbnail", card.transform);
+                Anchor(thumb, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -14), new Vector2(302, 170));
+                var raw = thumb.gameObject.AddComponent<RawImage>();
+                raw.texture = Load<Texture2D>($"Assets/Sprites/Terrains/{chPacks[i]}/2304x1296.png");
+                raw.uvRect = new Rect(0.12f, 0.1f, 0.76f, 0.8f);
+                raw.raycastTarget = false;
+
+                var num = Text("Number", card.transform, "CHAPTER " + (i + 1), 22, Gold, FontStyles.Bold);
+                Anchor(num.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -196), new Vector2(300, 30));
+                num.characterSpacing = 4;
+                var nm = Text("Name", card.transform, chNames[i], 27, Cream, FontStyles.Bold);
+                Anchor(nm.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -228), new Vector2(300, 74));
+                var boss = Text("Boss", card.transform, "Boss: " + chBosses[i], 20, new Color(1f, 0.55f, 0.50f), FontStyles.Italic);
+                Anchor(boss.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -312), new Vector2(300, 28));
+
+                var starsRow = Node("Stars", card.transform);
+                Anchor(starsRow, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -352), new Vector2(240, 64));
+                var starImgs = new Image[3];
+                for (int s = 0; s < 3; s++)
+                {
+                    var st = Img("Star_" + (s + 1), starsRow, new Color(0.22f, 0.15f, 0.08f), starSprite);
+                    st.type = Image.Type.Simple; st.preserveAspect = true;
+                    Anchor(st.rectTransform, Center, new Vector2((s - 1) * 78, 0), new Vector2(64, 64));
+                    starImgs[s] = st;
+                }
+                var best = Text("BestWord", card.transform, "", 19, new Color(0.62f, 0.95f, 0.58f), FontStyles.Normal);
+                Anchor(best.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -430), new Vector2(300, 52));
+
+                var lockCover = Img("Locked", card.transform, new Color(0.02f, 0.01f, 0.01f, 0.72f));
+                Stretch(lockCover.rectTransform);
+                lockCover.raycastTarget = false;
+                var lockIcon = Img("Icon", lockCover.transform, Color.white, lockSprite);
+                lockIcon.type = Image.Type.Simple; lockIcon.preserveAspect = true;
+                Anchor(lockIcon.rectTransform, Center, new Vector2(0, 40), new Vector2(120, 120));
+                var lockText = Text("Text", lockCover.transform, "LOCKED", 28, Cream, FontStyles.Bold);
+                Anchor(lockText.rectTransform, Center, new Vector2(0, -50), new Vector2(300, 40));
+                lockText.characterSpacing = 6;
+
+                cardsArray[i] = (cardBtn, lockCover.gameObject, starImgs, best);
+            }
+            var chBack = MenuButton(chBox.transform, "ChaptersBackButton", "BACK", Vector2.zero, true);
+            Anchor((RectTransform)chBack.transform, new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0.5f, 0), new Vector2(0, 24), new Vector2(300, 66));
+
+            var chSelect = chRoot.gameObject.AddComponent<ChapterSelectController>();
+            var chSo = new SerializedObject(chSelect);
+            chSo.FindProperty("totalLabel").objectReferenceValue = chTotal;
+            var cardsProp = chSo.FindProperty("cards");
+            cardsProp.arraySize = 5;
+            for (int i = 0; i < 5; i++)
+            {
+                var el = cardsProp.GetArrayElementAtIndex(i);
+                el.FindPropertyRelative("button").objectReferenceValue = cardsArray[i].button;
+                el.FindPropertyRelative("lockOverlay").objectReferenceValue = cardsArray[i].lockObj;
+                el.FindPropertyRelative("bestWord").objectReferenceValue = cardsArray[i].best;
+                var stars = el.FindPropertyRelative("stars");
+                stars.arraySize = 3;
+                for (int s = 0; s < 3; s++) stars.GetArrayElementAtIndex(s).objectReferenceValue = cardsArray[i].stars[s];
+            }
+            chSo.ApplyModifiedPropertiesWithoutUndo();
+
+            // ── Settings ─────────────────────────────────────────────────────
+            var settingsPanel = SettingsPanelBuilder.Build(canvas);
+
             // ── Fade overlay + controller ────────────────────────────────────
             var fade = Img("FadeOverlay", canvas, Color.black);
             Stretch(fade.rectTransform);
@@ -208,19 +309,28 @@ namespace Orasyon.EditorTools
             c.FindProperty("howToGroup").objectReferenceValue = howGroup;
             c.FindProperty("firstSelected").objectReferenceValue = start.gameObject;
             c.FindProperty("continueButton").objectReferenceValue = cont.gameObject;
+            c.FindProperty("chapterRoot").objectReferenceValue = chRoot.gameObject;
+            c.FindProperty("chapterSelect").objectReferenceValue = chSelect;
+            c.FindProperty("settings").objectReferenceValue = settingsPanel;
             c.ApplyModifiedPropertiesWithoutUndo();
 
             UnityEventTools.AddPersistentListener(start.onClick, ctrl.StartGame);
             UnityEventTools.AddPersistentListener(cont.onClick, ctrl.ContinueGame);
             UnityEventTools.AddPersistentListener(howTo.onClick, ctrl.ShowHowTo);
+            UnityEventTools.AddPersistentListener(chapters.onClick, ctrl.ShowChapters);
+            UnityEventTools.AddPersistentListener(settingsBtn.onClick, ctrl.ShowSettings);
+            UnityEventTools.AddPersistentListener(chBack.onClick, ctrl.HideChapters);
             UnityEventTools.AddPersistentListener(quit.onClick, ctrl.QuitGame);
             UnityEventTools.AddPersistentListener(close.onClick, ctrl.HideHowTo);
 
             // Draw order: menu above decorations, how-to and fade on top
             howRoot.SetAsLastSibling();
+            chRoot.SetAsLastSibling();
+            settingsPanel.transform.SetAsLastSibling();
             fade.transform.SetAsLastSibling();
             ctrlGo.SetAsLastSibling();
             howRoot.gameObject.SetActive(false);
+            chRoot.gameObject.SetActive(false);
 
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);

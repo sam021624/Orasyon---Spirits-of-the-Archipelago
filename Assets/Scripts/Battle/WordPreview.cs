@@ -27,6 +27,7 @@ namespace Orasyon.Battle
         /// <summary>Optional: a full breakdown line ("11 damage (base 7 x1.5 weakness)") that replaces the plain number.</summary>
         public static System.Func<string, string> DamageDescriber;
 
+        [SerializeField] private Color powerTile  = new Color(1f, 0.84f, 0.33f);
         [SerializeField] private Color rejectTile = new Color(0.95f, 0.45f, 0.40f);
         private Coroutine rejectRoutine;
         private bool      rejecting;
@@ -92,6 +93,7 @@ namespace Orasyon.Battle
                 var img = pool[i].GetComponent<Image>();
                 img.color = rejecting ? rejectTile
                           : kind != TileKind.Normal ? TileKindInfo.Fill(kind)
+                          : valid && StatusWordDatabase.Get(word) != null ? powerTile
                           : valid ? validTile : normalTile;
 
                 // Tapping a letter in the word sends that tile back to the board (like Bookworm Adventures)
@@ -128,6 +130,8 @@ namespace Orasyon.Battle
                                                           : Mathf.RoundToInt(LetterScoring.Damage(word) * PlayerProgress.DamageMultiplier);
                         hintLabel.text = $"{dmg} damage{tier}";
                     }
+                    var power = StatusWordDatabase.Get(word);
+                    if (power != null) hintLabel.text += "  <color=#FFD54A>Word of Power: " + power.Describe() + "</color>";
                 }
             }
         }

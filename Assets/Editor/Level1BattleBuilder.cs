@@ -461,15 +461,29 @@ namespace Orasyon.EditorTools
             var result = Panel("ResultPanel", canvas, new Color(0, 0, 0, 0.75f));
             Stretch(result.rectTransform);
             var resultBox = Panel("Box", result.transform, Wood, panelSprite);
-            Anchor(resultBox.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(680, 470));
+            Anchor(resultBox.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(700, 610));
             AddOutline(resultBox.gameObject, Gold, 3);
             var resultTitle = Text("Title", resultBox.transform, "Chapter Complete!", 48, Gold, TextAlignmentOptions.Center, FontStyles.Bold);
             Anchor(resultTitle.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -24), new Vector2(640, 64));
-            var resultBody = Text("Body", resultBox.transform, "", 24, Cream, TextAlignmentOptions.Center);
-            Anchor(resultBody.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -100), new Vector2(620, 110));
+            // Stars (earned on a win)
+            var starsRow = Node("Stars", resultBox.transform);
+            Anchor(starsRow, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -92), new Vector2(300, 84));
+            var starSprite = AssetDatabase.LoadAllAssetsAtPath("Assets/Resources/MoveIcons/star.png").OfType<Sprite>().FirstOrDefault();
+            var starImages = new Image[3];
+            for (int i = 0; i < 3; i++)
+            {
+                var star = Panel("Star_" + (i + 1), starsRow, new Color(0.22f, 0.15f, 0.08f), starSprite);
+                star.type = Image.Type.Simple; star.preserveAspect = true; star.raycastTarget = false;
+                Anchor(star.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2((i - 1) * 100, 0), new Vector2(84, 84));
+                starImages[i] = star;
+            }
+            var resultBody = Text("Body", resultBox.transform, "", 22, Cream, TextAlignmentOptions.Center);
+            Anchor(resultBody.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -186), new Vector2(640, 90));
+            var resultStats = Text("Stats", resultBox.transform, "", 19, new Color(0.62f, 0.95f, 0.58f), TextAlignmentOptions.Center, FontStyles.Normal);
+            Anchor(resultStats.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -282), new Vector2(660, 56));
             // Reward row: the boss's treasure (hidden on defeat)
             var rewardRow = Panel("Reward", resultBox.transform, WoodDark, panelSprite);
-            Anchor(rewardRow.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -222), new Vector2(600, 120));
+            Anchor(rewardRow.rectTransform, new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0.5f, 1), new Vector2(0, -352), new Vector2(620, 112));
             AddOutline(rewardRow.gameObject, new Color(Gold.r, Gold.g, Gold.b, 0.6f), 1);
             var rewardIcon = Panel("Icon", rewardRow.transform, Color.white);
             rewardIcon.type = Image.Type.Simple; rewardIcon.preserveAspect = true;
@@ -577,6 +591,10 @@ namespace Orasyon.EditorTools
             Set(m, "resultPanel", result.gameObject);
             Set(m, "resultTitle", resultTitle);
             Set(m, "resultBody", resultBody);
+            Set(m, "resultStats", resultStats);
+            var starProp = m.FindProperty("resultStars");
+            starProp.arraySize = 3;
+            for (int i = 0; i < 3; i++) starProp.GetArrayElementAtIndex(i).objectReferenceValue = starImages[i];
             Set(m, "retryButton", retry);
             Set(m, "resultMenuButton", resultMenu);
             Set(m, "bossReward", Load<TreasureDefinition>(TreasureFolder + spec.rewardAsset + ".asset"));

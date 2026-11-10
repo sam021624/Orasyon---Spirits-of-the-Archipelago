@@ -65,10 +65,10 @@ Order of work: art, VFX and the refill fix first, then all five stages playable 
   - [x] 5.5 Stage 5: Berberoka Swallow (void) and Siyokoy Sea Mist (smoke), Void tiles, Bakunawa eclipse meter (status line, rises each turn), phases at 66% and 33% HP, Total Eclipse at 7 (ignores the ward, releases every swallowed tile), the 6+/8+ letter gong rule, and the background veil that darkens with the meter.
   - [x] 5.6 Checkpoint: each stage uses its mechanic and can be won with the Orasyon counter.
 
-- [ ] 6. Optional: Phase D and F polish
-  - [ ] 6.1 Chapter Select, stars, defeat/victory stats.
-  - [ ] 6.2 `AudioManager` with SFX and music hooks (use the `sfxHook` on `VfxDefinition`).
-  - [ ] 6.3 Pause menu, keyboard play, status words.
+- [x] 6. Optional: Phase D and F polish
+  - [x] 6.1 Chapter Select, stars, defeat/victory stats.
+  - [x] 6.2 `AudioManager` with SFX and music hooks (use the `sfxHook` on `VfxDefinition`).
+  - [x] 6.3 Pause menu, keyboard play, status words.
   - [ ] 6.4 Balance playtests and 60 FPS profile; remove the old `Characters` folder once nothing references it (ask first).
 
 ## Open questions for you

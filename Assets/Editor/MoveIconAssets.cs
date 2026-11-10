@@ -35,6 +35,7 @@ namespace Orasyon.EditorTools
             Make("hex",    Rune);
             Make("scramble", Swirl);
             Make("void",   BlackHole);
+            Make("star",   Star);
             AssetDatabase.SaveAssets();
         }
 
@@ -207,6 +208,15 @@ namespace Orasyon.EditorTools
                 if (Mathf.Abs(r - target) <= 1.5f) return a > 8f ? new Color(0.62f, 0.95f, 0.92f) : new Color(0.30f, 0.76f, 0.80f);
             }
             return Color.clear;
+        }
+
+        private static Color Star(int x, int y)
+        {
+            float dx = x - 15.5f, dy = y - 14.5f, r = Mathf.Sqrt(dx * dx + dy * dy);
+            float theta = Mathf.Atan2(dy, dx);
+            float edge = 6.5f + 8.5f * Mathf.Pow(0.5f + 0.5f * Mathf.Cos(5f * (theta - Mathf.PI * 0.5f)), 1.4f);
+            if (r > edge) return Color.clear;
+            return dx - dy * 0.3f < -2f && r > 3f ? new Color(1f, 0.93f, 0.55f) : new Color(0.98f, 0.76f, 0.22f);
         }
 
         private static Color BlackHole(int x, int y)

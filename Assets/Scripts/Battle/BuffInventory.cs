@@ -90,6 +90,13 @@ namespace Orasyon.Battle
             return best;
         }
 
+        /// <summary>Keyboard shortcut: drinks a potion of this type if there is one.</summary>
+        public void TryUse(BuffType type)
+        {
+            foreach (var slot in slots)
+                if (slot.type == type) { Use(slot); return; }
+        }
+
         private void Use(BuffSlot slot)
         {
             if (!interactable || Count(slot.type) <= 0) return;

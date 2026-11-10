@@ -1,31 +1,7 @@
 fileFormatVersion: 2
 guid: 396a4ad572c1a8140a1d71ab2da93f81
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: 8165578091554483688
-    second: amalanhig_idle_0
-  - first:
-      213: 8356054773444626460
-    second: amalanhig_idle_1
-  - first:
-      213: 6772451378781005300
-    second: amalanhig_idle_2
-  - first:
-      213: 3048424256882733115
-    second: amalanhig_idle_3
-  - first:
-      213: 6224936416051059686
-    second: amalanhig_idle_4
-  - first:
-      213: -610256628573545809
-    second: amalanhig_idle_5
-  - first:
-      213: 2242599916200170161
-    second: amalanhig_idle_6
-  - first:
-      213: -5824461081554158648
-    second: amalanhig_idle_7
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,183 +108,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: amalanhig_idle_0
-      rect:
-        serializedVersion: 2
-        x: 30
-        y: 13
-        width: 141
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8ed21dcd206f15170800000000000000
-      internalID: 8165578091554483688
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_idle_1
-      rect:
-        serializedVersion: 2
-        x: 283
-        y: 14
-        width: 141
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c18cfde4b8ba6f370800000000000000
-      internalID: 8356054773444626460
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_idle_2
-      rect:
-        serializedVersion: 2
-        x: 538
-        y: 14
-        width: 141
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4f5a8d2a5a49cfd50800000000000000
-      internalID: 6772451378781005300
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_idle_3
-      rect:
-        serializedVersion: 2
-        x: 795
-        y: 14
-        width: 141
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: b30fd2cd5bd2e4a20800000000000000
-      internalID: 3048424256882733115
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_idle_4
-      rect:
-        serializedVersion: 2
-        x: 1054
-        y: 13
-        width: 141
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6ebdd1470ba636650800000000000000
-      internalID: 6224936416051059686
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_idle_5
-      rect:
-        serializedVersion: 2
-        x: 1313
-        y: 12
-        width: 141
-        height: 227
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: faadb0064dee787f0800000000000000
-      internalID: -610256628573545809
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_idle_6
-      rect:
-        serializedVersion: 2
-        x: 1571
-        y: 12
-        width: 140
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 1b29e62fdb05f1f10800000000000000
-      internalID: 2242599916200170161
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_idle_7
-      rect:
-        serializedVersion: 2
-        x: 1825
-        y: 12
-        width: 141
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8cb70e1718b5b2fa0800000000000000
-      internalID: -5824461081554158648
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     customData: 
     physicsShape: []
@@ -322,15 +122,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      amalanhig_idle_0: 8165578091554483688
-      amalanhig_idle_1: 8356054773444626460
-      amalanhig_idle_2: 6772451378781005300
-      amalanhig_idle_3: 3048424256882733115
-      amalanhig_idle_4: 6224936416051059686
-      amalanhig_idle_5: -610256628573545809
-      amalanhig_idle_6: 2242599916200170161
-      amalanhig_idle_7: -5824461081554158648
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,0 +1,22 @@
+# Words of Power. Format: WORD,EFFECT,TURNS,POWER
+# Effects: poison and burn (POWER damage to the enemy at the start of each of its turns, for TURNS turns),
+#          stun (the enemy loses TURNS turns; bosses are immune), heal (POWER hearts back for you).
+# Every word must also be in words.txt. Bosses take damage-over-time for half as long.
+VENOM,poison,3,2
+TOXIN,poison,3,2
+POISON,poison,4,2
+BLAZE,burn,3,2
+FLAME,burn,3,2
+EMBER,burn,2,2
+TORCH,burn,3,2
+INFERNO,burn,4,3
+SLEEP,stun,1,0
+SLUMBER,stun,1,0
+FREEZE,stun,1,0
+FROST,stun,1,0
+CHAIN,stun,1,0
+HEAL,heal,0,3
+HERB,heal,0,3
+TONIC,heal,0,4
+SALVE,heal,0,4
+REMEDY,heal,0,5

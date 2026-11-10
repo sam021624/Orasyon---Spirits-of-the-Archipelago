@@ -1,31 +1,7 @@
 fileFormatVersion: 2
 guid: 556da8687edce09409826c7d98ee4a1d
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: 2398574073749808115
-    second: amalanhig_walking_0
-  - first:
-      213: 6085940650071993967
-    second: amalanhig_walking_1
-  - first:
-      213: 39558312275904073
-    second: amalanhig_walking_2
-  - first:
-      213: 7652970618276831630
-    second: amalanhig_walking_3
-  - first:
-      213: -6085608885645876254
-    second: amalanhig_walking_4
-  - first:
-      213: -2400866458467537128
-    second: amalanhig_walking_5
-  - first:
-      213: -1440352030662045830
-    second: amalanhig_walking_6
-  - first:
-      213: 4143316665197373161
-    second: amalanhig_walking_7
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,183 +108,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: amalanhig_walking_0
-      rect:
-        serializedVersion: 2
-        x: 30
-        y: 10
-        width: 141
-        height: 228
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3f3a1517962794120800000000000000
-      internalID: 2398574073749808115
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_walking_1
-      rect:
-        serializedVersion: 2
-        x: 283
-        y: 24
-        width: 142
-        height: 227
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f6ea6abc6ca957450800000000000000
-      internalID: 6085940650071993967
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_walking_2
-      rect:
-        serializedVersion: 2
-        x: 538
-        y: 10
-        width: 142
-        height: 229
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9468e1f431a8c8000800000000000000
-      internalID: 39558312275904073
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_walking_3
-      rect:
-        serializedVersion: 2
-        x: 795
-        y: 24
-        width: 142
-        height: 227
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: e8164eaea30d43a60800000000000000
-      internalID: 7652970618276831630
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_walking_4
-      rect:
-        serializedVersion: 2
-        x: 1054
-        y: 9
-        width: 141
-        height: 229
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2e3ed1126f29b8ba0800000000000000
-      internalID: -6085608885645876254
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_walking_5
-      rect:
-        serializedVersion: 2
-        x: 1313
-        y: 23
-        width: 140
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 81f64e52da86eaed0800000000000000
-      internalID: -2400866458467537128
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_walking_6
-      rect:
-        serializedVersion: 2
-        x: 1570
-        y: 9
-        width: 141
-        height: 228
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a7f40ec9577d20ce0800000000000000
-      internalID: -1440352030662045830
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: amalanhig_walking_7
-      rect:
-        serializedVersion: 2
-        x: 1825
-        y: 23
-        width: 140
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9e6ab050e84008930800000000000000
-      internalID: 4143316665197373161
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     customData: 
     physicsShape: []
@@ -322,15 +122,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      amalanhig_walking_0: 2398574073749808115
-      amalanhig_walking_1: 6085940650071993967
-      amalanhig_walking_2: 39558312275904073
-      amalanhig_walking_3: 7652970618276831630
-      amalanhig_walking_4: -6085608885645876254
-      amalanhig_walking_5: -2400866458467537128
-      amalanhig_walking_6: -1440352030662045830
-      amalanhig_walking_7: 4143316665197373161
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

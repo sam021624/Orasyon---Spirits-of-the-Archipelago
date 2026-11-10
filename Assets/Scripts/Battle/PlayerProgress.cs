@@ -70,12 +70,45 @@ namespace Orasyon.Battle
             PlayerPrefs.Save();
         }
 
+        // ── Stars and records per chapter (kept when a new game starts, like the best scores of an arcade) ──
+        private static string StarKey(int chapter) => "orasyon.stars." + chapter;
+        private static string WordKey(int chapter) => "orasyon.bestWord." + chapter;
+
+        public static int BestStars(int chapter) => Mathf.Clamp(PlayerPrefs.GetInt(StarKey(chapter), 0), 0, 3);
+
+        public static string BestWord(int chapter) => PlayerPrefs.GetString(WordKey(chapter), "");
+
+        /// <summary>Stores the result of a won chapter. Only improvements are saved.</summary>
+        public static void RecordResult(int chapter, int stars, string longestWord)
+        {
+            if (stars > BestStars(chapter)) PlayerPrefs.SetInt(StarKey(chapter), stars);
+            if (!string.IsNullOrEmpty(longestWord) && longestWord.Length > BestWord(chapter).Length)
+                PlayerPrefs.SetString(WordKey(chapter), longestWord);
+            PlayerPrefs.Save();
+        }
+
+        public static int TotalStars()
+        {
+            int n = 0;
+            for (int c = 1; c <= FinalStage; c++) n += BestStars(c);
+            return n;
+        }
+
+        /// <summary>Clears treasures and chapter unlocks (a new adventure). Stars and best words are kept.</summary>
         public static void ResetAll()
         {
             Load();
             owned.Clear();
             PlayerPrefs.DeleteKey(Key);
             PlayerPrefs.DeleteKey(StageKey);
+            PlayerPrefs.Save();
+        }
+
+        /// <summary>Also clears the stars (used by tests and a full reset).</summary>
+        public static void ResetEverything()
+        {
+            ResetAll();
+            for (int c = 1; c <= FinalStage; c++) { PlayerPrefs.DeleteKey(StarKey(c)); PlayerPrefs.DeleteKey(WordKey(c)); }
             PlayerPrefs.Save();
         }
 

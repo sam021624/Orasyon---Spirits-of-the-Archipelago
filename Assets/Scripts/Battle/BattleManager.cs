@@ -108,6 +108,9 @@ namespace Orasyon.Battle
         [SerializeField] private GameObject      resultPanel;
         [SerializeField] private TextMeshProUGUI resultTitle;
         [SerializeField] private TextMeshProUGUI resultBody;
+        [Tooltip("Three star images shown on the result screen.")]
+        [SerializeField] private Image[]         resultStars;
+        [SerializeField] private TextMeshProUGUI resultStats;
         [SerializeField] private Button          retryButton;
         [SerializeField] private Button          resultMenuButton;
         [SerializeField] private string          mainMenuScene = "MainMenu";
@@ -157,6 +160,10 @@ namespace Orasyon.Battle
         private EnemyAttack previousAttack, olderAttack;
         private int         enemyTurnIndex;
 
+        // Statistics for stars, the result screen and telemetry
+        private readonly BattleStats stats = new BattleStats();
+        private int lastTrackedHp = -1;
+
         // Creature rules and board effects
         private readonly EnemyMechanics mech = new EnemyMechanics();
         private float veilTarget;
@@ -169,6 +176,9 @@ namespace Orasyon.Battle
         private int  weakenTurns, weakenPercent;   // on the player
         private bool stunned, stunImmune;          // on the player (immune right after a stun, so it can't chain)
         private int  guardTurns, guardPercent;     // on the enemy
+        private int  enemyDotTurns, enemyDotDamage; // Words of Power: poison or burn on the enemy
+        private string enemyDotName = "";
+        private bool enemyStunned;                 // Words of Power: the enemy loses its next turn
         private Vector2 shakeBase;
         private bool    shaking;
 
@@ -205,6 +215,11 @@ namespace Orasyon.Battle
                 }
             else
                 NewBoard();
+
+            // Keyboard play and the pause menu need no scene setup
+            var keys = gameObject.AddComponent<KeyboardInput>();
+            keys.Init(this, letterGrid);
+            gameObject.AddComponent<Orasyon.UI.PauseMenu>().Init(this);
 
             attackButton.onClick.AddListener(OnAttackPressed);
             clearButton.onClick.AddListener(letterGrid.ClearSelection);
@@ -281,6 +296,7 @@ namespace Orasyon.Battle
             string msg = word.Length < WordDictionary.MinLength ? "Need 3+ letters" : "Not a word";
             ShowFeedback($"<color=#FF8A7A>{msg}</color>", false);
             if (wordPreview != null) wordPreview.Reject();
+            AudioManager.Play(Sfx.Reject);
         }
 
         /// <summary>Lights up the tiles of a short everyday word the player can make.</summary>
@@ -298,6 +314,8 @@ namespace Orasyon.Battle
             }
 
             hintsLeft--;
+            AudioManager.Play(Sfx.Hint);
+            stats.HintsUsed++;
             RefreshHintLabel();
             letterGrid.HighlightWord(word);
             ShowFeedback($"Lola whispers through the book: <b>\"{word}\"</b>  <color=#9FE2BF>({hintsLeft} hint{(hintsLeft == 1 ? "" : "s")} left)</color>", true);
@@ -317,6 +335,8 @@ namespace Orasyon.Battle
             if (!CanAct) return;
             if (scramblesLeft <= 0) { ShowFeedback("No scrambles left against this foe.", false); return; }
             scramblesLeft--;
+            AudioManager.Play(Sfx.Scramble);
+            stats.ScramblesUsed++;
             RefreshScrambleLabel();
             letterGrid.Scramble();
             ShowFeedback($"You shuffle the letters.  <color=#9FE2BF>({scramblesLeft} scramble{(scramblesLeft == 1 ? "" : "s")} left)</color>", true);
@@ -332,6 +352,8 @@ namespace Orasyon.Battle
 
         private void UseBuff(BuffType type)
         {
+            stats.PotionsUsed++;
+            AudioManager.Play(type == BuffType.HealingPotion ? Sfx.Heal : Sfx.Potion);
             switch (type)
             {
                 case BuffType.HealingPotion:
@@ -373,6 +395,7 @@ namespace Orasyon.Battle
 
             var enemy = CurrentEnemy;
             int damage = ComputeDamage(word, fx, out bool weakness);
+            stats.RecordWord(word, damage);
             bool empowered = damageMultiplier > 1;
             bool weakened  = weakenTurns > 0;
             bool guarded   = guardTurns > 0;
@@ -392,6 +415,7 @@ namespace Orasyon.Battle
                 enemyHP = Mathf.Max(0, enemyHP - damage);
                 RefreshHearts();
                 PlayHurt(enemyAnimator, enemy);
+                AudioManager.Play(tier == 3 ? Sfx.HitHeavy : tier == 2 ? Sfx.HitMedium : Sfx.HitLight);
                 Popup(EnemyRect, "-" + damage, new Color(1f, 0.85f, 0.3f), 1f + 0.25f * (tier - 1));
                 if (vfxPlayer != null && heroImpactVfx != null)
                     vfxPlayer.Play(heroImpactVfx, EnemyCenter, 0.9f + 0.35f * (tier - 1));
@@ -479,6 +503,7 @@ namespace Orasyon.Battle
             if (orasyonMeter != null) orasyonMeter.Add(word.Length);
             ApplyWordTileEffects(fx);
             if (playerHP <= 0 && CheckPlayerDefeat()) yield break;   // a Sumpa (hex) tile can be fatal
+            if (enemyHP > 0) ApplyStatusWord(word, enemy);
 
             // Enemy defeated → next encounter (or victory)
             if (enemyHP <= 0)
@@ -495,6 +520,25 @@ namespace Orasyon.Battle
             }
 
             yield return new WaitForSeconds(0.25f);
+
+            // Words of Power: burning and poison hurt the enemy first, and a stunned enemy skips its turn
+            yield return EnemyDotTick(enemy);
+            if (enemyHP <= 0)
+            {
+                yield return ResolveEnemyDefeat(enemy);
+                yield break;
+            }
+            if (enemyStunned)
+            {
+                enemyStunned = false;
+                RefreshStatus();
+                Popup(EnemyRect, "Stunned!", new Color(1f, 0.88f, 0.4f), 1.2f);
+                if (feedbackLabel != null) feedbackLabel.text += $"\n<color=#FFE066>The {enemy.displayName} is stunned and loses its turn!</color>";
+                yield return new WaitForSeconds(1f);
+                FinishTurn();
+                yield break;
+            }
+
             if (turnIndicator != null) turnIndicator.ShowEnemyTurn();
             yield return EnemyPhase(enemy);
             if (CheckPlayerDefeat()) yield break;
@@ -504,6 +548,7 @@ namespace Orasyon.Battle
         /// <summary>The enemy is down: death animation, then the next encounter, or the treasure and the victory screen.</summary>
         private IEnumerator ResolveEnemyDefeat(CharacterDefinition enemy)
         {
+            AudioManager.Play(Sfx.EnemyDeath);
             yield return DefeatRoutine(enemyAnimator, enemy, fadeOut: true);
             enemyIndex++;
             if (CurrentEnemy == null)
@@ -515,6 +560,7 @@ namespace Orasyon.Battle
                 if (bossReward != null)
                 {
                     newTreasure = PlayerProgress.Grant(bossReward);
+                    AudioManager.Play(Sfx.Treasure);
                     yield return TreasureDropRoutine(bossReward);
                 }
                 PlayerProgress.CompleteStage(chapterNumber);
@@ -582,6 +628,78 @@ namespace Orasyon.Battle
         }
 
         // ── Orasyon ──────────────────────────────────────────────────────────
+        // ── Words of Power ───────────────────────────────────────────────────
+        /// <summary>Certain exact words add poison, burn, stun or healing on top of their damage.</summary>
+        private void ApplyStatusWord(string word, CharacterDefinition enemy)
+        {
+            var sw = StatusWordDatabase.Get(word);
+            if (sw == null) return;
+            AudioManager.Play(Sfx.WordOfPower);
+            Popup(EnemyRect, "Word of Power!", new Color(1f, 0.85f, 0.35f), 1.3f);
+            switch (sw.effect)
+            {
+                case StatusEffect.Poison:
+                case StatusEffect.Burn:
+                    int turns = enemy.isBoss ? Mathf.Max(1, sw.turns / 2) : sw.turns;   // bosses shake it off sooner
+                    enemyDotTurns = turns;
+                    enemyDotDamage = sw.power;
+                    enemyDotName = sw.effect == StatusEffect.Poison ? "Poisoned" : "Burning";
+                    if (feedbackLabel != null)
+                        feedbackLabel.text += $"\n<color=#FF9F5A>Word of Power! The {enemy.displayName} is {enemyDotName.ToLowerInvariant()} ({sw.power}/turn, {turns} turns).</color>";
+                    break;
+                case StatusEffect.Stun:
+                    if (enemy.isBoss)
+                    {
+                        Popup(EnemyRect, "Immune", new Color(0.8f, 0.8f, 0.85f));
+                        if (feedbackLabel != null) feedbackLabel.text += "\n<color=#C8C8D0>Bosses cannot be stunned.</color>";
+                    }
+                    else
+                    {
+                        enemyStunned = true;
+                        if (feedbackLabel != null) feedbackLabel.text += $"\n<color=#FFE066>Word of Power! The {enemy.displayName} will lose its next turn.</color>";
+                    }
+                    break;
+                case StatusEffect.Heal:
+                    int healed = Mathf.Min(sw.power, playerMaxHP - playerHP);
+                    if (healed > 0)
+                    {
+                        playerHP += healed;
+                        Popup(PlayerRect, "+" + healed, new Color(1f, 0.45f, 0.45f));
+                        if (vfxPlayer != null && healVfx != null) vfxPlayer.Play(healVfx, PlayerCenter, 0.9f);
+                    }
+                    if (feedbackLabel != null) feedbackLabel.text += $"\n<color=#9FE2BF>Word of Power! You recover {healed} HP.</color>";
+                    break;
+            }
+            RefreshHearts();
+            RefreshStatus();
+        }
+
+        /// <summary>Start of the enemy's turn: poison or burn deals its damage.</summary>
+        private IEnumerator EnemyDotTick(CharacterDefinition enemy)
+        {
+            if (enemyDotTurns <= 0) yield break;
+            enemyDotTurns--;
+            enemyHP = Mathf.Max(0, enemyHP - enemyDotDamage);
+            enemyAnimator.Flash(enemyDotName == "Burning" ? new Color(1f, 0.6f, 0.25f) : new Color(0.55f, 1f, 0.5f), 0.25f);
+            Popup(EnemyRect, $"{enemyDotName} -{enemyDotDamage}", enemyDotName == "Burning" ? new Color(1f, 0.65f, 0.3f) : new Color(0.55f, 1f, 0.45f));
+            if (feedbackLabel != null) feedbackLabel.text += $"\n<color=#FF9F5A>{enemyDotName} deals {enemyDotDamage} damage to the {enemy.displayName}.</color>";
+            stats.DamageDealt += enemyDotDamage;
+            RefreshHearts();
+            RefreshStatus();
+            yield return new WaitForSeconds(0.7f);
+        }
+
+        // ── Keyboard and pause ───────────────────────────────────────────────
+        public bool IsBattleOver => battleOver;
+        public bool CanPlayerAct => CanAct;
+
+        public void KeyAttack()   { if (attackButton != null && attackButton.interactable) OnAttackPressed(); }
+        public void KeyScramble() { if (scrambleButton != null && scrambleButton.interactable) OnScramblePressed(); }
+        public void KeyHint()     { if (hintButton != null && hintButton.interactable) OnHintPressed(); }
+        public void KeyOrasyon()  { OnOrasyonPressed(); }
+        public void KeyPotion(BuffType type) { if (buffs != null) buffs.TryUse(type); }
+        public void RestartChapter() { Time.timeScale = 1f; SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); }
+        public void QuitToMenu() { Time.timeScale = 1f; LoadMainMenu(); }
         private void OnOrasyonPressed()
         {
             if (!CanAct || orasyonMeter == null || !orasyonMeter.IsFull) return;
@@ -594,6 +712,8 @@ namespace Orasyon.Battle
         /// </summary>
         private IEnumerator OrasyonRoutine()
         {
+            stats.OrasyonCasts++;
+            AudioManager.Play(Sfx.Orasyon);
             busy = true;
             orasyonMeter.ResetCharge();
             RefreshInput();
@@ -628,6 +748,7 @@ namespace Orasyon.Battle
                 enemyHP = Mathf.Max(0, enemyHP - part);
                 RefreshHearts();
                 PlayHurt(enemyAnimator, enemy);
+                AudioManager.Play(Sfx.HitMedium, 0.7f);
                 Vector2 jitter = new Vector2(UnityEngine.Random.Range(-60f, 60f), UnityEngine.Random.Range(-40f, 60f));
                 if (vfxPlayer != null && flurryHitVfx != null) vfxPlayer.Play(flurryHitVfx, EnemyCenter + jitter, 0.9f);
                 else StartCoroutine(Burst(EnemyCenter + jitter, 170f, MagicGold));
@@ -911,6 +1032,7 @@ namespace Orasyon.Battle
                     landed++;
                     playerHP = Mathf.Max(0, playerHP - dmg);
                     PlayHurt(playerAnimator, player);
+                    AudioManager.Play(Sfx.Hurt);
                     if (!spriteFx) StartCoroutine(Burst(PlayerCenter, crit ? 300f : 180f, new Color(1f, 0.45f, 0.35f, 0.85f)));
                     if (crit)
                     {
@@ -1054,6 +1176,7 @@ namespace Orasyon.Battle
         private void ClearStatuses()
         {
             poisonTurns = weakenTurns = guardTurns = 0;
+            enemyDotTurns = 0; enemyStunned = false;
             stunned = stunImmune = false;
             RefreshStatus();
         }
@@ -1381,8 +1504,10 @@ namespace Orasyon.Battle
             powerPotionsAwarded = 0;
             if (orasyonMeter != null) orasyonMeter.ResetCharge();
             enemyTurnIndex = 0;
+            enemyDotTurns = 0; enemyStunned = false;
             previousAttack = olderAttack = null;
             mech.Reset(enemy);
+            AudioManager.SetMusic(enemy.isBoss ? MusicTrack.Boss : MusicTrack.Battle);
             veilTarget = 0f;
             nextAttack = PickNextAttack(enemy);
             RefreshScrambleLabel();
@@ -1463,6 +1588,8 @@ namespace Orasyon.Battle
 
         private void RefreshHearts()
         {
+            if (lastTrackedHp >= 0 && playerHP < lastTrackedHp) stats.HpLost += lastTrackedHp - playerHP;
+            lastTrackedHp = playerHP;
             if (playerHearts != null) playerHearts.Set(playerHP, playerMaxHP);
             var enemy = CurrentEnemy;
             if (enemyHearts != null && enemy != null) enemyHearts.Set(enemyHP, enemy.maxHP);
@@ -1491,6 +1618,8 @@ namespace Orasyon.Battle
                 string s = "";
                 if (guardTurns > 0)       s += $"<color=#8CC8FF>Guarded -{guardPercent}% ({guardTurns})</color>   ";
                 if (letterGrid != null && letterGrid.HasStolen) s += $"<color=#FFD27F>Pocket: {letterGrid.StolenLetters}</color>   ";
+                if (enemyDotTurns > 0)    s += $"<color=#FF9F5A>{enemyDotName} ({enemyDotDamage}/turn, {enemyDotTurns})</color>   ";
+                if (enemyStunned)         s += "<color=#FFE066>Stunned</color>   ";
                 s += mech.StatusText();
                 enemyStatusLabel.text = s;
             }
@@ -1539,9 +1668,22 @@ namespace Orasyon.Battle
             Destroy(popup.gameObject);
         }
 
+        private static readonly string[] DefeatTips =
+        {
+            "Long words hit much harder: 7+ letters call down lightning.",
+            "Tiles with a green leaf heal you when you use them in a word.",
+            "A Warding potion blocks the next hit and clears smoke and locks.",
+            "The Orasyon meter fills as you spell. Save its prayer for a bad board.",
+            "Watch the move above the enemy's head: it shows what happens next.",
+            "Words from the enemy's weakness list deal 50% more damage.",
+            "Burning tiles hurt every turn. Use them in a word to get rid of them.",
+            "Hint shows a word on your board when you are stuck.",
+        };
+
         private void ShowResult(bool victory)
         {
             won = victory;
+            AudioManager.Play(victory ? Sfx.Victory : Sfx.Defeat);
             resultPanel.SetActive(true);
             var retryLabel = retryButton.GetComponentInChildren<TextMeshProUGUI>();
             bool showReward = victory && bossReward != null;
@@ -1554,8 +1696,11 @@ namespace Orasyon.Battle
                 if (rewardEffect != null) rewardEffect.text = bossReward.EffectText;
             }
 
+            int starCount = 0;
             if (victory)
             {
+                starCount = stats.Stars(playerMaxHP);
+                PlayerProgress.RecordResult(chapterNumber, starCount, stats.LongestWord);
                 resultTitle.text = "Chapter Complete!";
                 resultBody.text  = victoryMessage;
                 if (retryLabel != null) retryLabel.text = nextStory != null ? "CONTINUE" : "PLAY AGAIN";
@@ -1563,11 +1708,45 @@ namespace Orasyon.Battle
             else
             {
                 resultTitle.text = "Defeated";
-                resultBody.text  = "Your orasyon falters... but the book is still in your hands.";
+                resultBody.text  = "Your orasyon falters... but the book is still in your hands.\n<size=80%><color=#9FE2BF>Tip: " +
+                                   DefeatTips[rng.Next(DefeatTips.Length)] + "</color></size>";
                 if (retryLabel != null) retryLabel.text = "TRY AGAIN";
             }
+
+            if (resultStats != null)
+            {
+                string last = string.IsNullOrEmpty(stats.LongestWord) ? "-" : stats.LongestWord;
+                resultStats.text = victory
+                    ? $"Longest word: <b>{last}</b>    Damage dealt: <b>{stats.DamageDealt}</b>    Hearts lost: <b>{stats.HeartsLost}</b>"
+                    : $"Last word: <b>{(string.IsNullOrEmpty(stats.LastWord) ? "-" : stats.LastWord)}</b>    Hearts lost: <b>{stats.HeartsLost}</b>    Words played: <b>{stats.Words}</b>";
+            }
+
+            if (resultStars != null && resultStars.Length > 0)
+                StartCoroutine(StarsRoutine(victory ? starCount : 0));
+
+            BattleTelemetry.Log(chapterNumber, victory ? "Chapter" : "Defeat", victory, stats, playerMaxHP);
         }
 
+        /// <summary>Stars light up one after another with a little pop.</summary>
+        private IEnumerator StarsRoutine(int count)
+        {
+            foreach (var s in resultStars) { s.color = new Color(0.22f, 0.15f, 0.08f, 1f); s.rectTransform.localScale = Vector3.one; }
+            yield return new WaitForSecondsRealtime(0.35f);
+            for (int i = 0; i < resultStars.Length; i++)
+            {
+                if (i >= count) continue;
+                var rt = resultStars[i].rectTransform;
+                resultStars[i].color = Color.white;
+                AudioManager.Play(Sfx.Star);
+                for (float t = 0f; t < 1f; t += Time.unscaledDeltaTime / 0.35f)
+                {
+                    rt.localScale = Vector3.one * (1f + 0.6f * Mathf.Sin(t * Mathf.PI));
+                    yield return null;
+                }
+                rt.localScale = Vector3.one;
+                yield return new WaitForSecondsRealtime(0.12f);
+            }
+        }
         private bool won;
 
         private void LoadMainMenu() => SceneManager.LoadScene(mainMenuScene);

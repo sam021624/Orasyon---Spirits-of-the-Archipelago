@@ -159,6 +159,16 @@ namespace Orasyon.EditorTools
         private static FrameClip Clip(string folder, string id, string clip, float fps = 0f)
         {
             var tex = AssetDatabase.LoadAssetAtPath<Texture2D>($"{folder}/{id}_{clip}.png");
+            if (tex == null)
+            {
+                // Folder names can be longer than the file prefix (duwende_minion / minion_idle): match by suffix.
+                foreach (var guid in AssetDatabase.FindAssets("t:Texture2D", new[] { folder }))
+                {
+                    string p = AssetDatabase.GUIDToAssetPath(guid);
+                    string n = Path.GetFileNameWithoutExtension(p);
+                    if (n == clip || n.EndsWith("_" + clip)) { tex = AssetDatabase.LoadAssetAtPath<Texture2D>(p); break; }
+                }
+            }
             if (tex == null) return new FrameClip();
             return new FrameClip(tex, Mathf.RoundToInt(tex.width / (float)tex.height), fps);
         }
@@ -309,6 +319,17 @@ namespace Orasyon.EditorTools
                     Atk("Cold Touch", 2, 2, weight: 1, effect: AttackEffect.Leech, power: 100, vfx: "amalanhig_grip"),
                     Atk("Grave Curse", 1, 2, weight: 2, vfx: "amalanhig_grip", grid: GridEffectType.HexTiles, gridCount: 2, gridTurns: 3),
                 } } },
+            { "mangkukulam", new Creature {
+                displayName = "Mangkukulam", hp = 40, size = 380f,
+                weak = new[] { "DOLL", "PIN", "WITCH", "CURSE", "HEX" },
+                description = "A village witch who sticks pins into little dolls and makes her neighbors suffer for it. " +
+                              "Nobody admits to knowing her, and everybody knows exactly where she lives.",
+                attacks = new[]
+                {
+                    Atk("Pin Prick",  2, 3, weight: 3, crit: 0.15f, vfx: "king_curse"),
+                    Atk("Voodoo Doll", 1, 2, weight: 2, effect: AttackEffect.Weaken, chance: 0.7f, turns: 2, power: 35, vfx: "manananggal_mist"),
+                    Atk("Hex",        1, 1, weight: 2, vfx: "king_curse", grid: GridEffectType.HexTiles, gridCount: 2, gridTurns: 3),
+                } } },
             { "wakwak", new Creature {
                 displayName = "Wak-Wak", hp = 40, size = 390f, hover = 40f,
                 weak = new[] { "WING", "FEATHER", "SKY", "ROOST", "BEAK" },
@@ -346,6 +367,17 @@ namespace Orasyon.EditorTools
                     Atk("Flood Slam", 3, 4, weight: 3, crit: 0.10f, vfx: "berberoka_splash"),
                     Atk("Mud Glob",   2, 3, weight: 2, effect: AttackEffect.Poison, chance: 0.6f, turns: 2, power: 1, vfx: "berberoka_glob", travels: true, hit: "berberoka_splash"),
                     Atk("Swallow",    1, 2, weight: 2, vfx: "berberoka_splash", grid: GridEffectType.VoidTiles, gridCount: 1),
+                } } },
+            { "magindara", new Creature {
+                displayName = "Magindara", hp = 45, size = 400f,
+                weak = new[] { "SIREN", "SONG", "CORAL", "PEARL", "WAVE" },
+                description = "A mermaid whose song carries across the water on quiet nights. " +
+                              "Sailors who listen too long forget which way the shore is.",
+                attacks = new[]
+                {
+                    Atk("Tail Whip",  2, 4, weight: 3, crit: 0.15f, vfx: "siyokoy_splash"),
+                    Atk("Siren Song", 1, 2, weight: 2, effect: AttackEffect.Stun, chance: 0.4f, vfx: "siyokoy_geyser"),
+                    Atk("Undertow",   1, 1, weight: 2, vfx: "siyokoy_wave", grid: GridEffectType.LockTiles, gridCount: 3, gridTurns: 2),
                 } } },
             { "siyokoy", new Creature {
                 displayName = "Siyokoy", hp = 45, size = 390f,
